@@ -1,0 +1,1977 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Can You Climate-Proof a Garden? — Roots of Resilience</title>
+<meta name="description" content="An interactive Pacific Dataviz story: plant a root-crop mix and stress-test it across 60 real dry-year events. Diversity rarely lets all three roots fail together.">
+<meta name="author" content="Roots of Resilience · Pacific Dataviz Challenge 2026">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Can You Climate-Proof a Garden? — Roots of Resilience">
+<meta property="og:description" content="Plant a hectare of cassava, taro and sweet potato, then stress-test it against 60 Pacific dry years. There is no climate-proof crop — diversity softens the worst year.">
+<meta property="og:image" content="hero-farm.jpg">
+<meta property="og:image:alt" content="A Pacific farmer stands in a household garden ruined by cyclone damage and drought.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Can You Climate-Proof a Garden? — Roots of Resilience">
+<meta name="twitter:description" content="Interactive stress-test: crop diversity and 60 Pacific dry-year events.">
+<meta name="twitter:image" content="hero-farm.jpg">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="hero-farm.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;0,900;1,500;1,600&family=Karla:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+/* ========== THEME TOKENS ========== */
+:root, [data-theme="night"]{
+  /* Ocean Garden — lagoon teal / mist, never near-black; veil keeps cream type readable */
+  --bg:#0E2F38; --bg-2:#164652; --panel:rgba(10,36,42,.88); --panel-2:rgba(16,48,56,.84);
+  --ink:#F7F1E4; --muted:rgba(247,241,228,0.92); --faint:rgba(231,217,188,0.74);
+  --line:rgba(231,217,188,0.2); --accent:#7BC4C8; --good:#9BB884; --warn:#D06A45;
+  --cassava:#CC9245; --taro:#93679C; --sp:#C9603F;
+  --quote:#FFF6E8; --climax:#FFFEF8;
+  --font-display:'Fraunces', serif; --font-body:'Karla', sans-serif; --font-mono:'IBM Plex Mono', monospace;
+  --glow:0 0 48px rgba(111,185,190,.18); --cell-glow:0 0 8px rgba(204,146,69,.28);
+  --paper-noise:0.04; --radius:18px; --sticky-top:88px;
+  --card-blur:14px; --card-border:rgba(231,217,188,0.22);
+  --soil:#3A2E22; --soil-2:#2A2118;
+  --veil-base:linear-gradient(165deg, rgba(10,36,42,.86) 0%, rgba(12,42,50,.78) 42%, rgba(10,36,42,.9) 100%);
+}
+[data-theme="paper"]{
+  /* Field Notes — brighter cream veil over the same coastal place */
+  --bg:#E8E2D4; --bg-2:#DDD5C4; --panel:rgba(255,251,242,.88); --panel-2:rgba(232,223,204,.9);
+  --ink:#14110E; --muted:#3F372C; --faint:#6E6454;
+  --line:rgba(20,17,14,0.14); --accent:#2A6469; --good:#3F5F32; --warn:#9A3A26;
+  --cassava:#A86F2C; --taro:#5F4268; --sp:#9A3A26;
+  --quote:#1A1510; --climax:#0E0C0A;
+  --font-display:'Source Serif 4', 'Literata', serif; --font-body:'Literata', Georgia, serif; --font-mono:'IBM Plex Mono', monospace;
+  --glow:0 10px 28px rgba(20,17,14,.08); --cell-glow:none;
+  --paper-noise:0.07; --radius:10px;
+  --card-blur:8px; --card-border:rgba(20,17,14,0.12);
+  --soil:#C4B49A; --soil-2:#A89878;
+  --veil-base:linear-gradient(165deg, rgba(232,226,212,.88) 0%, rgba(232,226,212,.72) 42%, rgba(221,213,196,.9) 100%);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  .atmosphere{transition:none !important;}
+  .beat h2, .stat-big, .quote{animation:none !important; transition:none !important;}
+}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--font-body); font-size:17px; line-height:1.55;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+h1,h2,h3{font-family:var(--font-display); margin:0; font-weight:600; line-height:1.15;}
+p{margin:0 0 .85em;}
+a{color:var(--accent);}
+button{font-family:inherit; cursor:pointer;}
+button:focus-visible, a:focus-visible, input:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+::selection{background:var(--sp); color:var(--bg);}
+
+/* Atmosphere — shared coastal landscape + readable color veils */
+.atmosphere{
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    var(--veil-base),
+    url(bg-ocean.jpg) center / cover no-repeat fixed;
+  transition:background 1.25s ease;
+}
+html[data-scene="hero"] .atmosphere{
+  background:
+    radial-gradient(ellipse 900px 560px at 50% 0%, rgba(201,96,63,.22), transparent 58%),
+    radial-gradient(ellipse 700px 480px at 80% 100%, rgba(28,80,90,.35), transparent 55%),
+    var(--veil-base),
+    url(bg-ocean.jpg) center / cover no-repeat fixed;
+}
+html[data-scene="warming"] .atmosphere{
+  background:
+    radial-gradient(ellipse 1000px 600px at 50% 8%, rgba(123,196,200,.16), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 85% 90%, rgba(231,217,188,.08), transparent 55%),
+    var(--veil-base),
+    url(bg-ocean.jpg) center / cover no-repeat fixed;
+}
+html[data-scene="plant"] .atmosphere{
+  background:
+    radial-gradient(ellipse 1100px 700px at 50% 5%, rgba(123,196,200,.18), transparent 58%),
+    radial-gradient(ellipse 800px 500px at 12% 95%, rgba(204,146,69,.12), transparent 55%),
+    var(--veil-base),
+    url(bg-ocean.jpg) center / cover no-repeat fixed;
+}
+html[data-scene="tense"] .atmosphere{
+  background:
+    radial-gradient(ellipse 950px 650px at 50% -5%, rgba(208,106,69,.28), transparent 55%),
+    radial-gradient(ellipse 700px 500px at 10% 100%, rgba(40,70,78,.4), transparent 55%),
+    var(--veil-base),
+    url(bg-ocean.jpg) center / cover no-repeat fixed;
+}
+html[data-scene="clarity"] .atmosphere{
+  background:
+    radial-gradient(ellipse 1050px 650px at 40% 5%, rgba(123,196,200,.18), transparent 58%),
+    radial-gradient(ellipse 750px 550px at 90% 95%, rgba(155,184,132,.12), transparent 55%),
+    var(--veil-base),
+    url(bg-ocean.jpg) center / cover no-repeat fixed;
+}
+html[data-scene="archipelago"] .atmosphere{
+  background:
+    radial-gradient(ellipse 900px 600px at 18% 12%, rgba(123,196,200,.16), transparent 55%),
+    radial-gradient(ellipse 800px 550px at 88% 22%, rgba(204,146,69,.12), transparent 55%),
+    radial-gradient(ellipse 700px 500px at 55% 95%, rgba(147,103,156,.1), transparent 55%),
+    var(--veil-base),
+    url(bg-ocean.jpg) center / cover no-repeat fixed;
+}
+html[data-scene="golden"] .atmosphere{
+  background:
+    radial-gradient(ellipse 1100px 700px at 50% 0%, rgba(204,146,69,.22), transparent 60%),
+    radial-gradient(ellipse 800px 500px at 15% 100%, rgba(201,96,63,.1), transparent 55%),
+    var(--veil-base),
+    url(bg-ocean.jpg) center / cover no-repeat fixed;
+}
+html[data-scene="sunset"] .atmosphere{
+  background:
+    radial-gradient(ellipse 1200px 750px at 50% 100%, rgba(201,96,63,.26), transparent 62%),
+    radial-gradient(ellipse 900px 600px at 20% 0%, rgba(204,146,69,.18), transparent 58%),
+    var(--veil-base),
+    url(bg-ocean.jpg) center / cover no-repeat fixed;
+}
+html[data-theme="paper"][data-scene="hero"] .atmosphere{
+  background:
+    radial-gradient(ellipse 900px 560px at 50% 0%, rgba(154,58,38,.12), transparent 58%),
+    var(--veil-base),
+    url(bg-ocean.jpg) center / cover no-repeat fixed;
+}
+html[data-theme="paper"][data-scene="tense"] .atmosphere{
+  background:
+    radial-gradient(ellipse 950px 650px at 50% 0%, rgba(154,58,38,.14), transparent 55%),
+    var(--veil-base),
+    url(bg-ocean.jpg) center / cover no-repeat fixed;
+}
+html[data-theme="paper"][data-scene="sunset"] .atmosphere,
+html[data-theme="paper"][data-scene="golden"] .atmosphere{
+  background:
+    radial-gradient(ellipse 1100px 700px at 50% 90%, rgba(168,111,44,.16), transparent 60%),
+    var(--veil-base),
+    url(bg-ocean.jpg) center / cover no-repeat fixed;
+}
+
+.grain{
+  position:fixed; inset:0; z-index:1; pointer-events:none; opacity:var(--paper-noise);
+  mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+[data-theme="paper"] .grain{mix-blend-mode:multiply; opacity:.11;}
+
+/* ========== CHROME ========== */
+.topbar{
+  position:fixed; top:0; left:0; right:0; z-index:40;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 20px; gap:12px;
+  background:linear-gradient(180deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 88%, transparent) 72%, transparent 100%);
+  pointer-events:none;
+}
+[data-theme="night"] .topbar{
+  background:linear-gradient(180deg, rgba(10,36,42,.96) 0%, rgba(10,36,42,.78) 65%, transparent 100%);
+}
+.topbar > *{pointer-events:auto;}
+.brand{font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);}
+[data-theme="night"] .brand{color:var(--ink); text-shadow:0 1px 12px rgba(10,36,42,.65);}
+.theme-toggle{
+  display:inline-flex; background:var(--panel); border:1px solid var(--line);
+  border-radius:100px; padding:3px; gap:2px;
+}
+.theme-toggle button{
+  border:none; background:transparent; color:var(--muted);
+  font-family:var(--font-mono); font-size:11px; padding:7px 12px; border-radius:100px;
+}
+.theme-toggle button.active{background:var(--ink); color:var(--bg); font-weight:600;}
+
+.progress-rail{
+  position:fixed; right:10px; top:50%; transform:translateY(-50%);
+  z-index:35; display:flex; flex-direction:column; gap:7px;
+}
+.progress-rail a{
+  width:8px; height:8px; border-radius:50%; background:var(--line);
+  display:block; transition:transform .2s, background .2s;
+}
+.progress-rail a.active, .progress-rail a:hover{background:var(--accent); transform:scale(1.35);}
+.progress-rail a.done{background:var(--good);}
+
+.mix-chip{
+  display:none; align-items:center; gap:8px; flex-wrap:wrap; justify-content:center;
+  background:var(--panel); border:1px solid var(--line); border-radius:100px;
+  padding:8px 12px; box-shadow:var(--glow); font-family:var(--font-mono); font-size:12px;
+  backdrop-filter:blur(10px); max-width:100%;
+}
+.mix-chip.visible{display:flex;}
+.mix-chip.pulse{animation:chipPulse 1.1s ease 2;}
+@keyframes chipPulse{
+  0%,100%{box-shadow:var(--glow);}
+  50%{box-shadow:0 0 0 3px var(--accent), var(--glow);}
+}
+@media (prefers-reduced-motion: reduce){
+  .mix-chip.pulse{animation:none;}
+}
+.plant-cue{
+  margin:10px 0 0; padding:8px 0 8px 12px; border-left:3px solid var(--accent);
+  font-family:var(--font-display); font-size:15px; color:var(--quote); font-weight:500;
+  opacity:0; transform:translateY(6px); transition:opacity .45s ease, transform .45s ease;
+}
+.plant-cue.show{opacity:1; transform:none;}
+.plant-cue[hidden]{display:none !important;}
+@media (prefers-reduced-motion: reduce){
+  .plant-cue{opacity:1; transform:none; transition:none;}
+}
+.mix-chip .sw{width:10px; height:10px; border-radius:2px; display:inline-block; margin-right:4px; vertical-align:-1px;}
+.mix-chip button{
+  border:1px solid var(--line); background:transparent; color:var(--muted);
+  border-radius:100px; padding:4px 10px; font-size:11px; font-family:var(--font-mono);
+}
+.mix-chip button:hover{color:var(--ink); border-color:var(--accent);}
+.focus-pill{
+  display:none; align-items:center; gap:8px; justify-content:center;
+  background:var(--panel); border:1px solid var(--line); border-radius:100px;
+  padding:6px 12px; box-shadow:var(--glow); font-family:var(--font-mono); font-size:11px;
+  color:var(--muted); backdrop-filter:blur(10px); max-width:100%;
+}
+.focus-pill.visible{display:flex;}
+.focus-pill strong{color:var(--ink); font-weight:600;}
+.focus-pill button{
+  border:none; background:transparent; color:var(--faint); cursor:pointer;
+  font-family:var(--font-mono); font-size:11px; padding:2px 4px;
+}
+.focus-pill button:hover{color:var(--accent);}
+.sticky-tools{
+  display:none; flex-direction:column; align-items:center; gap:8px;
+  margin-top:10px; width:100%; max-width:520px; flex-shrink:0;
+}
+.sticky-tools.has-tools{display:flex;}
+
+/* ========== LAYOUT ========== */
+main{position:relative; z-index:2;}
+.section{padding:72px 24px; max-width:1120px; margin:0 auto;}
+.section.hero{
+  min-height:100vh; display:flex; flex-direction:column; align-items:stretch;
+  justify-content:flex-start; padding:0 0 64px; max-width:none;
+}
+.hero-inner{max-width:720px; margin:0 auto; padding:28px 24px 0; text-align:center;}
+.eyebrow{font-family:var(--font-mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:14px; display:block;}
+.lede{color:var(--muted); font-size:17.5px; max-width:38em; line-height:1.65;}
+.lede + .lede{margin-top:-.15em;}
+.fine{font-size:12.5px; color:var(--faint); font-style:italic;}
+.quote{
+  font-family:var(--font-display); font-style:italic; font-weight:500;
+  font-size:clamp(26px,4.2vw,42px);
+  color:var(--quote); line-height:1.32; margin:28px auto 10px; max-width:640px;
+  position:relative; padding-top:18px;
+}
+.quote::before{
+  content:""; display:block; width:42px; height:2px; margin:0 auto 18px;
+  background:linear-gradient(90deg, transparent, var(--warn), transparent);
+  opacity:.85;
+}
+.attr{font-family:var(--font-mono); font-size:12px; color:var(--accent);}
+
+.scrolly{
+  display:grid; grid-template-columns:minmax(280px,1fr) minmax(300px,1.1fr);
+  gap:28px 40px; align-items:start; max-width:1120px; margin:0 auto; padding:40px 24px 80px;
+}
+.scrolly .beats{display:flex; flex-direction:column; gap:0;}
+.beat{
+  min-height:78vh; padding:64px 0; display:flex; flex-direction:column; justify-content:center;
+  border-top:1px solid transparent; max-width:38em;
+}
+.beat h2{
+  font-size:clamp(26px,3.4vw,38px); margin-bottom:14px; color:var(--ink);
+  opacity:0; transform:translateY(14px);
+  transition:opacity .7s ease, transform .7s ease;
+}
+.beat h2.in{opacity:1; transform:none;}
+#meaning h2, .ending h2{
+  opacity:0; transform:translateY(12px);
+  transition:opacity .75s ease, transform .75s ease;
+}
+#meaning h2.in, .ending h2.in{opacity:1; transform:none;}
+.beat .lede{max-width:none;}
+
+/* Ocean Garden: dark lagoon under cream copy (Field Notes: no scrim) */
+[data-theme="night"] .prose-scrim{
+  background:linear-gradient(105deg, rgba(10,36,42,.88) 0%, rgba(10,36,42,.72) 68%, rgba(10,36,42,.42) 100%);
+  border-radius:var(--radius);
+  padding:18px 20px;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  box-shadow:0 8px 32px rgba(0,0,0,.18);
+}
+[data-theme="night"] .beat.prose-scrim{
+  padding:28px 22px;
+  margin:8px 0;
+  box-sizing:border-box;
+}
+[data-theme="night"] .hero-inner.prose-scrim,
+[data-theme="night"] .ending-inner.prose-scrim{
+  text-align:center;
+  max-width:760px;
+  padding:22px 26px 26px;
+}
+[data-theme="night"] .meaning-inner.prose-scrim{
+  padding:22px 26px;
+  margin-bottom:12px;
+}
+[data-theme="night"] .methods.prose-scrim{
+  background:linear-gradient(180deg, rgba(10,36,42,.9) 0%, rgba(10,36,42,.82) 100%);
+  padding:40px 28px 100px;
+  border-radius:var(--radius) var(--radius) 0 0;
+  border-top:1px solid var(--line);
+}
+[data-theme="night"] .story-cap{
+  background:rgba(10,36,42,.78);
+  margin:0;
+  padding:14px 24px 24px;
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+[data-theme="night"] .story-cap.poet{
+  padding-top:16px;
+  padding-bottom:10px;
+}
+[data-theme="night"] .unveil-hint{
+  color:var(--muted);
+  background:rgba(10,36,42,.7);
+  display:inline-block;
+  margin:8px auto 6px;
+  padding:6px 12px;
+  border-radius:100px;
+}
+[data-theme="night"] .fund-gap{
+  background:rgba(10,36,42,.75);
+  padding:12px 16px;
+  border-radius:var(--radius);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+[data-theme="night"] .v-caption,
+[data-theme="night"] .visual-card .v-title{
+  color:rgba(231,217,188,0.82);
+}
+.sticky-col{
+  position:sticky; top:var(--sticky-top); height:calc(100vh - var(--sticky-top) - 24px);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  min-height:0; gap:0;
+}
+.visual-card{
+  width:100%; max-width:520px; max-height:calc(100% - 72px);
+  background:var(--panel); border:none;
+  border-radius:var(--radius); padding:18px 20px; box-shadow:var(--glow);
+  min-height:0; display:flex; flex-direction:column;
+  overflow-y:auto; -webkit-overflow-scrolling:touch;
+  backdrop-filter:blur(var(--card-blur));
+  -webkit-backdrop-filter:blur(var(--card-blur));
+}
+[data-theme="paper"] .visual-card{
+  background:var(--panel); box-shadow:inset 0 1px 0 rgba(255,255,255,.55), var(--glow);
+}
+.visual-card .v-title{font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--faint); margin-bottom:10px;}
+.visual-slot{flex:1; display:none; flex-direction:column; min-height:0;}
+.visual-slot.active{display:flex;}
+.v-caption{
+  margin-top:auto; padding-top:10px; font-family:var(--font-mono); font-size:10.5px;
+  color:var(--faint); line-height:1.45; border-top:none; flex-shrink:0;
+}
+.v-caption a{color:var(--accent); text-decoration:underline; text-underline-offset:2px;}
+.v-caption a:hover{color:var(--ink);}
+.decision-card{
+  margin-top:8px; padding:8px 0 8px 12px; border-radius:0;
+  background:transparent; border:none; border-left:3px solid var(--accent); flex-shrink:0;
+}
+.decision-card .dc-label{font-family:var(--font-mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--faint); margin-bottom:4px;}
+.decision-card .dc-row{display:flex; justify-content:space-between; gap:10px; font-family:var(--font-mono); font-size:11.5px; padding:2px 0; color:var(--muted);}
+.decision-card .dc-row strong{color:var(--ink);}
+.decision-card .dc-delta{margin-top:4px; font-family:var(--font-display); font-size:13px; color:var(--quote); font-weight:500; line-height:1.35;}
+.decision-card .dc-actions{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;}
+.decision-card .dc-actions a, .decision-card .dc-actions button{
+  font-family:var(--font-mono); font-size:11px; border-radius:100px; padding:4px 9px;
+  border:1px solid var(--line); background:transparent; color:var(--muted); text-decoration:none; cursor:pointer;
+}
+.decision-card .dc-actions a:hover, .decision-card .dc-actions button:hover{color:var(--accent); border-color:var(--accent);}
+.aha-callout{
+  margin:6px 0 4px; padding:4px 0 4px 12px; border-radius:0;
+  border:none; border-left:3px solid var(--warn); background:transparent;
+  font-family:var(--font-display); font-size:13px; color:var(--quote); font-weight:500; line-height:1.35;
+  opacity:0; transform:translateY(6px); transition:opacity .55s ease .12s, transform .55s ease .12s;
+  flex-shrink:0;
+}
+.aha-callout.in{opacity:1; transform:none;}
+.aha-callout.good{border-left-color:var(--good);}
+@media (prefers-reduced-motion: reduce){
+  .aha-callout{opacity:1; transform:none; transition:none;}
+}
+
+/* Dense sticky slots */
+#vs-sixty .stat-big, #vs-fail .stat-big{
+  font-size:clamp(36px,6vw,56px); margin:0 0 2px; line-height:1;
+}
+#vs-sixty .stat-sub, #vs-fail .stat-sub{font-size:11.5px;}
+#vs-sixty .tile-grid{gap:3px; margin-top:8px;}
+#vs-fail .tile-grid{gap:3px; margin-top:8px;}
+#vs-sixty .panel, #vs-fail .panel, #vs-tonga .panel{margin-top:8px; padding:10px 12px;}
+#vs-sixty .panel .row, #vs-fail .panel .row, #vs-tonga .panel .row{padding:5px 0; font-size:11.5px;}
+#vs-tonga .garden-grid, #vs-garden .garden-grid{max-width:280px;}
+#vs-evidence .strat-list{gap:6px;}
+#vs-safe .dual{gap:10px;}
+#vs-islands .map-svg{max-height:200px;}
+#vs-evidence .strat-btn{padding:8px 10px;}
+#vs-safe .crop-bar-row{grid-template-columns:90px 1fr 52px; gap:6px; font-size:12px;}
+#vs-safe .crop-bar-name{font-size:13px;}
+
+@media (max-width:860px){
+  .scrolly{grid-template-columns:1fr; padding-top:12px; gap:12px;}
+  .sticky-col{
+    position:sticky; top:64px; height:auto; max-height:min(68vh,600px); order:-1; z-index:8;
+    margin-bottom:8px; align-items:stretch;
+  }
+  .visual-card{
+    min-height:0; max-height:min(52vh,480px); max-width:none; padding:12px 14px;
+    overflow-y:auto; -webkit-overflow-scrolling:touch;
+  }
+  .sticky-tools{margin-top:8px; max-width:none;}
+  .beat{min-height:auto; padding:36px 0 64px; max-width:none;}
+  .hero-art{height:58vh; margin-top:48px;}
+  .hero-art img{height:100%;}
+  .hero-inner{padding-top:20px;}
+  .progress-rail{display:none;}
+  .garden-grid{max-width:220px;}
+  .stat-big{font-size:42px;}
+  #vs-sixty .stat-big, #vs-fail .stat-big{font-size:36px;}
+  .tile-grid{gap:4px;}
+  .tile{min-width:0; min-height:0; touch-action:manipulation;}
+  #vs-sixty .tile, #vs-fail .tile{min-height:18px;}
+}
+
+/* ========== GARDEN ========== */
+.garden-grid{display:grid; grid-template-columns:repeat(10,1fr); gap:2.5px; width:100%; aspect-ratio:1; max-width:340px; margin:0 auto;}
+.garden-cell{
+  border-radius:3px; display:grid; place-items:center; overflow:hidden;
+  background:linear-gradient(160deg, var(--soil) 0%, var(--soil-2) 100%);
+  transition:opacity .45s ease, filter .45s ease, box-shadow .45s ease;
+}
+.garden-cell svg{width:88%; height:88%; display:block; overflow:visible;}
+.garden-cell.crop-c{box-shadow:inset 0 0 0 1px rgba(204,146,69,.22);}
+.garden-cell.crop-t{box-shadow:inset 0 0 0 1px rgba(147,103,156,.22);}
+.garden-cell.crop-s{box-shadow:inset 0 0 0 1px rgba(201,96,63,.22);}
+[data-theme="night"] .garden-cell{box-shadow:inset 0 0 0 1px rgba(255,255,255,.05), var(--cell-glow);}
+.garden-cell.wilt{filter:saturate(.45) brightness(.85);}
+.garden-legend{display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-top:12px; font-family:var(--font-mono); font-size:11px; color:var(--muted); align-items:center;}
+.garden-legend .sw{
+  width:16px; height:16px; border-radius:3px; display:inline-grid; place-items:center;
+  margin-right:5px; vertical-align:-3px;
+  background:linear-gradient(160deg, var(--soil) 0%, var(--soil-2) 100%);
+}
+.garden-legend .sw svg{width:12px; height:12px; display:block;}
+@media (max-width:860px){
+  .garden-cell svg{width:92%; height:92%;}
+  .garden-cell .plant-stroke{stroke-width:1.35;}
+}
+
+.sliders{display:flex; flex-direction:column; gap:16px; margin:18px 0;}
+.slider-row .lab{display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:13px; margin-bottom:6px;}
+.slider-row input[type=range]{width:100%; accent-color:var(--cassava);}
+.slider-row.taro input{accent-color:var(--taro);}
+.slider-row.sp input{accent-color:var(--sp);}
+.pct-c{color:var(--cassava); font-weight:700;}
+.pct-t{color:var(--taro); font-weight:700;}
+.pct-s{color:var(--sp); font-weight:700;}
+
+.stat-big{
+  font-family:var(--font-display); font-weight:900; font-size:clamp(48px,10vw,88px);
+  line-height:1; margin:8px 0; color:var(--climax);
+  transform:scale(.92); opacity:.55; transition:transform .55s cubic-bezier(.2,.8,.2,1), opacity .55s ease;
+}
+.stat-big.in{transform:scale(1); opacity:1;}
+.stat-big.bad{color:var(--warn);} .stat-big.good{color:var(--good);}
+.stat-sub{font-family:var(--font-mono); font-size:12.5px; color:var(--accent);}
+
+.panel{
+  background:var(--panel-2); border-radius:12px; padding:14px 16px; margin-top:12px; border:none;
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+}
+.row{display:flex; justify-content:space-between; gap:10px; padding:8px 0; border-bottom:1px solid var(--line); font-family:var(--font-mono); font-size:12.5px;}
+.row:last-child{border-bottom:none;}
+.row .v{font-weight:700;} .row .v.neg{color:var(--warn);} .row .v.pos{color:var(--good);}
+
+/* ========== TILES / BARS ========== */
+.tile-grid{display:grid; grid-template-columns:repeat(10,1fr); gap:5px;}
+.tile{
+  aspect-ratio:1; border-radius:4px; border:none; padding:0; cursor:pointer;
+  position:relative; transition:transform .15s, box-shadow .15s;
+}
+.tile.g{background:var(--good);} .tile.b{background:var(--warn);}
+.tile:hover, .tile.active{transform:scale(1.12); box-shadow:0 0 0 2px var(--ink);}
+.tile.dim{opacity:.28;}
+.tile-tip{
+  display:none; position:absolute; bottom:115%; left:50%; transform:translateX(-50%);
+  background:var(--ink); color:var(--bg); font-family:var(--font-mono); font-size:10px;
+  padding:4px 7px; border-radius:6px; white-space:nowrap; z-index:5; pointer-events:none;
+}
+.tile:hover .tile-tip{display:block;}
+
+.crop-bars{display:flex; flex-direction:column; gap:10px;}
+.crop-bar-row{display:grid; grid-template-columns:110px 1fr 64px; gap:10px; align-items:center;}
+.crop-bar-name{font-family:var(--font-display); font-size:14px; display:flex; align-items:center; gap:6px; cursor:pointer; border:none; background:none; color:var(--ink); padding:0; text-align:left;}
+.crop-bar-name:hover, .crop-bar-name.hl{color:var(--accent);}
+.crop-bar-track{background:var(--bg-2); border-radius:100px; height:12px; overflow:hidden;}
+.crop-bar-fill{height:100%; border-radius:100px; transition:width .4s;}
+.crop-bar-val{font-family:var(--font-mono); font-size:11px; text-align:right; color:var(--muted);}
+.dual{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+@media(max-width:560px){.dual{grid-template-columns:1fr;} .tile-grid{grid-template-columns:repeat(6,1fr);}}
+
+/* ========== STRATEGY ========== */
+.strat-list{display:flex; flex-direction:column; gap:8px;}
+.strat-btn{
+  display:grid; grid-template-columns:1fr auto auto; gap:10px; align-items:center;
+  background:var(--bg-2); border:1px solid var(--line); border-radius:12px;
+  padding:12px 14px; color:var(--ink); text-align:left; transition:border .15s, background .15s;
+}
+.strat-btn:hover, .strat-btn.active{border-color:var(--accent); background:var(--panel);}
+.strat-btn .name{font-family:var(--font-display); font-size:15px; font-weight:600;}
+.strat-btn .meta{font-family:var(--font-mono); font-size:11px; color:var(--muted);}
+.strat-btn .worst{font-family:var(--font-mono); font-weight:700; color:var(--warn); font-size:14px;}
+.toggle-row{display:flex; align-items:center; gap:10px; margin:12px 0 4px; font-family:var(--font-mono); font-size:12px; color:var(--muted);}
+.toggle-row input{accent-color:var(--accent);}
+
+/* ========== CORR / MAP ========== */
+.corr-btns{display:flex; flex-wrap:wrap; gap:6px; margin:10px 0 14px;}
+.corr-btns button{
+  border:1px solid var(--line); background:var(--bg-2); color:var(--muted);
+  border-radius:100px; padding:6px 11px; font-family:var(--font-mono); font-size:11px;
+}
+.corr-btns button.active{background:var(--ink); color:var(--bg); border-color:var(--ink);}
+.corr-viz{display:flex; flex-direction:column; gap:10px; margin-top:8px;}
+.corr-pair{display:grid; grid-template-columns:130px 1fr 48px; gap:8px; align-items:center; font-family:var(--font-mono); font-size:12px;}
+.corr-track{height:10px; background:var(--bg-2); border-radius:100px; position:relative; overflow:hidden;}
+.corr-fill{position:absolute; top:0; bottom:0; border-radius:100px;}
+
+.map-svg{width:100%; height:auto; border-radius:14px; background:var(--bg-2);}
+[data-theme="paper"] .map-svg{background:#E6D7B5;}
+.map-dot{cursor:pointer; pointer-events:all;}
+.map-dot circle.hit{fill:transparent; pointer-events:all;}
+.map-dot circle.core{fill:var(--accent); stroke:var(--bg); stroke-width:2; transition:r .15s, fill .15s; pointer-events:none;}
+.map-dot circle.ring{fill:none; stroke:var(--accent); stroke-width:1.5; opacity:0; pointer-events:none;}
+.map-dot:hover circle.core, .map-dot.active circle.core{fill:var(--ink); transform:scale(1.35); transform-origin:center; transform-box:fill-box;}
+.map-dot:hover circle.ring, .map-dot.active circle.ring{opacity:.5;}
+.map-dot text{fill:var(--muted); font-family:var(--font-mono); font-size:11px; pointer-events:none;}
+.map-dot:hover text, .map-dot.active text{fill:var(--ink); font-weight:600;}
+.map-bg{pointer-events:none;}
+.tag{display:inline-block; font-family:var(--font-mono); font-size:10px; text-transform:uppercase; letter-spacing:.05em; padding:4px 10px; border-radius:100px; margin-top:8px;}
+.tag.rising{background:rgba(143,174,123,.2); color:var(--good);}
+.tag.falling{background:rgba(201,96,63,.18); color:var(--warn);}
+.tag.stable{background:var(--line); color:var(--faint);}
+
+/* ========== WARMING CHART ========== */
+.warm-chart{width:100%; height:220px;}
+.story-chart{width:100%; height:auto; display:block; margin:8px 0 4px; flex-shrink:0;}
+.story-chart.anomaly{max-height:148px;}
+.story-chart.strip{max-height:110px;}
+.story-chart.strat{max-height:168px;}
+.chart-label{font-family:var(--font-mono); font-size:10px; fill:var(--faint);}
+.chart-val{font-family:var(--font-mono); font-size:10px; font-weight:600;}
+.strip-wrap{margin:6px 0 4px;}
+.strip-hint{font-family:var(--font-mono); font-size:10px; color:var(--faint); margin:0 0 4px;}
+#vs-tonga .garden-grid{max-width:220px; margin-bottom:4px;}
+#vs-sixty .tile-grid{margin-top:6px;}
+#vs-evidence .strat-list{margin-top:6px;}
+.mech{display:flex; flex-direction:column; gap:4px; margin-top:14px; font-family:var(--font-mono); font-size:12px;}
+.mech span{background:var(--bg-2); border-radius:8px; padding:8px 12px; text-align:center;}
+.mech .arr{text-align:center; color:var(--accent); background:none; padding:0;}
+
+/* ========== KNOWLEDGE / CLOSE ========== */
+.k-card{background:var(--panel); border:none; border-radius:var(--radius); padding:16px 18px; backdrop-filter:blur(var(--card-blur));}
+.k-card.centerpiece{box-shadow:inset 3px 0 0 var(--accent);}
+.k-card .place{font-family:var(--font-mono); font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:var(--accent); margin-bottom:6px;}
+.k-card h3{font-size:16px; margin-bottom:6px;}
+.k-card p{font-size:13.5px; color:var(--muted); margin:0; line-height:1.55;}
+.k-card .fine a{color:var(--accent);}
+.k-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:20px;}
+@media(max-width:640px){.k-grid{grid-template-columns:1fr;}}
+
+.fund-chips{display:flex; flex-wrap:wrap; gap:10px; margin:18px 0;}
+.fund-chip{background:var(--panel); border:none; border-radius:14px; padding:14px 16px; flex:1; min-width:200px; backdrop-filter:blur(var(--card-blur));}
+.fund-chip .amt{font-family:var(--font-display); font-size:22px; font-weight:700; color:var(--good);}
+.fund-chip .lbl{font-size:13px; color:var(--muted); margin-top:4px;}
+
+.cta-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:22px;}
+.btn{
+  display:inline-flex; align-items:center; gap:6px; border-radius:100px;
+  padding:12px 20px; font-size:14px; border:1px solid var(--line);
+  background:var(--panel); color:var(--ink); text-decoration:none;
+}
+.btn.primary{background:var(--ink); color:var(--bg); border-color:var(--ink); font-weight:700;}
+.btn.primary:hover{background:var(--accent); border-color:var(--accent); color:var(--bg);}
+.btn.ghost:hover{border-color:var(--accent); color:var(--accent);}
+
+.ending{
+  text-align:center; padding:0 0 70px; max-width:none; margin:0 auto;
+  position:relative;
+}
+.ending-inner{max-width:720px; margin:0 auto; padding:28px 24px 0;}
+.ending h2{
+  font-size:clamp(30px,4.8vw,48px); margin-bottom:10px; color:var(--climax);
+  letter-spacing:-0.01em;
+}
+.ending .sub{
+  font-family:var(--font-display); font-style:italic; color:var(--muted);
+  font-size:clamp(18px,2.4vw,24px); margin-bottom:22px;
+}
+.ending .hope-line{
+  margin-top:28px; font-family:var(--font-display);
+  font-size:clamp(20px,2.8vw,28px); color:var(--quote); font-weight:500;
+}
+
+.hero-art{
+  position:relative; width:100%; margin:0; border-radius:0; overflow:hidden;
+  height:min(84vh,820px); max-height:none; background:var(--bg-2);
+}
+.hero-art img{
+  width:100%; height:100%; object-fit:cover; object-position:center 32%;
+  display:block;
+}
+.hero-art::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:
+    linear-gradient(180deg, rgba(7,13,14,.35) 0%, transparent 28%, transparent 48%, var(--bg) 100%),
+    linear-gradient(90deg, rgba(7,13,14,.25) 0%, transparent 40%);
+}
+[data-theme="paper"] .hero-art::after{
+  background:
+    linear-gradient(180deg, rgba(232,226,212,.35) 0%, transparent 30%, transparent 50%, var(--bg) 100%),
+    linear-gradient(90deg, rgba(232,226,212,.2) 0%, transparent 45%);
+}
+.hero-inner{max-width:720px; margin:0 auto; padding:8px 24px 0; text-align:center;}
+.section.hero{padding-bottom:72px;}
+
+/* Full-bleed emotional image bands */
+.story-band{
+  position:relative; width:100%; max-width:none; margin:0; padding:0;
+}
+.story-art{
+  position:relative; width:100%; margin:0; overflow:hidden;
+  height:min(52vh,560px); background:var(--bg-2);
+}
+.story-art img{
+  width:100%; height:100%; object-fit:cover; object-position:center center; display:block;
+}
+.story-art::after{
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:linear-gradient(180deg, transparent 42%, var(--bg) 100%);
+}
+[data-theme="paper"] .story-art::after{
+  background:linear-gradient(180deg, transparent 40%, var(--bg) 100%);
+}
+.story-art.pos-hands img{object-position:center 40%;}
+.story-art.pos-plant img{object-position:center 45%;}
+.story-cap{
+  font-family:var(--font-mono); font-size:12px; color:var(--faint);
+  text-align:center; padding:10px 24px 28px; margin:0; letter-spacing:.02em;
+}
+.story-cap.poet{
+  font-family:var(--font-display); font-size:clamp(18px,2.4vw,24px); color:var(--quote);
+  font-weight:500; letter-spacing:0; padding-bottom:6px;
+}
+.story-art.unveil-host{cursor:pointer;}
+.unveil-layer{
+  position:absolute; inset:0; z-index:3; display:flex; align-items:flex-end; justify-content:center;
+  padding:28px 24px 48px; text-align:center;
+  background:linear-gradient(180deg, transparent 35%, rgba(7,13,14,.78) 100%);
+  opacity:0; transition:opacity .45s ease; pointer-events:none;
+}
+[data-theme="paper"] .unveil-layer{
+  background:linear-gradient(180deg, transparent 35%, rgba(40,32,24,.62) 100%);
+}
+.story-art.unveil-host:hover .unveil-layer,
+.story-art.unveil-host:focus-within .unveil-layer,
+.story-art.unveil-host.is-open .unveil-layer{opacity:1;}
+.unveil-layer .u-data{
+  font-family:var(--font-mono); font-size:13px; color:rgba(243,239,230,.95);
+  margin:0; max-width:34em; line-height:1.45;
+  opacity:0; transform:translateY(8px);
+  transition:opacity .4s ease .12s, transform .4s ease .12s;
+}
+.story-art.unveil-host:hover .u-data,
+.story-art.unveil-host:focus-within .u-data,
+.story-art.unveil-host.is-open .u-data{opacity:1; transform:none;}
+.unveil-hint{
+  font-family:var(--font-mono); font-size:11px; color:var(--faint);
+  text-align:center; margin:0 0 4px;
+}
+@media (prefers-reduced-motion: reduce){
+  .unveil-layer, .unveil-layer .u-data{transition:none;}
+  .story-art.unveil-host .unveil-layer{opacity:1;}
+  .story-art.unveil-host .u-data{opacity:1; transform:none;}
+}
+.fund-gap{
+  font-family:var(--font-mono); font-size:12.5px; color:var(--muted);
+  max-width:34em; margin:6px auto 0; line-height:1.55;
+}
+@media (max-width:860px){
+  .hero-art{height:58vh; margin-top:48px;}
+  .story-art{height:48vh;}
+  .focus-pill{font-size:10px; padding:6px 10px;}
+}
+
+/* ========== METHODS ========== */
+.methods{max-width:900px; margin:0 auto; padding:40px 24px 100px; border-top:1px solid var(--line);}
+.methods h3{font-family:var(--font-mono); font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--faint); margin:28px 0 10px;}
+.methods p, .methods li{font-size:13.5px; color:var(--muted); line-height:1.7;}
+.methods a{color:var(--accent);}
+details{margin-top:10px;}
+summary{font-family:var(--font-mono); font-size:12.5px; color:var(--accent); cursor:pointer; padding:8px 0;}
+table{width:100%; border-collapse:collapse; font-family:var(--font-mono); font-size:12px; margin-top:10px;}
+th{text-align:left; padding:7px 8px; color:var(--faint); border-bottom:1px solid var(--line); font-size:10px; text-transform:uppercase;}
+td{padding:7px 8px; border-bottom:1px solid var(--line); color:var(--muted);}
+.confounds{display:flex; flex-wrap:wrap; gap:6px; margin:10px 0;}
+.confounds span{font-family:var(--font-mono); font-size:10.5px; color:var(--faint); background:var(--panel); padding:4px 9px; border-radius:100px; border:1px solid var(--line);}
+.credit{font-family:var(--font-mono); font-size:11px; color:var(--faint); margin-top:28px;}
+.center{text-align:center;}
+.center .lede{margin-left:auto; margin-right:auto;}
+.section#meaning{max-width:none; padding-left:0; padding-right:0;}
+.meaning-inner{max-width:900px; margin:0 auto; padding:0 24px;}
+.section#meaning .lede{max-width:42em;}
+.ending .lede{margin-left:auto; margin-right:auto; max-width:38em;}
+.story-art.bleed{
+  width:100vw; max-width:100vw;
+  margin-left:calc(50% - 50vw); margin-right:calc(50% - 50vw);
+}
+</style>
+</head>
+<body>
+<div class="atmosphere" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="brand">Roots of Resilience · Pacific Dataviz Challenge 2026</div>
+  <div class="theme-toggle" role="group" aria-label="Theme">
+    <button type="button" id="theme-night" class="active" onclick="setTheme('night')">Ocean Garden</button>
+    <button type="button" id="theme-paper" onclick="setTheme('paper')">Field Notes</button>
+  </div>
+</header>
+
+<nav class="progress-rail" id="progress-rail" aria-label="Story progress"></nav>
+
+<main>
+<!-- HERO -->
+<section class="section hero" id="hero" data-scene="hero">
+  <figure class="hero-art">
+    <img src="hero-farm.jpg" width="1600" height="1066" loading="eager"
+      alt="A Pacific farmer stands in a household garden ruined by cyclone damage and drought — broken stalks, wilted leaves, and cracked dry soil under a storm-dark sky.">
+  </figure>
+  <div class="hero-inner prose-scrim">
+    <span class="eyebrow">Tanna Island, Vanuatu — November 2015</span>
+    <p class="lede">After Cyclone Pam, drought finished what the storm had started in Anauda Johnson’s household garden.</p>
+    <p class="quote">“There’s nothing left in the garden.”</p>
+    <div class="attr">— Anauda Johnson, subsistence farmer · ABC News</div>
+    <p class="fine" style="margin-top:18px; max-width:560px; margin-left:auto; margin-right:auto;">Vanuatu opens the story; the stress test that follows uses six Pacific countries with longer crop records. See Methods.</p>
+    <div class="cta-row" style="justify-content:center; margin-top:28px;">
+      <a class="btn primary" href="#warming">Why warming raises the stakes →</a>
+    </div>
+  </div>
+</section>
+
+<!-- SCROLLY CORE -->
+<div class="scrolly" id="story">
+  <div class="beats">
+    <article class="beat prose-scrim" id="warming" data-visual="warming">
+      <span class="eyebrow">Warming</span>
+      <h2>A dry year hits harder in a warmer climate</h2>
+      <p class="lede">These dry years are real history, not projections — but they now land in a warmer climate. Hotter air raises evaporative demand, so the same dry spell can stress crops more. Resilience matters even where rainfall trends are uncertain.</p>
+      <p class="fine">Surface-temperature anomalies for the six countries in this stress test. Pacific Data Hub, SPC:DF_CLIMATE_CHANGE(1.0).</p>
+    </article>
+
+    <article class="beat prose-scrim" id="plant" data-visual="garden">
+      <span class="eyebrow">Plant your hectare</span>
+      <h2>Can you climate-proof a garden?</h2>
+      <p class="lede">Split one hectare between cassava, taro and sweet potato. Your mix carries through every test below.</p>
+      <p class="plant-cue" id="plant-cue" hidden>This mix is now your garden for every test below.</p>
+      <div class="sliders">
+        <div class="slider-row">
+          <div class="lab"><span>Cassava</span><span class="pct-c" id="pct-c">33%</span></div>
+          <input type="range" id="sl-c" min="0" max="100" value="33" aria-label="Cassava share">
+        </div>
+        <div class="slider-row taro">
+          <div class="lab"><span>Taro</span><span class="pct-t" id="pct-t">33%</span></div>
+          <input type="range" id="sl-t" min="0" max="100" value="33" aria-label="Taro share">
+        </div>
+        <div class="slider-row sp">
+          <div class="lab"><span>Sweet potato</span><span class="pct-s" id="pct-s">34%</span></div>
+          <input type="range" id="sl-s" min="0" max="100" value="34" aria-label="Sweet potato share">
+        </div>
+      </div>
+      <p class="fine">Shares normalize automatically. Hypothetical hectare × real national yield histories — not an observed household garden.</p>
+    </article>
+
+    <article class="beat prose-scrim" id="tonga" data-visual="tonga">
+      <span class="eyebrow">First stress test</span>
+      <h2>Tonga, 1987</h2>
+      <p class="lede">Tonga’s driest year in this rainfall record. See each crop vs trend — and what your mix would have harvested.</p>
+    </article>
+
+    <article class="beat prose-scrim" id="sixty" data-visual="sixty">
+      <span class="eyebrow">Full backtest</span>
+      <h2>Now against all 60 dry-year events</h2>
+      <p class="lede">Ten driest years in each of six countries — sixty events, none hand-picked. The big number is your worst harvest across them.</p>
+    </article>
+
+    <article class="beat prose-scrim" id="safe" data-visual="safe">
+      <span class="eyebrow">No safe crop</span>
+      <h2>The “winner” is also the most common loser</h2>
+      <p class="lede">Sweet potato wins most often (~42%) — and loses almost as often (~38%). Swing like that is volatility, not a safe monocrop.</p>
+    </article>
+
+    <article class="beat prose-scrim" id="fail" data-visual="fail">
+      <span class="eyebrow">The number that matters</span>
+      <h2>How often did all three roots fail together?</h2>
+      <p class="lede"><strong style="color:var(--ink)">4 / 60</strong> — Fiji 2006, New Caledonia 2014, Tonga 1980 and 1981. In the other 56 dry years, at least one root held at or above trend.</p>
+    </article>
+
+    <article class="beat prose-scrim" id="why" data-visual="why">
+      <span class="eyebrow">Mechanism</span>
+      <h2>Bad years don’t always coincide</h2>
+      <p class="lede">Diversification only buffers when crops don’t move in lockstep. Pick a country: bars left of center are negative correlations — when one is up, another tends to be down.</p>
+    </article>
+
+    <article class="beat prose-scrim" id="evidence" data-visual="evidence">
+      <span class="eyebrow">Insurance, not prediction</span>
+      <h2>Mix vs monocrop on your worst year</h2>
+      <p class="lede">An equal mix doesn’t stop bad years — it shrinks how bad the worst one gets. Click a strategy to apply it; toggle the ±50% cap to check outliers aren’t driving the result.</p>
+    </article>
+
+    <article class="beat prose-scrim" id="islands" data-visual="islands">
+      <span class="eyebrow">Six islands, six stories</span>
+      <h2>The average hides the map</h2>
+      <p class="lede">Same three roots, different hedges country to country. Tap a marker for correlations and how concentrated area among these crops became since 1961.</p>
+    </article>
+  </div>
+
+  <aside class="sticky-col" aria-live="polite">
+    <div class="visual-card">
+      <div class="v-title" id="visual-title">Warming</div>
+
+      <div class="visual-slot" id="vs-warming">
+        <svg class="warm-chart" id="warm-svg" viewBox="0 0 480 220" role="img" aria-label="Temperature anomalies rising from 1960s to 2020s"></svg>
+        <div class="mech">
+          <span>Air warms</span>
+          <span class="arr">↓</span>
+          <span>Soil &amp; plants lose water faster</span>
+          <span class="arr">↓</span>
+          <span>Same dry spell → greater crop stress</span>
+        </div>
+        <p class="v-caption">Fig 1 · Mean surface-temperature anomalies (°C), six stress-test countries + mean (bold). Data: <a href="https://stats.pacificdata.org/vis?locale=en&amp;dataflow[datasourceId]=SPC2&amp;dataflow[agencyId]=SPC&amp;dataflow[dataflowId]=DF_CLIMATE_CHANGE&amp;dataflow[version]=1.0" target="_blank" rel="noopener">Pacific Data Hub · ST_ANOM</a></p>
+      </div>
+
+      <div class="visual-slot" id="vs-garden">
+        <div class="garden-grid" id="garden-plot"></div>
+        <div class="garden-legend">
+          <span><span class="sw" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><g class="plant-stroke" stroke="var(--cassava)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V11"/><path d="M12 12l-5-4"/><path d="M12 12l5-4"/><path d="M12 10l-3.5-5.5"/><path d="M12 10l3.5-5.5"/><path d="M7 8l-2.5-1.5"/><path d="M17 8l2.5-1.5"/></g></svg></span>Cassava</span>
+          <span><span class="sw" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path class="plant-stroke" d="M12 20V13M12 13c-4.5-1-7-4.5-6-8 3.5 1 5.5 4 6 8z" fill="var(--taro)" fill-opacity=".35" stroke="var(--taro)" stroke-width="1.2" stroke-linejoin="round"/><path class="plant-stroke" d="M12 13c4.5-1 7-4.5 6-8-3.5 1-5.5 4-6 8z" fill="var(--taro)" fill-opacity=".45" stroke="var(--taro)" stroke-width="1.2" stroke-linejoin="round"/><path d="M12 13v-2" stroke="#7a5a88" stroke-width="1.1"/></svg></span>Taro</span>
+          <span><span class="sw" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><g class="plant-stroke" stroke="var(--sp)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16c3-1 5-3 7-6"/><path d="M11 10c1.5 2 3.5 3.5 6 4"/><path d="M11 10c-1.2-2.2.2-4.5 2.5-4.8"/><path d="M17 14c1.8-.2 3.2 1.2 3 2.8"/><path d="M7.5 13.5c-.8 1.4.2 3 1.8 3"/></g></svg></span>Sweet potato</span>
+        </div>
+        <p class="v-caption">Fig 2 · Hypothetical hectare allocation stress-tested with national yield histories. Crop data: <a href="https://www.fao.org/faostat/en/#data/QCL" target="_blank" rel="noopener">FAOSTAT QCL</a></p>
+      </div>
+
+      <div class="visual-slot" id="vs-tonga">
+        <div class="garden-grid" id="garden-tonga"></div>
+        <svg class="story-chart anomaly" id="tonga-anomaly-svg" viewBox="0 0 420 140" role="img" aria-label="Crop yield anomalies versus trend for Tonga 1987, plus your hectare mix"></svg>
+        <div class="panel" id="tonga-panel"></div>
+        <p class="v-caption">Fig 3 · Crop anomalies vs trend, Tonga 1987 (driest year) × your mix. Bars = crop yield anomaly; garden cells dim with stress. Rainfall: <a href="https://stats.pacificdata.org/vis?locale=en&amp;dataflow[datasourceId]=SPC2&amp;dataflow[agencyId]=SPC&amp;dataflow[dataflowId]=DF_CLIMATE_CHANGE&amp;dataflow[version]=1.0" target="_blank" rel="noopener">PDH rainfall anomalies</a> · Yields: <a href="https://www.fao.org/faostat/en/#data/QCL" target="_blank" rel="noopener">FAOSTAT</a></p>
+      </div>
+
+      <div class="visual-slot" id="vs-sixty">
+        <div class="stat-big bad" id="worst-stat">—</div>
+        <div class="stat-sub" id="worst-sub">Your worst year</div>
+        <div class="decision-card" id="decision-card" aria-live="polite">
+          <div class="dc-label">Your mix vs best monocrop</div>
+          <div class="dc-row"><span>Your mix · worst</span><strong id="dc-yours">—</strong></div>
+          <div class="dc-row"><span>Best monocrop · worst</span><strong id="dc-mono">—</strong></div>
+          <div class="dc-delta" id="dc-delta">Plant a mix to see the comparison.</div>
+          <div class="dc-actions">
+            <button type="button" onclick="document.getElementById('plant').scrollIntoView({behavior:'smooth'})">Edit mix</button>
+            <a href="#evidence">Compare strategies →</a>
+          </div>
+        </div>
+        <div class="strip-wrap">
+          <p class="strip-hint">Your mix across 60 dry years · worst → best · tap a bar</p>
+          <svg class="story-chart strip" id="sixty-strip-svg" viewBox="0 0 420 100" role="img" aria-label="Sorted harvest outcomes for your mix across 60 dry-year events"></svg>
+        </div>
+        <div class="tile-grid" id="scrub-tiles"></div>
+        <div class="panel" id="sixty-panel"></div>
+        <p class="v-caption">Fig 4 · Sorted hectare outcomes for your mix across 60 driest country-years (lowest 20% rainfall per country). Strip + tiles select the same event. Data: <a href="https://stats.pacificdata.org/vis?locale=en&amp;dataflow[datasourceId]=SPC2&amp;dataflow[agencyId]=SPC&amp;dataflow[dataflowId]=DF_CLIMATE_CHANGE&amp;dataflow[version]=1.0" target="_blank" rel="noopener">PDH rainfall anomalies</a> + <a href="https://www.fao.org/faostat/en/#data/QCL" target="_blank" rel="noopener">FAOSTAT yields</a></p>
+      </div>
+
+      <div class="visual-slot" id="vs-safe">
+        <div class="aha-callout" id="aha-safe">Same crop tops the wins <em>and</em> the losses — volatility, not safety.</div>
+        <div class="dual">
+          <div><div class="v-title" style="margin:0 0 6px">Best performer</div><div class="crop-bars" id="best-bars"></div></div>
+          <div><div class="v-title" style="margin:0 0 6px">Worst performer</div><div class="crop-bars" id="worst-bars"></div></div>
+        </div>
+        <p class="v-caption">Fig 5 · Best vs worst root across 60 dry-year events. Hover a crop to leave only its wins and losses lit. Data: <a href="https://www.fao.org/faostat/en/#data/QCL" target="_blank" rel="noopener">FAOSTAT yields</a> on <a href="https://stats.pacificdata.org/vis?locale=en&amp;dataflow[datasourceId]=SPC2&amp;dataflow[agencyId]=SPC&amp;dataflow[dataflowId]=DF_CLIMATE_CHANGE&amp;dataflow[version]=1.0" target="_blank" rel="noopener">PDH dry years</a></p>
+      </div>
+
+      <div class="visual-slot" id="vs-fail">
+        <div class="stat-big bad" id="fail-stat">4 / 60</div>
+        <div class="stat-sub">All three below trend together</div>
+        <div class="aha-callout good" id="aha-fail">4 joint failures — in 56 of 60 dry years, at least one root held.</div>
+        <div class="tile-grid" id="fail-tiles"></div>
+        <div class="garden-legend" style="margin-top:8px;">
+          <span><span class="sw" style="background:var(--good)"></span>At least one held</span>
+          <span><span class="sw" style="background:var(--warn)"></span>All three failed</span>
+        </div>
+        <div class="panel" id="fail-panel" style="margin-top:8px; display:none;"></div>
+        <p class="v-caption">Fig 6 · Joint below-trend years among cassava, taro and sweet potato. Tap a red tile to inspect. Data: <a href="https://www.fao.org/faostat/en/#data/QCL" target="_blank" rel="noopener">FAOSTAT</a> + <a href="https://stats.pacificdata.org/vis?locale=en&amp;dataflow[datasourceId]=SPC2&amp;dataflow[agencyId]=SPC&amp;dataflow[dataflowId]=DF_CLIMATE_CHANGE&amp;dataflow[version]=1.0" target="_blank" rel="noopener">PDH</a></p>
+      </div>
+
+      <div class="visual-slot" id="vs-why">
+        <div class="corr-btns" id="corr-btns"></div>
+        <div class="corr-viz" id="corr-viz"></div>
+        <p class="fine" id="corr-note" style="margin-top:12px;"></p>
+        <p class="v-caption">Fig 7 · Full-record yield correlations (not dry years only). Data: <a href="https://www.fao.org/faostat/en/#data/QCL" target="_blank" rel="noopener">FAOSTAT crop yields</a></p>
+      </div>
+
+      <div class="visual-slot" id="vs-evidence">
+        <label class="toggle-row"><input type="checkbox" id="cap-toggle"> Cap anomalies at ±50% (sensitivity check)</label>
+        <p class="fine" style="margin:0 0 4px;">Worst-year harvest % — shorter bars (less severe) are better. Click a row to apply that mix.</p>
+        <svg class="story-chart strat" id="evidence-worst-svg" viewBox="0 0 420 160" role="img" aria-label="Worst-year harvest by planting strategy"></svg>
+        <div class="strat-list" id="strat-list"></div>
+        <p class="v-caption">Fig 8 · Worst-year % by strategy on the same 60-event backtest. Data: <a href="https://www.fao.org/faostat/en/#data/QCL" target="_blank" rel="noopener">FAOSTAT</a> + <a href="https://stats.pacificdata.org/vis?locale=en&amp;dataflow[datasourceId]=SPC2&amp;dataflow[agencyId]=SPC&amp;dataflow[dataflowId]=DF_CLIMATE_CHANGE&amp;dataflow[version]=1.0" target="_blank" rel="noopener">PDH rainfall</a></p>
+      </div>
+
+      <div class="visual-slot" id="vs-islands">
+        <svg class="map-svg" viewBox="0 0 700 380" id="pacific-map"></svg>
+        <div class="panel" id="island-panel" style="margin-top:8px;"></div>
+        <p class="v-caption">Fig 9 · Country correlations and harvested-area composition since 1961 (three roots only). Data: <a href="https://www.fao.org/faostat/en/#data/QCL" target="_blank" rel="noopener">FAOSTAT area &amp; yield</a></p>
+      </div>
+    </div>
+    <div class="sticky-tools" id="sticky-tools" aria-live="polite">
+      <div class="mix-chip" id="mix-chip">
+        <span id="mix-chip-text"></span>
+        <button type="button" id="mix-edit-btn" onclick="document.getElementById('plant').scrollIntoView({behavior:'smooth'})">Edit mix</button>
+      </div>
+      <div class="focus-pill" id="focus-pill">
+        <span>Focus: <strong id="focus-pill-name">—</strong></span>
+        <button type="button" id="focus-clear" aria-label="Clear country focus">Clear</button>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- RESILIENCE INTERLUDE -->
+<section class="story-band" id="resilience" data-scene="clarity">
+  <figure class="story-art unveil-host" id="resilience-art" tabindex="0" role="button" aria-expanded="false" aria-label="Reveal the data behind this garden image">
+    <img src="img-resilience.jpg" width="1600" height="1066" loading="lazy"
+      alt="A living mixed root-crop garden after rain — cassava, taro and sweet potato green and intact under soft mist.">
+    <div class="unveil-layer" aria-hidden="true">
+      <p class="u-data">In 56 of 60 dry years, at least one root stayed at or above trend.</p>
+    </div>
+  </figure>
+  <p class="story-cap poet">A garden that still holds — they don’t always fail together.</p>
+  <p class="unveil-hint">Hover or tap the image to unveil the number</p>
+</section>
+
+<!-- MEANING -->
+<section class="section" id="meaning" data-scene="meaning">
+  <div class="meaning-inner prose-scrim">
+    <span class="eyebrow">More than yield</span>
+    <h2 style="font-size:clamp(26px,3.4vw,38px); margin-bottom:12px;">A garden can be statistically resilient and still fail its community</h2>
+    <p class="lede">Yield is one dimension. Culture, preference, labour and choice are ones this model cannot measure — taro alone carries ceremonial weight across the Pacific that tonnes will never capture.</p>
+  </div>
+  <figure class="story-art pos-hands bleed">
+    <img src="img-taro.jpg" width="1600" height="1066" loading="lazy"
+      alt="Weathered hands holding freshly harvested taro in soft morning light.">
+  </figure>
+  <p class="story-cap">Crop as more than yield — dignity in the harvest.</p>
+  <div class="meaning-inner prose-scrim">
+    <div class="k-grid" id="k-grid"></div>
+  </div>
+</section>
+
+<!-- CLOSE -->
+<section class="ending" id="close" data-scene="close">
+  <figure class="story-art pos-plant">
+    <img src="img-hope.jpg" width="1600" height="1066" loading="lazy"
+      alt="A Pacific farmer tending a diverse mixed root-crop plot in warm late-afternoon light.">
+  </figure>
+  <p class="story-cap">Planting options forward.</p>
+  <div class="ending-inner prose-scrim">
+    <h2>There is no climate-proof crop.</h2>
+    <p class="sub">There may not even be a climate-proof garden.</p>
+    <p class="lede">Diversity gives a garden more ways to survive — so everything doesn’t fail together.</p>
+    <p class="hope-line">Fund the ability to choose — not one prescription.</p>
+    <p class="fund-gap">Climate finance is moving — the gap that remains is Pacific field evidence tying diversified root portfolios to household outcomes. Examples already funded:</p>
+    <div class="fund-chips" style="justify-content:center;">
+      <div class="fund-chip">
+        <div class="amt">US$42M</div>
+        <div class="lbl">GCF FP295 — regenerative agriculture in Tonga, Vanuatu &amp; Samoa</div>
+      </div>
+      <div class="fund-chip">
+        <div class="amt">NZ$10M</div>
+        <div class="lbl">CePaCT genebank — drought- and cyclone-ready varieties</div>
+      </div>
+    </div>
+    <div class="cta-row" style="justify-content:center;">
+      <button class="btn primary" type="button" onclick="document.getElementById('plant').scrollIntoView({behavior:'smooth'})">↺ Try a different mix</button>
+      <a class="btn ghost" href="#methods">Methods &amp; sources</a>
+    </div>
+  </div>
+</section>
+
+<!-- METHODS -->
+<footer class="methods prose-scrim" id="methods">
+  <h2 style="font-size:22px; margin-bottom:8px;">Methods &amp; sources</h2>
+  <p>Crop production and harvested area: FAOSTAT 1961–2024. Rainfall and surface-temperature anomalies: Pacific Data Hub Climate Change Indicators, SPC:DF_CLIMATE_CHANGE(1.0). Dry years = lowest 20% of rainfall anomalies per country (1979–2024) → 60 country-year events across Fiji, New Caledonia, Niue, Papua New Guinea, Solomon Islands and Tonga. Yields detrended by country and crop (log-linear). The interactive garden combines crop shares with fitted tonnes-per-hectare yields — harvest change is not a simple average of percentage anomalies. Descriptive, not causal: national statistics ≠ household gardens; historical stress tests ≠ forecasts.</p>
+
+  <h3>Chart data (open links)</h3>
+  <ul>
+    <li>Fig 1 — Surface-temperature anomalies (ST_ANOM): <a href="https://stats.pacificdata.org/vis?locale=en&amp;dataflow[datasourceId]=SPC2&amp;dataflow[agencyId]=SPC&amp;dataflow[dataflowId]=DF_CLIMATE_CHANGE&amp;dataflow[version]=1.0" target="_blank" rel="noopener">SPC:DF_CLIMATE_CHANGE(1.0)</a></li>
+    <li>Figs 2–9 — Crop yields &amp; harvested area: <a href="https://www.fao.org/faostat/en/#data/QCL" target="_blank" rel="noopener">FAOSTAT QCL</a></li>
+    <li>Figs 3–6, 8 — Rainfall anomalies (dry-year selection): same <a href="https://stats.pacificdata.org/vis?locale=en&amp;dataflow[datasourceId]=SPC2&amp;dataflow[agencyId]=SPC&amp;dataflow[dataflowId]=DF_CLIMATE_CHANGE&amp;dataflow[version]=1.0" target="_blank" rel="noopener">PDH climate indicators</a></li>
+  </ul>
+
+  <h3>If a computer designs the garden</h3>
+  <p>231 mixes at 5% steps, same hectare math. None is “the” Pacific garden — the model ignores the factors below.</p>
+  <table>
+    <thead><tr><th>Optimizing for</th><th>C</th><th>T</th><th>SP</th><th>Worst</th><th>Mean</th></tr></thead>
+    <tbody id="opt-tbody"></tbody>
+  </table>
+  <div class="confounds" id="confounds"></div>
+
+  <details>
+    <summary>Country coverage</summary>
+    <table><thead><tr><th>Country</th><th>Cassava</th><th>Taro</th><th>SP</th><th>Included?</th></tr></thead>
+    <tbody id="cov-tbody"></tbody></table>
+  </details>
+  <details>
+    <summary>Full correlation matrix (all years)</summary>
+    <table><thead><tr><th>Country</th><th>C↔T</th><th>C↔SP</th><th>T↔SP</th></tr></thead>
+    <tbody id="corr-tbody"></tbody></table>
+  </details>
+  <details>
+    <summary>Sources</summary>
+    <ul>
+      <li>ABC News (Nov 2015). Tanna Island, Vanuatu — Anauda Johnson after Cyclone Pam / El Niño drought.</li>
+      <li>Nunn et al. (2024). Traditional knowledge for climate resilience in the Pacific Islands. WIREs Climate Change 15(4). doi.org/10.1002/wcc.882</li>
+      <li>Kaoh, Lebot, McGregor, Bourke et al. (2016). More resilient cropping systems… IHC proceedings.</li>
+      <li>PLOS Sustainability &amp; Transformation (2022). Pacific smallholder food security scoping review (Bellona Island).</li>
+      <li>ACIAR HORT-2018-195. Improving root crop resilience and biosecurity.</li>
+      <li>Green Climate Fund FP295 (2026). Climate-resilient regenerative agriculture.</li>
+      <li>Pacific Community (2022, 2024). CePaCT climate financing; Vanuavatu sweet potato release.</li>
+      <li>Land 14(6):1210 (2025). Indigenous Knowledge, Gender and Agriculture scoping review.</li>
+      <li>FAO. Taro cultivation in Asia and the Pacific.</li>
+      <li>IPCC AR6 WGII Ch.15 Small Islands; WGI Regional Fact Sheet: Small Islands.</li>
+    </ul>
+  </details>
+  <p class="credit">Roots of Resilience — Pacific Dataviz Challenge 2026</p>
+</footer>
+</main>
+
+<script>
+const WARM_SERIES = [
+  {id:"FJ", name:"Fiji", pts:[[1961,0],[1964,-0.1],[1967,-0.2],[1970,0.1],[1973,0.2],[1976,0],[1979,-0.1],[1982,-0.3],[1985,0],[1988,0.3],[1991,-0.1],[1994,-0.4],[1997,-0.2],[2000,0.5],[2003,0.2],[2006,0.2],[2009,0.1],[2012,0.4],[2015,-0.2],[2018,0.5],[2021,0.7],[2024,0.6]]},
+  {id:"TO", name:"Tonga", pts:[[1961,0.1],[1964,0],[1967,-0.2],[1970,0.2],[1973,0.4],[1976,0],[1979,-0.2],[1982,-0.2],[1985,-0.1],[1988,0.4],[1991,0],[1994,-0.3],[1997,-0.2],[2000,0.5],[2003,0.3],[2006,0.4],[2009,0.3],[2012,0.4],[2015,-0.1],[2018,0.5],[2021,0.8],[2024,0.6]]},
+  {id:"NU", name:"Niue", pts:[[1961,0.2],[1964,0],[1967,-0.2],[1970,0.2],[1973,0.4],[1976,-0.2],[1979,-0.1],[1982,-0.1],[1985,-0.2],[1988,0.3],[1991,0.3],[1994,0.1],[1997,-0.2],[2000,0.5],[2003,0.4],[2006,0.5],[2009,0.4],[2012,0.4],[2015,0.1],[2018,0.6],[2021,0.7],[2024,0.6]]},
+  {id:"SB", name:"Solomon Is.", pts:[[1961,-0.3],[1964,-0.3],[1967,-0.3],[1970,0.1],[1973,0],[1976,-0.3],[1979,-0.1],[1982,-0.3],[1985,0.1],[1988,0.2],[1991,0.1],[1994,-0.2],[1997,-0.2],[2000,0.4],[2003,0.5],[2006,0.3],[2009,0.4],[2012,0.3],[2015,0.1],[2018,0.6],[2021,0.6],[2024,0.9]]},
+  {id:"PG", name:"PNG", pts:[[1961,-0.4],[1964,-0.1],[1967,-0.5],[1970,0.1],[1973,0.1],[1976,-0.3],[1979,-0.1],[1982,-0.5],[1985,0],[1988,0.3],[1991,-0.1],[1994,-0.2],[1997,-0.2],[2000,0.2],[2003,0.3],[2006,0.1],[2009,0.4],[2012,0.2],[2015,0.2],[2018,0.5],[2021,0.7],[2024,1.0]]},
+  {id:"NC", name:"N. Caledonia", pts:[[1961,-0.5],[1964,-0.2],[1967,-0.3],[1970,0.1],[1973,0.4],[1976,0],[1979,-0.2],[1982,-0.5],[1985,-0.1],[1988,0.5],[1991,-0.5],[1994,-0.7],[1997,-0.1],[2000,-0.1],[2003,0.1],[2006,-0.1],[2009,0.1],[2012,0],[2015,0],[2018,0.3],[2021,0.4],[2024,0.6]]}
+];
+const WARM_MEAN = [[1961,-0.15],[1964,-0.12],[1967,-0.28],[1970,0.13],[1973,0.25],[1976,-0.13],[1979,-0.13],[1982,-0.32],[1985,-0.05],[1988,0.33],[1991,-0.05],[1994,-0.28],[1997,-0.18],[2000,0.33],[2003,0.3],[2006,0.23],[2009,0.28],[2012,0.28],[2015,0.02],[2018,0.5],[2021,0.65],[2024,0.72]];
+
+const STRESS_EVENTS = [
+{country:"Fiji",year:1983,rain:-11.1,pctl:0.133333,temp:-0.4,hotDry:false,cassava:60.384418,taro:30.448712,sp:-26.220622,eyC:11.846537,eyT:9.199018,eySp:4.066177},
+{country:"Fiji",year:1987,rain:-21.8,pctl:0.022222,temp:-0.4,hotDry:false,cassava:-7.077622,taro:5.271672,sp:187.891383,eyC:12.155609,eyT:9.499232,eySp:4.47064},
+{country:"Fiji",year:1992,rain:-15.3,pctl:0.088889,temp:-0.2,hotDry:false,cassava:-59.547843,taro:-67.965673,sp:81.459724,eyC:12.553312,eyT:9.888314,eySp:5.033256},
+{country:"Fiji",year:1995,rain:-10.9,pctl:0.155556,temp:0.2,hotDry:false,cassava:7.622614,taro:-3.413962,sp:22.619196,eyC:12.798153,eyT:10.129373,eySp:5.404265},
+{country:"Fiji",year:1998,rain:-24.2,pctl:0,temp:0,hotDry:false,cassava:4.878592,taro:-19.453086,sp:74.7064,eyC:13.047769,eyT:10.376307,eySp:5.802622},
+{country:"Fiji",year:2003,rain:-17.8,pctl:0.066667,temp:0.2,hotDry:false,cassava:-9.282034,taro:-9.541101,sp:39.521245,eyC:13.474662,eyT:10.801314,eySp:6.532864},
+{country:"Fiji",year:2004,rain:-10,pctl:0.2,temp:0.2,hotDry:false,cassava:23.515714,taro:-14.004017,sp:-35.252748,eyC:13.561702,eyT:10.888382,eySp:6.689589},
+{country:"Fiji",year:2006,rain:-10.9,pctl:0.155556,temp:0.2,hotDry:false,cassava:-8.969793,taro:-13.964584,sp:-9.728697,eyC:13.737473,eyT:11.06463,eySp:7.014411},
+{country:"Fiji",year:2014,rain:-14.4,pctl:0.111111,temp:0.4,hotDry:false,cassava:-30.358402,taro:-21.605948,sp:18.918717,eyC:14.463634,eyT:11.798613,eySp:8.479263},
+{country:"Fiji",year:2015,rain:-21,pctl:0.044444,temp:-0.2,hotDry:false,cassava:71.765567,taro:68.177973,sp:14.401943,eyC:14.557063,eyT:11.89372,eySp:8.682684},
+{country:"New Caledonia",year:1987,rain:-14.8,pctl:0.066667,temp:-0.2,hotDry:false,cassava:45.02878,taro:11.490617,sp:33.3934,eyC:5.516147,eyT:3.886725,eySp:3.310197},
+{country:"New Caledonia",year:1993,rain:-10.2,pctl:0.177778,temp:-0.5,hotDry:false,cassava:36.947871,taro:-21.046179,sp:37.54454,eyC:4.773736,eyT:4.221877,eySp:2.877503},
+{country:"New Caledonia",year:1994,rain:-12.7,pctl:0.111111,temp:-0.7,hotDry:false,cassava:30.017985,taro:-18.233485,sp:35.789478,eyC:4.660103,eyT:4.280481,eySp:2.811099},
+{country:"New Caledonia",year:2010,rain:-10.8,pctl:0.155556,temp:0.4,hotDry:true,cassava:-29.058438,taro:27.231197,sp:-48.889993,eyC:3.169489,eyT:5.336838,eySp:1.934824},
+{country:"New Caledonia",year:2014,rain:-12.8,pctl:0.088889,temp:0.1,hotDry:false,cassava:-23.902152,taro:-6.842344,sp:-47.001451,eyC:2.87831,eyT:5.639387,eySp:1.762312},
+{country:"New Caledonia",year:2015,rain:-12.3,pctl:0.133333,temp:0,hotDry:false,cassava:-7.519386,taro:1.658586,sp:-31.762877,eyC:2.809796,eyT:5.717668,eySp:1.721644},
+{country:"New Caledonia",year:2016,rain:-16,pctl:0.022222,temp:0.7,hotDry:true,cassava:1.514179,taro:-0.992372,sp:-13.803516,eyC:2.742912,eyT:5.797034,eySp:1.681913},
+{country:"New Caledonia",year:2017,rain:-18.5,pctl:0,temp:0.5,hotDry:true,cassava:8.905347,taro:-8.497724,sp:1.51627,eyC:2.67762,eyT:5.877503,eySp:1.6431},
+{country:"New Caledonia",year:2018,rain:-9.6,pctl:0.2,temp:0.3,hotDry:false,cassava:15.182712,taro:-7.504224,sp:16.36104,eyC:2.613882,eyT:5.959088,eySp:1.605182},
+{country:"New Caledonia",year:2019,rain:-15.3,pctl:0.044444,temp:0.2,hotDry:false,cassava:20.734667,taro:-8.644663,sp:30.905922,eyC:2.551662,eyT:6.041806,eySp:1.568139},
+{country:"Niue",year:1979,rain:-18.1,pctl:0.111111,temp:-0.1,hotDry:false,cassava:-25.205563,taro:-50.138445,sp:43.455375,eyC:5.142299,eyT:4.011106,eySp:17.427022},
+{country:"Niue",year:1980,rain:-12.6,pctl:0.177778,temp:0.1,hotDry:false,cassava:-25.288016,taro:-53.334298,sp:43.405626,eyC:5.147974,eyT:4.071513,eySp:17.433068},
+{country:"Niue",year:1983,rain:-24.1,pctl:0,temp:-0.3,hotDry:false,cassava:-22.556222,taro:-31.683338,sp:43.256482,eyC:5.165037,eyT:4.258245,eySp:17.451217},
+{country:"Niue",year:1986,rain:-13.7,pctl:0.133333,temp:-0.3,hotDry:false,cassava:-9.947403,taro:0.575387,sp:43.107494,eyC:5.182157,eyT:4.453542,eySp:17.469386},
+{country:"Niue",year:1987,rain:-18.2,pctl:0.088889,temp:-0.4,hotDry:false,cassava:-14.330168,taro:13.062398,sp:43.057865,eyC:5.187876,eyT:4.520611,eySp:17.475446},
+{country:"Niue",year:1992,rain:-12.7,pctl:0.155556,temp:0.2,hotDry:false,cassava:-1.412975,taro:34.756534,sp:-0.033013,eyC:5.216566,eyT:4.871416,eySp:17.505779},
+{country:"Niue",year:1997,rain:-23,pctl:0.044444,temp:-0.2,hotDry:false,cassava:0.904454,taro:29.469989,sp:0.869097,eyC:5.245415,eyT:5.249444,eySp:17.536165},
+{country:"Niue",year:1998,rain:-23.5,pctl:0.022222,temp:-0.3,hotDry:false,cassava:1.310106,taro:28.395187,sp:1.02142,eyC:5.251204,eyT:5.3285,eySp:17.542249},
+{country:"Niue",year:2002,rain:-18.7,pctl:0.066667,temp:0.4,hotDry:false,cassava:-9.800562,taro:22.562503,sp:0.523537,eyC:5.274423,eyT:5.656808,eySp:17.566604},
+{country:"Niue",year:2014,rain:-11,pctl:0.2,temp:0.6,hotDry:true,cassava:13.917938,taro:-1.342411,sp:-11.248648,eyC:5.344699,eyT:6.768163,eySp:17.639872},
+{country:"Papua New Guinea",year:1979,rain:-11.1,pctl:0.111111,temp:-0.1,hotDry:false,cassava:0.311891,taro:-0.254322,sp:1.387437,eyC:10.283715,eyT:6.661008,eySp:4.43842},
+{country:"Papua New Guinea",year:1982,rain:-17.7,pctl:0.066667,temp:-0.5,hotDry:false,cassava:0.32916,taro:0.034413,sp:0.837854,eyC:10.266208,eyT:6.697695,eySp:4.488707},
+{country:"Papua New Guinea",year:1987,rain:-10,pctl:0.155556,temp:-0.1,hotDry:false,cassava:2.335584,taro:1.19985,sp:4.018273,eyC:10.237094,eyT:6.75929,eySp:4.573788},
+{country:"Papua New Guinea",year:1991,rain:-8.1,pctl:0.2,temp:-0.1,hotDry:false,cassava:3.448004,taro:-3.444815,sp:1.227365,eyC:10.213863,eyT:6.808973,eySp:4.643013},
+{country:"Papua New Guinea",year:1992,rain:-14.3,pctl:0.088889,temp:-0.2,hotDry:false,cassava:4.430944,taro:-3.632323,sp:1.920775,eyC:10.208064,eyT:6.82145,eySp:4.660483},
+{country:"Papua New Guinea",year:1993,rain:-18.7,pctl:0.044444,temp:-0.4,hotDry:false,cassava:4.551921,taro:-3.90603,sp:2.607565,eyC:10.202268,eyT:6.833951,eySp:4.678018},
+{country:"Papua New Guinea",year:1994,rain:-10.2,pctl:0.133333,temp:-0.2,hotDry:false,cassava:6.479379,taro:-2.626284,sp:-4.165982,eyC:10.196475,eyT:6.846474,eySp:4.695619},
+{country:"Papua New Guinea",year:1997,rain:-26.7,pctl:0,temp:-0.2,hotDry:false,cassava:4.789721,taro:-12.843687,sp:-3.133831,eyC:10.179115,eyT:6.884183,eySp:4.74882},
+{country:"Papua New Guinea",year:2004,rain:-9.2,pctl:0.177778,temp:0.1,hotDry:false,cassava:-1.368274,taro:-6.56568,sp:2.55753,eyC:10.138726,eyT:6.972979,eySp:4.875312},
+{country:"Papua New Guinea",year:2015,rain:-20.2,pctl:0.022222,temp:0.2,hotDry:false,cassava:-1.96392,taro:5.801573,sp:0.253217,eyC:10.075579,eyT:7.114835,eySp:5.080928},
+{country:"Solomon Islands",year:1987,rain:-22,pctl:0.022222,temp:-0.3,hotDry:false,cassava:19.427516,taro:25.077395,sp:4.732085,eyC:12.55992,eyT:16.605103,eySp:12.890033},
+{country:"Solomon Islands",year:1989,rain:-11,pctl:0.111111,temp:0.2,hotDry:false,cassava:18.772225,taro:26.094397,sp:7.619074,eyC:12.876847,eyT:16.812801,eySp:13.008846},
+{country:"Solomon Islands",year:1992,rain:-18.9,pctl:0.066667,temp:-0.4,hotDry:false,cassava:24.682415,taro:25.472886,sp:10.956172,eyC:13.367295,eyT:17.129228,eySp:13.189123},
+{country:"Solomon Islands",year:1993,rain:-20.4,pctl:0.044444,temp:-0.7,hotDry:false,cassava:24.434697,taro:25.318938,sp:11.412544,eyC:13.534895,eyT:17.236022,eySp:13.249769},
+{country:"Solomon Islands",year:1994,rain:-8.4,pctl:0.177778,temp:-0.2,hotDry:false,cassava:20.432992,taro:24.954,sp:10.983902,eyC:13.704595,eyT:17.343482,eySp:13.310694},
+{country:"Solomon Islands",year:1995,rain:-12,pctl:0.088889,temp:0.4,hotDry:false,cassava:17.924017,taro:24.297969,sp:10.549812,eyC:13.876424,eyT:17.451611,eySp:13.371898},
+{country:"Solomon Islands",year:1997,rain:-28,pctl:0,temp:-0.2,hotDry:false,cassava:12.465612,taro:13.18685,sp:11.151013,eyC:14.226571,eyT:17.669897,eySp:13.495154},
+{country:"Solomon Islands",year:2003,rain:-10.5,pctl:0.133333,temp:0.5,hotDry:true,cassava:8.712754,taro:9.043683,sp:3.3273,eyC:15.330921,eyT:18.341273,eySp:13.871778},
+{country:"Solomon Islands",year:2005,rain:-10.3,pctl:0.155556,temp:0.5,hotDry:true,cassava:6.748754,taro:7.696608,sp:1.385092,eyC:15.71777,eyT:18.570687,eySp:13.99964},
+{country:"Solomon Islands",year:2008,rain:-8.4,pctl:0.177778,temp:0.3,hotDry:false,cassava:3.423408,taro:5.707133,sp:0.343649,eyC:16.316422,eyT:18.920199,eySp:14.193648},
+{country:"Tonga",year:1979,rain:-19.5,pctl:0.088889,temp:-0.2,hotDry:false,cassava:-30.145931,taro:-8.468125,sp:7.438592,eyC:9.202859,eyT:7.556566,eySp:12.034124},
+{country:"Tonga",year:1980,rain:-16.5,pctl:0.133333,temp:0,hotDry:false,cassava:-32.815092,taro:-8.288571,sp:-0.831951,eyC:9.323799,eyT:7.568497,eySp:11.999833},
+{country:"Tonga",year:1981,rain:-14.8,pctl:0.177778,temp:-0.1,hotDry:false,cassava:-32.633764,taro:-8.069395,sp:-0.076201,eyC:9.446329,eyT:7.580446,eySp:11.96564},
+{country:"Tonga",year:1983,rain:-26,pctl:0.022222,temp:-0.3,hotDry:false,cassava:-29.955671,taro:-7.478396,sp:0.214593,eyC:9.696241,eyT:7.604402,eySp:11.897546},
+{country:"Tonga",year:1986,rain:-13.4,pctl:0.2,temp:-0.4,hotDry:false,cassava:-24.54355,taro:-6.00301,sp:1.425513,eyC:10.083559,eyT:7.640477,eySp:11.79613},
+{country:"Tonga",year:1987,rain:-26.3,pctl:0,temp:-0.5,hotDry:false,cassava:-11.013666,taro:-5.260212,sp:2.72744,eyC:10.216073,eyT:7.65254,eySp:11.762518},
+{country:"Tonga",year:1994,rain:-16.1,pctl:0.155556,temp:-0.3,hotDry:false,cassava:15.271838,taro:23.086134,sp:4.077262,eyC:11.193736,eyT:7.737516,eySp:11.529896},
+{country:"Tonga",year:1998,rain:-21.8,pctl:0.044444,temp:-0.1,hotDry:false,cassava:13.053247,taro:16.752231,sp:5.272017,eyC:11.793853,eyT:7.786497,eySp:11.399041},
+{country:"Tonga",year:2003,rain:-17,pctl:0.111111,temp:0.3,hotDry:false,cassava:1.67319,taro:8.669109,sp:5.915728,eyC:12.589442,eyT:7.848159,eySp:11.237558},
+{country:"Tonga",year:2015,rain:-21.5,pctl:0.066667,temp:-0.1,hotDry:false,cassava:2.141017,taro:-3.637185,sp:-3.336966,eyC:14.724763,eyT:7.998149,eySp:10.859271}
+];
+
+/* Optimal mixes recomputed under the correct hectare-weighted
+   formula via exhaustive 231-combination grid search (5% steps) —
+   verified directly against STRESS_EVENTS above. */
+const OPTIMAL_MIXES = [
+  {name:"Best worst-case year", cassava:10, taro:40, sp:50, mean:6.89, worst:-18.6},
+  {name:"Fewest severe-loss years", cassava:5, taro:35, sp:60, mean:7.64, worst:-21.0, severe:3},
+  {name:"Lowest overall volatility", cassava:15, taro:45, sp:40, mean:6.14, worst:-30.0},
+];
+const CONFOUNDS = ["calories","nutrition","soil conditions","salinity","cyclone resistance","planting timing","cultural importance","labour","household preference","crop disease","geography","future climate","economic value"];
+
+const CORRELATIONS = [
+  {country:"Fiji", ct:0.803, cs:-0.320, ts:-0.271},
+  {country:"New Caledonia", ct:-0.286, cs:0.857, ts:-0.308},
+  {country:"Niue", ct:0.580, cs:-0.761, ts:-0.554},
+  {country:"Papua New Guinea", ct:-0.636, cs:0.0831, ts:0.00477},
+  {country:"Solomon Islands", ct:0.945, cs:0.904, ts:0.868},
+  {country:"Tonga", ct:0.495, cs:-0.0442, ts:0.227},
+];
+
+const DIVERSITY = [
+  {country:"Niue", first:1.80, last:1.11, tag:"falling"},
+  {country:"New Caledonia", first:2.67, last:2.45, tag:"falling"},
+  {country:"Papua New Guinea", first:1.63, last:1.73, tag:"stable"},
+  {country:"Fiji", first:2.16, last:2.25, tag:"stable"},
+  {country:"Solomon Islands", first:1.51, last:1.69, tag:"rising"},
+  {country:"Tonga", first:2.42, last:2.90, tag:"rising"},
+];
+
+/* Map marker positions -- equirectangular projection, longitude shifted to
+   a 0-360 scale so Fiji/Tonga/Niue (which straddle the antimeridian) don't
+   wrap to opposite sides of the canvas. viewBox is 700x380. */
+const COUNTRY_POS = {
+  "Papua New Guinea": {x:70.6, y:57.0},
+  "Solomon Islands": {x:263.4, y:114.0},
+  "New Caledonia": {x:326.3, y:319.5},
+  "Fiji": {x:474.6, y:253.9},
+  "Tonga": {x:555.3, y:312.6},
+  "Niue": {x:618.7, y:277.2},
+};
+
+const ISLAND_DESC = {
+  "Fiji":"Cassava & taro move together (+0.80); sweet potato hedges the rest.",
+  "New Caledonia":"Cassava & sweet potato lockstep (+0.86); taro moves differently.",
+  "Niue":"Sharpest hedge: cassava ↔ sweet potato −0.76. Area also more concentrated since 1961.",
+  "Papua New Guinea":"Flattest record — severe losses rare under every strategy.",
+  "Solomon Islands":"Crops move together (+0.87 to +0.95) — diversification helps less here.",
+  "Tonga":"Harvested area grew more balanced (2.42 → 2.90 effective crops since 1961).",
+};
+
+const COVERAGE = [
+  {country:"Fiji", cassava:64, taro:64, sp:64, included:true},
+  {country:"New Caledonia", cassava:64, taro:64, sp:64, included:true},
+  {country:"Niue", cassava:64, taro:64, sp:64, included:true},
+  {country:"Papua New Guinea", cassava:64, taro:64, sp:64, included:true},
+  {country:"Solomon Islands", cassava:64, taro:64, sp:64, included:true},
+  {country:"Tonga", cassava:64, taro:64, sp:64, included:true},
+  {country:"Samoa", cassava:64, taro:64, sp:null, included:false, note:"no comparable sweet-potato yield series in this dataset"},
+  {country:"French Polynesia", cassava:64, taro:30, sp:7, included:false, note:"sweet potato/taro coverage too short"},
+  {country:"Kiribati", cassava:null, taro:64, sp:null, included:false, note:"taro only"},
+  {country:"Micronesia (FSM)", cassava:30, taro:null, sp:30, included:false, note:"no taro data"},
+  {country:"Vanuatu", cassava:3, taro:3, sp:3, included:false, note:"only 3 years in this crop dataset — too short to detrend"},
+];
+
+const KNOWLEDGE = [
+  {place:"Solomon Islands", title:"\u201cCrucial to the overall risk management strategy of the island\u201d", text:"On Bellona, shifting cultivation with many crops and cultivars persists because it manages risk — the same principle this dataset measures another way.", src:"PLOS Sustainability & Transformation (2022)", centerpiece:true},
+  {place:"Fiji, Marshall Islands & beyond", title:"Place-based, not one generic recipe", text:"Pacific traditional knowledge documents local water systems and drought-ready varieties. Adaptation has to be co-produced with communities, not designed once for everywhere.", src:"Nunn et al., WIREs Climate Change 15(4) (2024)", url:"https://doi.org/10.1002/wcc.882"},
+  {place:"Pacific region", title:"Centuries of risk, built into the garden itself", text:"Environmental risk shaped diversified Pacific gardens over centuries. Intensification has to keep that risk logic, not override it.", src:"Kaoh, Lebot, McGregor, Bourke et al. (2016)"},
+  {place:"Tonga & Samoa", title:"The same practice, still being extended today", text:"Farmer-led trials are testing intercropping as traditional knowledge meeting modern methods — while ACIAR lists root-crop diversity among active Pacific priorities.", src:"Pacific Community (2026); ACIAR HORT-2018-195", url:"https://www.aciar.gov.au/project/HORT-2018-195"},
+];
+
+function hectareOutcome(ev, w, cap){
+  const clip = v => cap ? Math.max(-50, Math.min(50, v)) : v;
+  const c = clip(ev.cassava), t = clip(ev.taro), s = clip(ev.sp);
+  const Hstar = w.c*ev.eyC + w.t*ev.eyT + w.s*ev.eySp;
+  const H = w.c*ev.eyC*(1+c/100) + w.t*ev.eyT*(1+t/100) + w.s*ev.eySp*(1+s/100);
+  return { pct: 100*(H/Hstar - 1), kgPerHa: (Hstar-H)*1000 };
+}
+function strategyStats(w, cap){
+  const outcomes = STRESS_EVENTS.map(ev=>hectareOutcome(ev,w,cap).pct);
+  return {
+    worst: Math.min(...outcomes),
+    mean: outcomes.reduce((a,b)=>a+b,0)/outcomes.length,
+    severe: outcomes.filter(o=>o<=-10).length
+  };
+}
+
+const state = {
+  garden: {cassava:33, taro:33, sp:34},
+  theme: localStorage.getItem('ror-theme') || 'night',
+  eventIdx: STRESS_EVENTS.findIndex(e=>e.country==='Tonga' && e.year===1987),
+  highlightCrop: null,
+  corrCountry: 'Niue',
+  island: 'Fiji',
+  strategy: 'yours',
+  cap: false,
+  visual: 'warming',
+  planted: false,
+  focusPinned: false,
+  mixCueShown: false
+};
+
+function normalized(){
+  const g = state.garden;
+  const sum = g.cassava + g.taro + g.sp;
+  if(!sum) return {c:1/3,t:1/3,s:1/3};
+  return {c:g.cassava/sum, t:g.taro/sum, s:g.sp/sum};
+}
+function fmtPct(x){ return (x>=0?'+':'') + x.toFixed(1) + '%'; }
+function weightsFromStrategy(id){
+  if(id==='cassava') return {c:1,t:0,s:0};
+  if(id==='taro') return {c:0,t:1,s:0};
+  if(id==='sp') return {c:0,t:0,s:1};
+  if(id==='equal') return {c:1/3,t:1/3,s:1/3};
+  return normalized();
+}
+
+/* ---- Theme ---- */
+function setTheme(t){
+  state.theme = t;
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('ror-theme', t);
+  document.getElementById('theme-night').classList.toggle('active', t==='night');
+  document.getElementById('theme-paper').classList.toggle('active', t==='paper');
+  drawWarmChart();
+  drawMap();
+}
+
+/* ---- Garden plot ---- */
+const PLANT_SVG = {
+  c: `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><g class="plant-stroke" stroke="var(--cassava)" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V11.5"/><path fill="var(--cassava)" fill-opacity=".28" d="M12 12.2l-5.2-4.2 1.4-1.1 3.8 3.1z"/><path fill="var(--cassava)" fill-opacity=".28" d="M12 12.2l5.2-4.2-1.4-1.1-3.8 3.1z"/><path fill="var(--cassava)" fill-opacity=".38" d="M12 10.2L8.2 4.2l1.5-.7L12 8.6z"/><path fill="var(--cassava)" fill-opacity=".38" d="M12 10.2l3.8-6 1.5.7L12 8.6z"/><path d="M7.2 8.2L4.5 6.5"/><path d="M16.8 8.2l2.7-1.7"/></g></svg>`,
+  t: `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path class="plant-stroke" d="M12 20.5V13.2M12 13.2c-4.8-1.1-7.4-4.8-6.2-8.5 3.8 1.1 5.8 4.3 6.2 8.5z" fill="var(--taro)" fill-opacity=".4" stroke="var(--taro)" stroke-width="1.15" stroke-linejoin="round"/><path class="plant-stroke" d="M12 13.2c4.8-1.1 7.4-4.8 6.2-8.5-3.8 1.1-5.8 4.3-6.2 8.5z" fill="var(--taro)" fill-opacity=".55" stroke="var(--taro)" stroke-width="1.15" stroke-linejoin="round"/><path d="M12 13.2V10.8" stroke="#8a6a96" stroke-width="1.15" stroke-linecap="round"/></svg>`,
+  s: `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><g class="plant-stroke" stroke="var(--sp)" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17c3.2-1.2 5.4-3.4 7.6-6.6"/><path d="M11.1 10.4c1.6 2.1 3.8 3.7 6.4 4.2"/><path fill="var(--sp)" fill-opacity=".35" d="M11.1 10.4c-1.3-2.4.3-4.9 2.8-5.1.4 2.2-.7 4.2-2.8 5.1z"/><path fill="var(--sp)" fill-opacity=".4" d="M17.5 14.6c1.9-.2 3.4 1.3 3.1 3-.2.1-2.2.2-3.1-3z"/><path fill="var(--sp)" fill-opacity=".32" d="M7.2 14c-.9 1.5.2 3.2 1.9 3.2.2-1.6-.4-2.8-1.9-3.2z"/></g></svg>`
+};
+
+function renderGarden(elId, w, anomalies){
+  const el = document.getElementById(elId);
+  if(!el) return;
+  const nc = Math.round(w.c*100), nt = Math.round(w.t*100);
+  const cropFor = i => i < nc ? 'c' : (i < nc+nt ? 't' : 's');
+  const anomKey = {c:'cassava', t:'taro', s:'sp'};
+  let html = '';
+  for(let i=0;i<100;i++){
+    const crop = cropFor(i);
+    let opacity = 1;
+    let wilt = false;
+    if(anomalies){
+      const a = anomalies[anomKey[crop]];
+      opacity = Math.max(0.22, Math.min(1.15, 1 + a/110));
+      wilt = a < -15;
+    }
+    html += `<div class="garden-cell crop-${crop}${wilt?' wilt':''}" style="opacity:${opacity.toFixed(2)}">${PLANT_SVG[crop]}</div>`;
+  }
+  el.innerHTML = html;
+}
+
+/* ---- Sliders ---- */
+function onSlider(){
+  state.garden.cassava = +document.getElementById('sl-c').value;
+  state.garden.taro = +document.getElementById('sl-t').value;
+  state.garden.sp = +document.getElementById('sl-s').value;
+  state.planted = true;
+  const w = normalized();
+  document.getElementById('pct-c').textContent = Math.round(w.c*100)+'%';
+  document.getElementById('pct-t').textContent = Math.round(w.t*100)+'%';
+  document.getElementById('pct-s').textContent = Math.round(w.s*100)+'%';
+  showMixCue();
+  updateAll();
+}
+function showMixCue(){
+  if(state.mixCueShown) return;
+  state.mixCueShown = true;
+  const cue = document.getElementById('plant-cue');
+  if(cue){
+    cue.hidden = false;
+    requestAnimationFrame(()=>cue.classList.add('show'));
+  }
+  const chip = document.getElementById('mix-chip');
+  if(chip){
+    chip.classList.add('visible','pulse');
+    setTimeout(()=>chip.classList.remove('pulse'), 2400);
+  }
+}
+['sl-c','sl-t','sl-s'].forEach(id=>{
+  // bound after DOM ready below
+});
+
+function updateMixChip(){
+  const w = normalized();
+  const chip = document.getElementById('mix-chip');
+  const editBtn = document.getElementById('mix-edit-btn');
+  document.getElementById('mix-chip-text').innerHTML =
+    `<span class="sw" style="background:var(--cassava)"></span>${Math.round(w.c*100)}% ` +
+    `<span class="sw" style="background:var(--taro)"></span>${Math.round(w.t*100)}% ` +
+    `<span class="sw" style="background:var(--sp)"></span>${Math.round(w.s*100)}%`;
+  const show = state.planted || ['garden','tonga','sixty','safe','fail','why','evidence','islands'].includes(state.visual);
+  chip.classList.toggle('visible', show && state.visual !== 'warming');
+  if(editBtn) editBtn.hidden = state.visual === 'garden';
+  updateFocusPill();
+}
+
+function updateFocusPill(){
+  const pill = document.getElementById('focus-pill');
+  if(!pill) return;
+  const name = state.corrCountry || state.island;
+  document.getElementById('focus-pill-name').textContent = name || '—';
+  const show = state.focusPinned && ['why','evidence','islands','fail','safe','sixty'].includes(state.visual);
+  pill.classList.toggle('visible', !!show);
+  syncStickyTools();
+}
+
+function syncStickyTools(){
+  const tools = document.getElementById('sticky-tools');
+  if(!tools) return;
+  const chipOn = document.getElementById('mix-chip')?.classList.contains('visible');
+  const pillOn = document.getElementById('focus-pill')?.classList.contains('visible');
+  tools.classList.toggle('has-tools', !!(chipOn || pillOn));
+}
+
+function updateDecisionCard(){
+  const yours = strategyStats(normalized(), state.cap);
+  const mono = [
+    strategyStats({c:1,t:0,s:0}, state.cap),
+    strategyStats({c:0,t:1,s:0}, state.cap),
+    strategyStats({c:0,t:0,s:1}, state.cap)
+  ];
+  const bestMono = mono.reduce((a,b)=> a.worst > b.worst ? a : b);
+  const monoLabel = (()=>{
+    const scores = [
+      {n:'Cassava', st:mono[0]},
+      {n:'Taro', st:mono[1]},
+      {n:'Sweet potato', st:mono[2]}
+    ];
+    return scores.sort((a,b)=>b.st.worst-a.st.worst)[0].n;
+  })();
+  const delta = yours.worst - bestMono.worst;
+  document.getElementById('dc-yours').textContent = fmtPct(yours.worst);
+  document.getElementById('dc-mono').textContent = `${fmtPct(bestMono.worst)} (${monoLabel})`;
+  const el = document.getElementById('dc-delta');
+  if(delta > 0.05){
+    el.textContent = `Mix softens worst year by ${delta.toFixed(1)} pts.`;
+  } else if(delta < -0.05){
+    el.textContent = `Monocrop beats your mix by ${Math.abs(delta).toFixed(1)} pts on worst year — try equal thirds.`;
+  } else {
+    el.textContent = `Nearly tied with the best monocrop on worst-year risk.`;
+  }
+}
+
+/* ---- Warming SVG (PDH surface-temp anomalies, six stress-test countries) ---- */
+function drawWarmChart(){
+  const svg = document.getElementById('warm-svg');
+  if(!svg) return;
+  const allVals = WARM_SERIES.flatMap(s=>s.pts.map(p=>p[1])).concat(WARM_MEAN.map(p=>p[1]));
+  const vmin = Math.min(-0.6, ...allVals);
+  const vmax = Math.max(1.1, ...allVals);
+  const W=480, H=220, pad={l:40,r:14,t:16,b:30};
+  const xYear = y => pad.l + (y-1961)/(2024-1961)*(W-pad.l-pad.r);
+  const yVal = v => pad.t + (vmax-v)/(vmax-vmin)*(H-pad.t-pad.b);
+  let paths = '';
+  WARM_SERIES.forEach((s,si)=>{
+    let d = '';
+    s.pts.forEach((pt,i)=>{
+      d += (i?'L':'M') + xYear(pt[0]).toFixed(1) + ',' + yVal(pt[1]).toFixed(1);
+    });
+    const op = 0.28 + si*0.07;
+    paths += `<path d="${d}" fill="none" stroke="var(--accent)" stroke-width="1.35" opacity="${op}"/>`;
+  });
+  let md = '';
+  WARM_MEAN.forEach((pt,i)=>{
+    md += (i?'L':'M') + xYear(pt[0]).toFixed(1) + ',' + yVal(pt[1]).toFixed(1);
+  });
+  paths += `<path d="${md}" fill="none" stroke="var(--warn)" stroke-width="2.4" opacity="0.95"/>`;
+  paths += `<line x1="${pad.l}" x2="${W-pad.r}" y1="${yVal(0)}" y2="${yVal(0)}" stroke="var(--faint)" stroke-dasharray="3 4"/>`;
+  paths += `<text x="${pad.l}" y="${H-8}" fill="var(--faint)" font-size="10" font-family="IBM Plex Mono,monospace">1961</text>`;
+  paths += `<text x="${W-pad.r}" y="${H-8}" fill="var(--faint)" font-size="10" font-family="IBM Plex Mono,monospace" text-anchor="end">2024</text>`;
+  paths += `<text x="${pad.l-6}" y="${yVal(1)}" fill="var(--faint)" font-size="9" font-family="IBM Plex Mono,monospace" text-anchor="end">+1°</text>`;
+  paths += `<text x="${pad.l-6}" y="${yVal(-0.5)}" fill="var(--faint)" font-size="9" font-family="IBM Plex Mono,monospace" text-anchor="end">−0.5°</text>`;
+  paths += `<text x="${W-pad.r}" y="${pad.t+10}" fill="var(--warn)" font-size="10" font-family="IBM Plex Mono,monospace" text-anchor="end">6-country mean</text>`;
+  svg.innerHTML = paths;
+  svg.setAttribute('aria-label', 'Surface temperature anomalies rising from about −0.2°C in the 1960s to about +0.7°C by 2024 across the six stress-test countries. Pacific Data Hub ST_ANOM.');
+}
+
+/* ---- Tonga panel ---- */
+function drawTongaAnomaly(ev, mixPct){
+  const svg = document.getElementById('tonga-anomaly-svg');
+  if(!svg) return;
+  const rows = [
+    {lab:'Cassava', v:ev.cassava, color:'var(--cassava)'},
+    {lab:'Taro', v:ev.taro, color:'var(--taro)'},
+    {lab:'Sweet potato', v:ev.sp, color:'var(--sp)'},
+    {lab:'Your mix', v:mixPct, color:'var(--accent)', mix:true}
+  ];
+  const vals = rows.map(r=>r.v);
+  const lo = Math.min(-15, ...vals);
+  const hi = Math.max(15, ...vals);
+  const W=420, H=140, pad={l:108, r:52, t:14, b:18};
+  const x0 = pad.l + (-lo)/(hi-lo)*(W-pad.l-pad.r);
+  const xOf = v => pad.l + (v-lo)/(hi-lo)*(W-pad.l-pad.r);
+  const rowH = (H-pad.t-pad.b)/rows.length;
+  let html = `<line x1="${x0.toFixed(1)}" x2="${x0.toFixed(1)}" y1="${pad.t-4}" y2="${H-pad.b+4}" stroke="var(--faint)" stroke-dasharray="3 3"/>`;
+  html += `<text x="${x0.toFixed(1)}" y="${H-4}" text-anchor="middle" class="chart-label">trend</text>`;
+  rows.forEach((r,i)=>{
+    const y = pad.t + i*rowH + rowH*0.22;
+    const h = rowH*0.52;
+    const x1 = xOf(0), x2 = xOf(r.v);
+    const left = Math.min(x1,x2), w = Math.max(1.5, Math.abs(x2-x1));
+    const fill = r.v<0 ? 'var(--warn)' : 'var(--good)';
+    const op = r.mix ? 0.95 : 0.82;
+    html += `<text x="${pad.l-8}" y="${(y+h*0.72).toFixed(1)}" text-anchor="end" class="chart-label" fill="${r.color}">${r.lab}</text>`;
+    html += `<rect x="${left.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="2" fill="${fill}" opacity="${op}"${r.mix?' stroke="var(--ink)" stroke-width="1" stroke-opacity=".35"':''}/>`;
+    html += `<text x="${(x2 + (r.v>=0?6:-6)).toFixed(1)}" y="${(y+h*0.72).toFixed(1)}" text-anchor="${r.v>=0?'start':'end'}" class="chart-val" fill="${fill}">${fmtPct(r.v)}</text>`;
+  });
+  svg.innerHTML = html;
+}
+
+function updateTonga(){
+  const w = normalized();
+  const ev = STRESS_EVENTS.find(e=>e.country==='Tonga' && e.year===1987);
+  renderGarden('garden-tonga', w, {cassava:ev.cassava, taro:ev.taro, sp:ev.sp});
+  const out = hectareOutcome(ev, w, state.cap);
+  drawTongaAnomaly(ev, out.pct);
+  document.getElementById('tonga-panel').innerHTML = `
+    <div class="row"><span>Cassava</span><span class="v neg">−11.0%</span></div>
+    <div class="row"><span>Taro</span><span class="v neg">−5.3%</span></div>
+    <div class="row"><span>Sweet potato</span><span class="v pos">+2.7%</span></div>
+    <div class="row"><span><strong>Your harvest</strong></span><span class="v ${out.pct>=0?'pos':'neg'}">${fmtPct(out.pct)}</span></div>`;
+}
+
+/* ---- Sixty scrub ---- */
+function backtest(){
+  const w = weightsFromStrategy(state.strategy);
+  const outcomes = STRESS_EVENTS.map((ev,i)=>({i, ...ev, ...hectareOutcome(ev,w,state.cap)}));
+  outcomes.sort((a,b)=>a.pct-b.pct);
+  return {
+    w, outcomes,
+    worst: outcomes[0],
+    best: outcomes[outcomes.length-1],
+    mean: outcomes.reduce((s,o)=>s+o.pct,0)/outcomes.length,
+    severe: outcomes.filter(o=>o.pct<=-10).length
+  };
+}
+
+function cropWinner(ev){
+  const vals = {cassava:ev.cassava, taro:ev.taro, sp:ev.sp};
+  return Object.entries(vals).sort((a,b)=>b[1]-a[1])[0][0];
+}
+function cropLoser(ev){
+  const vals = {cassava:ev.cassava, taro:ev.taro, sp:ev.sp};
+  return Object.entries(vals).sort((a,b)=>a[1]-b[1])[0][0];
+}
+
+function updateSixty(){
+  const bt = backtest();
+  drawSixtyStrip(bt);
+  const el = document.getElementById('scrub-tiles');
+  const hl = state.highlightCrop;
+  el.innerHTML = STRESS_EVENTS.map((e,i)=>{
+    const allFail = e.cassava<0 && e.taro<0 && e.sp<0;
+    let dim = '';
+    if(hl){
+      const win = cropWinner(e)===hl, lose = cropLoser(e)===hl;
+      if(!win && !lose) dim = ' dim';
+    }
+    const active = i===state.eventIdx ? ' active' : '';
+    return `<button type="button" class="tile ${allFail?'b':'g'}${dim}${active}" data-i="${i}" aria-label="${e.country} ${e.year}"><span class="tile-tip">${e.country} ${e.year}</span></button>`;
+  }).join('');
+  el.querySelectorAll('.tile').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ state.eventIdx = +btn.dataset.i; updateSixty(); });
+  });
+  const ev = STRESS_EVENTS[state.eventIdx];
+  const out = hectareOutcome(ev, bt.w, state.cap);
+  document.getElementById('worst-stat').textContent = fmtPct(bt.worst.pct);
+  document.getElementById('worst-stat').className = 'stat-big ' + (bt.worst.pct>=0?'good':'bad');
+  document.getElementById('worst-sub').textContent = `${bt.worst.country} ${bt.worst.year} · worst of 60`;
+  document.getElementById('sixty-panel').innerHTML = `
+    <div class="row"><span>Inspecting</span><span class="v">${ev.country} ${ev.year}</span></div>
+    <div class="row"><span>Rain anomaly</span><span class="v">${ev.rain}%</span></div>
+    <div class="row"><span>C / T / SP</span><span class="v">${fmtPct(ev.cassava)} · ${fmtPct(ev.taro)} · ${fmtPct(ev.sp)}</span></div>
+    <div class="row"><span>Your hectare</span><span class="v ${out.pct>=0?'pos':'neg'}">${fmtPct(out.pct)}</span></div>
+    <div class="row"><span>Mean · Severe</span><span class="v">${fmtPct(bt.mean)} · ${bt.severe}/60</span></div>`;
+}
+
+function drawSixtyStrip(bt){
+  const svg = document.getElementById('sixty-strip-svg');
+  if(!svg) return;
+  const outcomes = bt.outcomes;
+  const W=420, H=100, pad={l:28, r:12, t:10, b:22};
+  const vals = outcomes.map(o=>o.pct);
+  const lo = Math.min(-5, ...vals);
+  const hi = Math.max(5, ...vals);
+  const yOf = v => pad.t + (hi-v)/(hi-lo)*(H-pad.t-pad.b);
+  const y0 = yOf(0);
+  const gap = 1.2;
+  const barW = (W-pad.l-pad.r)/outcomes.length - gap;
+  let html = `<line x1="${pad.l}" x2="${W-pad.r}" y1="${y0.toFixed(1)}" y2="${y0.toFixed(1)}" stroke="var(--faint)" stroke-dasharray="3 3"/>`;
+  const yMean = yOf(bt.mean);
+  html += `<line x1="${pad.l}" x2="${W-pad.r}" y1="${yMean.toFixed(1)}" y2="${yMean.toFixed(1)}" stroke="var(--accent)" stroke-opacity=".45" stroke-width="1"/>`;
+  html += `<text x="4" y="${(yMean+3).toFixed(1)}" class="chart-label" fill="var(--accent)">mean</text>`;
+  html += `<text x="4" y="${(y0+3).toFixed(1)}" class="chart-label">0</text>`;
+  outcomes.forEach((o,i)=>{
+    const x = pad.l + i*(barW+gap);
+    const y1 = yOf(o.pct), yZ = y0;
+    const top = Math.min(y1,yZ), h = Math.max(1.2, Math.abs(y1-yZ));
+    const active = o.i===state.eventIdx;
+    const fill = o.pct<0 ? 'var(--warn)' : 'var(--good)';
+    html += `<rect class="strip-bar" data-i="${o.i}" x="${x.toFixed(1)}" y="${top.toFixed(1)}" width="${Math.max(1.5,barW).toFixed(1)}" height="${h.toFixed(1)}" rx="1" fill="${fill}" opacity="${active?1:0.55}" stroke="${active?'var(--ink)':'none'}" stroke-width="${active?1.2:0}" style="cursor:pointer"/>`;
+  });
+  html += `<text x="${pad.l}" y="${H-6}" class="chart-label">worst</text>`;
+  html += `<text x="${W-pad.r}" y="${H-6}" text-anchor="end" class="chart-label">best</text>`;
+  svg.innerHTML = html;
+  svg.querySelectorAll('.strip-bar').forEach(bar=>{
+    bar.addEventListener('click', ()=>{
+      state.eventIdx = +bar.getAttribute('data-i');
+      updateSixty();
+    });
+  });
+}
+
+/* ---- Safe crop bars ---- */
+function updateSafe(){
+  const best = {cassava:0,taro:0,sp:0}, worst={cassava:0,taro:0,sp:0};
+  STRESS_EVENTS.forEach(e=>{ best[cropWinner(e)]++; worst[cropLoser(e)]++; });
+  const order = ['sp','taro','cassava'];
+  const labels = {cassava:'Cassava', taro:'Taro', sp:'Sweet potato'};
+  const colors = {cassava:'var(--cassava)', taro:'var(--taro)', sp:'var(--sp)'};
+  const fill = (data, id) => {
+    const max = Math.max(...order.map(k=>data[k]));
+    document.getElementById(id).innerHTML = order.map(k=>{
+      const n = data[k], pct = (n/60*100).toFixed(0);
+      const hl = state.highlightCrop===k ? ' hl' : '';
+      return `<div class="crop-bar-row">
+        <button type="button" class="crop-bar-name${hl}" data-crop="${k}">${labels[k]}</button>
+        <div class="crop-bar-track"><div class="crop-bar-fill" style="width:${n/max*100}%;background:${colors[k]}"></div></div>
+        <div class="crop-bar-val">${n} (${pct}%)</div>
+      </div>`;
+    }).join('');
+    document.getElementById(id).querySelectorAll('[data-crop]').forEach(b=>{
+      b.addEventListener('mouseenter', ()=>{ state.highlightCrop = b.dataset.crop; updateSafe(); updateSixty(); });
+      b.addEventListener('mouseleave', ()=>{ state.highlightCrop = null; updateSafe(); updateSixty(); });
+      b.addEventListener('click', ()=>{ state.highlightCrop = state.highlightCrop===b.dataset.crop ? null : b.dataset.crop; updateSafe(); updateSixty(); });
+    });
+  };
+  fill(best, 'best-bars');
+  fill(worst, 'worst-bars');
+}
+
+/* ---- Fail tiles ---- */
+function updateFail(){
+  const el = document.getElementById('fail-tiles');
+  el.innerHTML = STRESS_EVENTS.map((e,i)=>{
+    const allFail = e.cassava<0 && e.taro<0 && e.sp<0;
+    const active = i===state.eventIdx && allFail ? ' active' : '';
+    return `<button type="button" class="tile ${allFail?'b':'g'}${active}" data-i="${i}"${allFail?'':' tabindex="-1"'}><span class="tile-tip">${e.country} ${e.year}</span></button>`;
+  }).join('');
+  el.querySelectorAll('.tile.b').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      state.eventIdx = +btn.dataset.i;
+      const e = STRESS_EVENTS[state.eventIdx];
+      const out = hectareOutcome(e, normalized(), state.cap);
+      const panel = document.getElementById('fail-panel');
+      panel.style.display = 'block';
+      panel.innerHTML = `<div class="row"><span>${e.country} ${e.year}</span><span class="v neg">${fmtPct(out.pct)} for your mix</span></div>
+        <div class="row"><span>C / T / SP</span><span class="v">${fmtPct(e.cassava)} · ${fmtPct(e.taro)} · ${fmtPct(e.sp)}</span></div>`;
+      updateFail();
+    });
+  });
+}
+
+/* ---- Correlations ---- */
+function updateCorr(){
+  const btns = document.getElementById('corr-btns');
+  btns.innerHTML = CORRELATIONS.map(c=>
+    `<button type="button" class="${c.country===state.corrCountry?'active':''}" data-c="${c.country}">${c.country}</button>`
+  ).join('');
+  btns.querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{
+    state.corrCountry=b.dataset.c;
+    state.island=b.dataset.c;
+    state.focusPinned=true;
+    updateCorr();
+    updateFocusPill();
+  }));
+  const c = CORRELATIONS.find(x=>x.country===state.corrCountry);
+  const pairs = [
+    {lab:'Cassava ↔ Taro', v:c.ct},
+    {lab:'Cassava ↔ SP', v:c.cs},
+    {lab:'Taro ↔ SP', v:c.ts}
+  ];
+  document.getElementById('corr-viz').innerHTML = pairs.map(p=>{
+    const mag = Math.abs(p.v);
+    const color = p.v<0 ? 'var(--warn)' : 'var(--good)';
+    const left = p.v<0 ? (50-mag*50) : 50;
+    const width = mag*50;
+    return `<div class="corr-pair"><span>${p.lab}</span>
+      <div class="corr-track"><div class="corr-fill" style="left:${left}%;width:${width}%;background:${color}"></div></div>
+      <span style="color:${color};font-weight:700">${p.v>=0?'+':''}${p.v.toFixed(2)}</span></div>`;
+  }).join('');
+  document.getElementById('corr-note').textContent = ISLAND_DESC[state.corrCountry] || '';
+}
+
+/* ---- Evidence strategies ---- */
+function drawEvidenceWorst(strategies){
+  const svg = document.getElementById('evidence-worst-svg');
+  if(!svg) return;
+  const rows = strategies.map(s=>({
+    id:s.id,
+    lab:s.name,
+    worst:strategyStats(weightsFromStrategy(s.id), state.cap).worst
+  }));
+  const W=420, H=160, pad={l:118, r:48, t:8, b:8};
+  const worsts = rows.map(r=>r.worst);
+  const lo = Math.min(...worsts, -5);
+  const hi = Math.max(0, ...worsts);
+  // Magnitude chart: 0 at right (best possible on this axis), more negative extends left
+  const span = Math.max(5, -lo);
+  const xOf = v => pad.l + (1 - Math.min(1, Math.max(0, -v)/span))*(W-pad.l-pad.r);
+  const x0 = W - pad.r;
+  const rowH = (H-pad.t-pad.b)/rows.length;
+  let html = `<line x1="${x0}" x2="${x0}" y1="${pad.t}" y2="${H-pad.b}" stroke="var(--faint)" stroke-dasharray="3 3"/>`;
+  html += `<text x="${x0}" y="${H-2}" text-anchor="middle" class="chart-label">0%</text>`;
+  rows.forEach((r,i)=>{
+    const y = pad.t + i*rowH + rowH*0.18;
+    const h = rowH*0.58;
+    const x = xOf(r.worst);
+    const w = Math.max(2, x0 - x);
+    const active = state.strategy===r.id;
+    html += `<text x="${pad.l-8}" y="${(y+h*0.72).toFixed(1)}" text-anchor="end" class="chart-label"${active?' font-weight="700" fill="var(--ink)"':''}>${r.lab}</text>`;
+    html += `<rect class="strat-bar" data-id="${r.id}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="var(--warn)" opacity="${active?0.95:0.55}" stroke="${active?'var(--ink)':'none'}" stroke-width="${active?1.25:0}" style="cursor:pointer"/>`;
+    html += `<text x="${(x-6).toFixed(1)}" y="${(y+h*0.72).toFixed(1)}" text-anchor="end" class="chart-val" fill="var(--warn)">${fmtPct(r.worst)}</text>`;
+  });
+  svg.innerHTML = html;
+  svg.querySelectorAll('.strat-bar').forEach(bar=>{
+    bar.addEventListener('click', ()=>{
+      state.strategy = bar.getAttribute('data-id');
+      if(state.strategy!=='yours'){
+        const w = weightsFromStrategy(state.strategy);
+        state.garden = {cassava:Math.round(w.c*100), taro:Math.round(w.t*100), sp:Math.round(w.s*100)};
+        document.getElementById('sl-c').value = state.garden.cassava;
+        document.getElementById('sl-t').value = state.garden.taro;
+        document.getElementById('sl-s').value = state.garden.sp;
+        document.getElementById('pct-c').textContent = state.garden.cassava+'%';
+        document.getElementById('pct-t').textContent = state.garden.taro+'%';
+        document.getElementById('pct-s').textContent = state.garden.sp+'%';
+      }
+      updateAll();
+    });
+  });
+}
+
+function updateEvidence(){
+  const strategies = [
+    {id:'cassava', name:'Cassava only'},
+    {id:'taro', name:'Taro only'},
+    {id:'sp', name:'Sweet potato only'},
+    {id:'equal', name:'Equal mix (⅓ each)'},
+    {id:'yours', name:'Your mix'}
+  ];
+  drawEvidenceWorst(strategies);
+  document.getElementById('strat-list').innerHTML = strategies.map(s=>{
+    const st = strategyStats(weightsFromStrategy(s.id), state.cap);
+    return `<button type="button" class="strat-btn ${state.strategy===s.id?'active':''}" data-id="${s.id}">
+      <span class="name">${s.name}</span>
+      <span class="meta">${st.severe}/60 severe · mean ${fmtPct(st.mean)}</span>
+      <span class="worst">${fmtPct(st.worst)}</span>
+    </button>`;
+  }).join('');
+  document.getElementById('strat-list').querySelectorAll('.strat-btn').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      state.strategy = b.dataset.id;
+      if(state.strategy!=='yours'){
+        const w = weightsFromStrategy(state.strategy);
+        state.garden = {cassava:Math.round(w.c*100), taro:Math.round(w.t*100), sp:Math.round(w.s*100)};
+        document.getElementById('sl-c').value = state.garden.cassava;
+        document.getElementById('sl-t').value = state.garden.taro;
+        document.getElementById('sl-s').value = state.garden.sp;
+        document.getElementById('pct-c').textContent = state.garden.cassava+'%';
+        document.getElementById('pct-t').textContent = state.garden.taro+'%';
+        document.getElementById('pct-s').textContent = state.garden.sp+'%';
+      }
+      updateAll();
+    });
+  });
+}
+
+/* ---- Map ---- */
+function drawMap(){
+  const svg = document.getElementById('pacific-map');
+  if(!svg) return;
+  const dots = Object.entries(COUNTRY_POS).map(([name,pos])=>`
+    <g class="map-dot ${name===state.island?'active':''}" transform="translate(${pos.x},${pos.y})" data-name="${name}">
+      <circle class="hit" r="18"></circle>
+      <circle class="ring" r="16"></circle>
+      <circle class="core" r="6"></circle>
+      <text x="12" y="4">${name}</text>
+    </g>`).join('');
+  svg.innerHTML = `
+    <defs><radialGradient id="ocean" cx="35%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="var(--panel-2)"/><stop offset="100%" stop-color="var(--bg-2)"/>
+    </radialGradient></defs>
+    <rect class="map-bg" width="700" height="380" fill="url(#ocean)"/>
+    <path class="map-bg" d="M0,340 Q175,320 350,340 T700,340" fill="none" stroke="var(--line)" stroke-width="1"/>
+    <path class="map-bg" d="M0,200 Q175,185 350,200 T700,200" fill="none" stroke="var(--line)" stroke-width="1"/>
+    ${dots}`;
+  svg.querySelectorAll('.map-dot').forEach(g=>{
+    const name = g.getAttribute('data-name');
+    g.addEventListener('mouseenter', ()=>showIsland(name, true, false));
+    g.addEventListener('click', ()=>showIsland(name, true, true));
+    g.addEventListener('touchstart', ()=>showIsland(name, true, true), {passive:true});
+  });
+  showIsland(state.island, false, false);
+}
+function showIsland(name, redrawActive=true, pin=true){
+  state.island = name;
+  state.corrCountry = name;
+  if(pin) state.focusPinned = true;
+  if(redrawActive){
+    document.querySelectorAll('.map-dot').forEach(g=>g.classList.toggle('active', g.getAttribute('data-name')===name));
+  }
+  const div = DIVERSITY.find(d=>d.country===name);
+  const label = div ? (div.tag==='rising'?'More balanced':div.tag==='falling'?'More concentrated':'Stable') : '';
+  document.getElementById('island-panel').innerHTML = `
+    <div style="font-family:var(--font-display);font-size:18px;font-weight:600;margin-bottom:6px;">${name}</div>
+    <div style="font-size:14px;color:var(--muted);">${ISLAND_DESC[name]}</div>
+    ${div?`<span class="tag ${div.tag}">${label}</span>`:''}`;
+  updateFocusPill();
+}
+
+/* ---- Knowledge ---- */
+function renderKnowledge(){
+  document.getElementById('k-grid').innerHTML = KNOWLEDGE.map(k=>`
+    <div class="k-card ${k.centerpiece?'centerpiece':''}">
+      <div class="place">${k.place}</div>
+      <h3>${k.title}</h3>
+      <p>${k.text}</p>
+      <div class="fine" style="margin-top:8px; font-style:normal;">Source: ${k.url ? `<a href="${k.url}" target="_blank" rel="noopener">${k.src}</a>` : k.src}</div>
+    </div>`).join('');
+}
+
+/* ---- Methods tables ---- */
+function fillMethods(){
+  document.getElementById('opt-tbody').innerHTML = OPTIMAL_MIXES.map(m=>
+    `<tr><td>${m.name}</td><td>${m.cassava}%</td><td>${m.taro}%</td><td>${m.sp}%</td><td>${m.worst}%${m.severe!=null?` (${m.severe}/60)`:''}</td><td>${m.mean>=0?'+':''}${m.mean}%</td></tr>`
+  ).join('');
+  document.getElementById('confounds').innerHTML = CONFOUNDS.map(c=>`<span>${c}</span>`).join('');
+  document.getElementById('cov-tbody').innerHTML = COVERAGE.map(c=>
+    `<tr><td>${c.country}</td><td>${c.cassava??'—'}</td><td>${c.taro??'—'}</td><td>${c.sp??'—'}</td><td>${c.included?'Yes':'No — '+(c.note||'')}</td></tr>`
+  ).join('');
+  document.getElementById('corr-tbody').innerHTML = CORRELATIONS.map(c=>
+    `<tr><td>${c.country}</td><td>${c.ct>=0?'+':''}${c.ct.toFixed(3)}</td><td>${c.cs>=0?'+':''}${c.cs.toFixed(3)}</td><td>${c.ts>=0?'+':''}${c.ts.toFixed(3)}</td></tr>`
+  ).join('');
+}
+
+/* ---- Visual switching ---- */
+const VISUAL_TITLES = {
+  warming:'Warming · six countries',
+  garden:'Your hectare',
+  tonga:'Tonga 1987 · live mix',
+  sixty:'60 dry-year events',
+  safe:'Best vs worst crop',
+  fail:'Joint failures',
+  why:'Yield correlations',
+  evidence:'Strategy comparison',
+  islands:'Pacific map'
+};
+function showVisual(id){
+  const changed = state.visual !== id;
+  state.visual = id;
+  document.querySelectorAll('.visual-slot').forEach(el=>el.classList.remove('active'));
+  const slot = document.getElementById('vs-'+id);
+  if(slot) slot.classList.add('active');
+  document.getElementById('visual-title').textContent = VISUAL_TITLES[id] || id;
+  updateMixChip();
+  if(changed){
+    const card = document.querySelector('.visual-card');
+    if(card) card.scrollTop = 0;
+  }
+  requestAnimationFrame(()=>animateStats());
+}
+
+function updateAll(){
+  const w = normalized();
+  renderGarden('garden-plot', w);
+  updateTonga();
+  updateSixty();
+  updateSafe();
+  updateFail();
+  updateCorr();
+  updateEvidence();
+  updateDecisionCard();
+  updateMixChip();
+  requestAnimationFrame(()=>animateStats());
+}
+
+/* ---- Progress rail + atmosphere + motion ---- */
+const BEAT_IDS = ['hero','warming','plant','tonga','sixty','safe','fail','why','evidence','islands','resilience','meaning','close'];
+const SCENE_FOR = {
+  hero:'hero', warming:'warming', plant:'plant',
+  tonga:'tense', sixty:'tense', safe:'tense', fail:'tense',
+  why:'clarity', evidence:'clarity', islands:'archipelago',
+  resilience:'clarity', meaning:'golden', close:'sunset'
+};
+function setScene(beatId){
+  document.documentElement.setAttribute('data-scene', SCENE_FOR[beatId] || 'warming');
+}
+function buildRail(){
+  const rail = document.getElementById('progress-rail');
+  rail.innerHTML = BEAT_IDS.map(id=>`<a href="#${id}" data-id="${id}" title="${id}"></a>`).join('');
+}
+function animateStats(){
+  document.querySelectorAll('.stat-big').forEach(el=>{
+    el.classList.remove('in');
+    void el.offsetWidth;
+    el.classList.add('in');
+  });
+  document.querySelectorAll('.aha-callout').forEach(el=>{
+    el.classList.remove('in');
+    void el.offsetWidth;
+    if(el.closest('.visual-slot.active')) el.classList.add('in');
+  });
+}
+function setupHeadlineMotion(){
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const heads = document.querySelectorAll('.beat h2, #meaning h2, .ending h2, .quote');
+  if(reduce){
+    heads.forEach(h=>h.classList.add('in'));
+    document.querySelectorAll('.stat-big, .aha-callout').forEach(s=>s.classList.add('in'));
+    return;
+  }
+  // Quotes start visible (hero peak); add class immediately if already on screen
+  document.querySelectorAll('.quote').forEach(q=>q.classList.add('in'));
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{ if(en.isIntersecting) en.target.classList.add('in'); });
+  }, {threshold:0.35});
+  heads.forEach(h=>io.observe(h));
+}
+function setupUnveil(){
+  const art = document.getElementById('resilience-art');
+  if(!art) return;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){
+    art.classList.add('is-open');
+    art.setAttribute('aria-expanded','true');
+    return;
+  }
+  const toggle = ()=>{
+    const open = art.classList.toggle('is-open');
+    art.setAttribute('aria-expanded', open ? 'true' : 'false');
+  };
+  art.addEventListener('click', toggle);
+  art.addEventListener('keydown', e=>{
+    if(e.key==='Enter' || e.key===' '){ e.preventDefault(); toggle(); }
+  });
+}
+function setupObserver(){
+  const beats = document.querySelectorAll('.beat[data-visual]');
+  const sections = BEAT_IDS.map(id=>document.getElementById(id)).filter(Boolean);
+  const io = new IntersectionObserver((entries)=>{
+    const visible = entries.filter(en=>en.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio);
+    if(visible[0]){
+      showVisual(visible[0].target.dataset.visual);
+      if(visible[0].target.id==='plant') state.planted = true;
+      setScene(visible[0].target.id);
+    }
+  }, {rootMargin:'-20% 0px -35% 0px', threshold:[0,0.15,0.4]});
+  beats.forEach(b=>io.observe(b));
+
+  const pio = new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting){
+        const id = en.target.id;
+        setScene(id);
+        document.querySelectorAll('.progress-rail a').forEach(a=>{
+          const aid = a.dataset.id;
+          const ai = BEAT_IDS.indexOf(aid), ci = BEAT_IDS.indexOf(id);
+          a.classList.toggle('active', aid===id);
+          a.classList.toggle('done', ai < ci);
+        });
+      }
+    });
+  }, {rootMargin:'-35% 0px -45% 0px', threshold:0});
+  sections.forEach(s=>pio.observe(s));
+
+  let ticking = false;
+  window.addEventListener('scroll', ()=>{
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(()=>{
+      ticking = false;
+      const mid = window.innerHeight * 0.42;
+      let best = null, bestDist = Infinity;
+      sections.forEach(b=>{
+        const r = b.getBoundingClientRect();
+        const dist = Math.abs(r.top + r.height*0.25 - mid);
+        if(dist < bestDist){ bestDist = dist; best = b; }
+      });
+      if(best){
+        setScene(best.id);
+        if(best.dataset && best.dataset.visual) showVisual(best.dataset.visual);
+      }
+    });
+  }, {passive:true});
+}
+
+/* ---- Init ---- */
+document.documentElement.setAttribute('data-theme', state.theme);
+document.documentElement.setAttribute('data-scene', 'hero');
+document.getElementById('theme-night').classList.toggle('active', state.theme==='night');
+document.getElementById('theme-paper').classList.toggle('active', state.theme==='paper');
+
+document.getElementById('sl-c').addEventListener('input', onSlider);
+document.getElementById('sl-t').addEventListener('input', onSlider);
+document.getElementById('sl-s').addEventListener('input', onSlider);
+document.getElementById('cap-toggle').addEventListener('change', e=>{ state.cap = e.target.checked; updateAll(); });
+document.getElementById('focus-clear').addEventListener('click', ()=>{
+  state.focusPinned = false;
+  updateFocusPill();
+});
+
+buildRail();
+drawWarmChart();
+drawMap();
+renderKnowledge();
+fillMethods();
+showVisual('warming');
+updateAll();
+setupObserver();
+setupHeadlineMotion();
+setupUnveil();
+setScene('hero');
+</script>
+</body>
+</html>
