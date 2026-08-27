@@ -1,0 +1,5 @@
+strategy,severe_events,worst_decline,n_events
+cassava_only,14,-59.547843,60
+taro_only,11,-67.965673,60
+sweet_potato_only,7,-48.889993,60
+mixed_equal,7,-36.745596,60

@@ -1,0 +1,9 @@
+statistic,value
+mean_benefit_pp,3.53
+ci_low_pp,1.37
+ci_high_pp,5.91
+sign_flip_p,0.0078
+wilcoxon_p,0.0122
+single_crop_mean_downside,6.63
+diversified_mean_downside,3.1
+proportional_reduction,0.533

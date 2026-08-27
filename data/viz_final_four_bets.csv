@@ -1,0 +1,5 @@
+strategy,expected_usd,actual_usd,diff_usd,outcome_pct
+cassava_only,3913,4833,920,23.5
+taro_only,6912,5944,-968,-14.0
+sweet_potato_only,1930,1250,-680,-35.3
+mixed_equal,4251,4009,-243,-5.7
