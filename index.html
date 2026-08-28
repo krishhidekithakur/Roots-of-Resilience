@@ -278,8 +278,8 @@ main{position:relative; z-index:2;}
   transition:max-width .35s ease, grid-template-columns .35s ease;
 }
 .scrolly.is-wide{
-  max-width:1400px;
-  grid-template-columns:minmax(260px,.85fr) minmax(480px,1.45fr);
+  max-width:1560px;
+  grid-template-columns:minmax(260px,.7fr) minmax(480px,1.6fr);
 }
 .scrolly .beats{display:flex; flex-direction:column; gap:0;}
 .beat{
@@ -424,7 +424,7 @@ main{position:relative; z-index:2;}
 #vs-sixty .panel, #vs-joint .panel, #vs-tonga .panel{margin-top:8px; padding:10px 12px;}
 #vs-sixty .panel .row, #vs-joint .panel .row, #vs-tonga .panel .row{padding:5px 0; font-size:11.5px;}
 #vs-tonga .garden-grid, #vs-garden .garden-grid{max-width:280px;}
-#vs-islands .map-svg{max-height:380px;}
+#vs-islands .map-svg{max-height:520px;}
 
 /* New evidence chart chrome */
 .winner-chips{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 10px;}
@@ -449,15 +449,80 @@ main{position:relative; z-index:2;}
 }
 .hm-tip strong, .chart-tip strong{color:var(--ink); font-weight:600;}
 .story-punch{font-family:var(--font-display); font-size:15px; color:var(--quote); font-weight:500; margin:10px 0 0; line-height:1.4;}
-.downside-svg, .money-svg, .insurance-svg, .frontier-svg, .bootstrap-svg{width:100%; height:auto; display:block;}
+.downside-svg, .money-svg, .insurance-svg, .frontier-svg, .bootstrap-svg, .harvest-svg, .waterfall-svg, .contrib-svg{width:100%; height:auto; display:block;}
 .downside-dot{cursor:pointer; transition:opacity .15s ease;}
 .downside-dot.dim{opacity:.22;}
 .downside-dot.hl{opacity:1;}
 .money-reveal{margin-top:10px; font-family:var(--font-display); font-size:14px; color:var(--quote); line-height:1.45;}
 .money-reveal .line2{margin-top:6px; font-weight:600; color:var(--ink);}
+.money-reveal .line3{margin-top:6px;}
+.money-bar{cursor:pointer;}
+.money-bar.dim{opacity:.28;}
+.money-bar.hl{opacity:1;}
+.qty-hero{
+  font-family:var(--font-display); font-weight:700; line-height:1.05;
+  font-size:clamp(34px,5.4vw,56px); color:var(--climax); margin:10px 0 4px;
+}
+.qty-hero.bad{color:var(--warn);}
+.qty-sub{font-family:var(--font-mono); font-size:12px; color:var(--accent); margin-bottom:8px;}
+.visual-card details.chapter-details{
+  border:1px solid var(--line); border-radius:10px; padding:4px 12px 8px; margin:8px 0 4px;
+  background:transparent;
+}
+.visual-card details.chapter-details summary{
+  font-family:var(--font-display); font-size:15px; font-weight:600; cursor:pointer;
+  min-height:44px; display:flex; align-items:center; color:var(--ink);
+}
+.harvest-legend, .ins-tally{
+  display:flex; flex-wrap:wrap; gap:8px 14px; margin:8px 0 4px;
+  font-family:var(--font-mono); font-size:11px; color:var(--muted);
+}
+.harvest-legend span, .ins-tally span{display:inline-flex; align-items:center; gap:6px;}
+.swatch{
+  width:14px; height:10px; border-radius:2px; display:inline-block; border:1px solid var(--line);
+}
+.swatch.kept{background:var(--good);}
+.swatch.miss{
+  background:repeating-linear-gradient(-45deg, var(--warn) 0 2px, transparent 2px 5px);
+}
+.swatch.base{background:rgba(247,241,228,.28);}
+.bridge-grid{
+  display:grid; grid-template-columns:1fr auto 1fr; gap:10px; align-items:stretch; margin:6px 0 10px;
+}
+.bridge-card{
+  border:1px solid var(--line); border-radius:12px; padding:14px 14px 12px; background:var(--panel-2);
+}
+.bridge-card .place{font-family:var(--font-mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--faint); margin-bottom:6px;}
+.bridge-card .big{font-family:var(--font-display); font-size:clamp(22px,3vw,30px); font-weight:700; line-height:1.15; margin:0 0 6px;}
+.bridge-card p{margin:0; font-size:13px; color:var(--muted); line-height:1.45;}
+.bridge-arrow{
+  display:flex; align-items:center; justify-content:center; font-size:22px; color:var(--accent);
+  min-width:28px; min-height:44px;
+}
+.bridge-note{
+  font-family:var(--font-mono); font-size:11.5px; color:var(--accent); margin:0 0 10px; line-height:1.45;
+}
+.mini-timeline{
+  display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:4px 0 8px;
+  font-family:var(--font-mono); font-size:11px; color:var(--muted);
+}
+.mini-timeline div{border-left:3px solid var(--line); padding:6px 0 6px 10px;}
+.mini-timeline .yr{color:var(--ink); font-weight:600; display:block; margin-bottom:2px;}
+.linked-qty{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:4px 0 8px;}
+.linked-box{
+  border:1px solid var(--line); border-radius:12px; padding:12px;
+  background:var(--panel-2);
+}
+.linked-box .k{font-family:var(--font-mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--faint); margin-bottom:6px;}
+.linked-box .flow{font-family:var(--font-display); font-size:clamp(20px,3vw,28px); font-weight:700; line-height:1.2;}
+.linked-box .delta{font-family:var(--font-mono); font-size:12px; color:var(--warn); margin-top:6px;}
 .ins-stat-row{display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 14px; margin:4px 0 8px;}
 .ins-stat-row .arrow{font-family:var(--font-display); font-size:clamp(28px,5vw,42px); font-weight:600; color:var(--ink);}
 .ins-stat-row .pct{font-family:var(--font-mono); font-size:13px; color:var(--accent); font-weight:600;}
+@media(max-width:720px){
+  .bridge-grid, .linked-qty, .mini-timeline{grid-template-columns:1fr;}
+  .bridge-arrow{transform:rotate(90deg);}
+}
 .ins-caveat{font-size:12.5px; color:var(--faint); margin:0 0 8px; line-height:1.5;}
 .ins-actions{display:flex; flex-wrap:wrap; gap:8px; margin:8px 0;}
 .ins-actions button, .info-btn{
@@ -472,7 +537,7 @@ main{position:relative; z-index:2;}
 .ins-info.open, .stat-check.open{display:block;}
 .ins-row.dim{opacity:.25;}
 .explore{
-  max-width:960px; margin:0 auto; padding:48px 24px 40px; border-top:1px solid var(--line);
+  max-width:1200px; margin:0 auto; padding:48px 24px 40px; border-top:1px solid var(--line);
 }
 .explore h2{font-size:clamp(22px,3vw,30px); margin-bottom:8px;}
 .explore > .lede{margin-bottom:20px;}
@@ -646,13 +711,13 @@ main{position:relative; z-index:2;}
 .tag.stable{background:var(--line); color:var(--faint);}
 
 /* ========== WARMING CHART ========== */
-.warm-chart{width:100%; height:220px;}
+.warm-chart{width:100%; height:320px;}
 .story-chart{width:100%; height:auto; display:block; margin:8px 0 4px; flex-shrink:0;}
-.story-chart.anomaly{max-height:148px;}
-.story-chart.strip{max-height:110px;}
-.story-chart.strat{max-height:168px;}
-.chart-label{font-family:var(--font-mono); font-size:10px; fill:var(--faint);}
-.chart-val{font-family:var(--font-mono); font-size:10px; font-weight:600;}
+.story-chart.anomaly{max-height:220px;}
+.story-chart.strip{max-height:160px;}
+.story-chart.strat{max-height:260px;}
+.chart-label{font-family:var(--font-mono); font-size:11px; fill:var(--faint);}
+.chart-val{font-family:var(--font-mono); font-size:11px; font-weight:600;}
 .strip-wrap{margin:6px 0 4px;}
 .strip-hint{font-family:var(--font-mono); font-size:10px; color:var(--faint); margin:0 0 4px;}
 #vs-tonga .garden-grid{max-width:220px; margin-bottom:4px;}
@@ -897,42 +962,56 @@ td{padding:7px 8px; border-bottom:1px solid var(--line); color:var(--muted);}
       <span class="eyebrow">Full backtest</span>
       <h2>Now against all 60 dry-year events</h2>
       <p class="lede">Ten driest years in each of six countries — sixty events, none hand-picked. The big number is your worst harvest across them.</p>
+      <p class="story-punch">One of those sixty tests was much worse than the rest.</p>
     </article>
 
-    <article class="beat prose-scrim" id="winner" data-visual="winner">
-      <span class="eyebrow">No safe crop</span>
-      <h2>The winner keeps changing.</h2>
-      <p class="lede">Across 60 unusually dry country-years, no root stays on top. Which crop you would have wanted depends on the place and the year — information you only learn after the shock.</p>
-      <p class="story-punch">That is the problem with betting on one crop.</p>
+    <article class="beat prose-scrim" id="worst" data-visual="worst">
+      <span class="eyebrow">The worst test</span>
+      <h2>What does −36.7% actually look like?</h2>
+      <p class="fine">Fiji · 1992</p>
+      <p class="lede">In the worst historical stress test for the equal-third hectare, expected harvest was about 9.16 tonnes.</p>
+      <p class="lede">The historical crop outcomes imply about 5.79 tonnes.</p>
+      <p class="qty-hero bad">3.37 tonnes short</p>
+      <p class="qty-sub">≈ 3,365 kg per hectare · hypothetical equal-third hectare</p>
+      <p class="fine">Implied harvest versus a fitted benchmark — not an observed household garden, and not a claim that drought caused this exact tonne loss.</p>
+      <p class="story-punch">That is the physical shock.</p>
+      <p class="lede">But what was it worth?</p>
     </article>
 
-    <article class="beat prose-scrim" id="joint" data-visual="joint">
-      <span class="eyebrow">The pattern that makes diversification possible</span>
-      <h2>They usually didn't all fall together.</h2>
-      <p class="lede"><strong style="color:var(--ink)">56 / 60</strong> — In 56 of the 60 selected unusually dry country-years, at least one of the three national crop-yield series remained at or above its fitted trend.</p>
-      <p class="fine">Only 4 / 60 had all three below fitted trend together. This is a national crop-series result — not a claim that every household garden followed the same pattern.</p>
-    </article>
-
-    <article class="beat prose-scrim" id="downside" data-visual="downside">
-      <span class="eyebrow">Insurance, not prediction</span>
-      <h2>Diversification isn't trying to pick the winner.</h2>
-      <p class="story-punch" id="downside-reveal">It's trying to make the loser hurt less.</p>
-      <p class="lede">The same 60 dry stress events were applied to each strategy. Look at how far the worst losses stretch.</p>
+    <article class="beat prose-scrim" id="moneyBridge" data-visual="moneyBridge">
+      <span class="eyebrow">From tonnes to dollars</span>
+      <h2>Can we put a dollar figure on Fiji 1992?</h2>
+      <p class="story-punch">Not honestly.</p>
+      <p class="lede">Complete producer prices for all three crops are not available for that stress year.</p>
+      <p class="lede">So we keep the worst physical year in tonnes — and move to the years we can price consistently.</p>
+      <p class="story-punch">We price only the years where all three producer prices are observed.</p>
     </article>
 
     <article class="beat prose-scrim" id="money" data-visual="money">
-      <span class="eyebrow">What does a bad bet cost?</span>
+      <span class="eyebrow">Now put a price on the bet</span>
       <h2>One hectare. Same dry year. Four bets.</h2>
-      <p class="fine" style="margin-bottom:8px;">Fiji · 2004</p>
-      <p class="lede">The crop choice changes not just tonnes harvested, but the gross farm-gate value attached to that harvest.</p>
+      <p class="fine">Fiji · 2004</p>
+      <p class="lede">Each strategy faces the same historical year. Only the crop allocation changes.</p>
+      <p class="story-punch">If you knew the winner beforehand, one crop would be enough.</p>
+      <p class="lede">But you don't.</p>
+    </article>
+
+    <article class="beat prose-scrim" id="pricedWorst" data-visual="pricedWorst">
+      <span class="eyebrow">The worst priced diversified year</span>
+      <h2>Fiji 2006: about US$541 below benchmark.</h2>
+      <p class="lede">Among the 10 dry stress events for which all three producer prices were available, this was the largest percentage downside for the equal-third diversified hectare.</p>
+      <p class="story-punch">One year tells us what the loss can look like.</p>
+      <p class="lede">What happens across every stress event we can price?</p>
     </article>
 
     <article class="beat prose-scrim" id="insurance" data-visual="insurance">
       <span class="eyebrow">Price-covered stress test</span>
       <h2>Diversification didn't win every year.</h2>
-      <p class="story-punch">It made losing less costly.</p>
-      <p class="lede">Across the 10 selected dry stress events with complete producer prices for all three crops, average farm-gate-value downside was 6.6% under an equal-probability single-crop benchmark and 3.1% for the equal-third diversified hectare.</p>
+      <p class="lede">Ten dry years. Same question. Did diversification make losing less costly?</p>
+      <p class="story-punch">It reduced the average downside.</p>
+      <p class="lede">Across the 10 price-covered dry stress events, average farm-gate-value downside was 6.6% under an equal-probability single-crop benchmark and 3.1% for the equal-third diversified hectare.</p>
       <p class="fine">Price coverage is limited to 10 events in Fiji and New Caledonia. Treat this economic result as exploratory.</p>
+      <p class="story-punch">Lower average downside is a risk principle — not a universal planting recipe.</p>
     </article>
 
     <article class="beat prose-scrim" id="islands" data-visual="islands">
@@ -986,7 +1065,7 @@ td{padding:7px 8px; border-bottom:1px solid var(--line); color:var(--muted);}
           <div class="dc-delta" id="dc-delta">Plant a mix to see the comparison.</div>
           <div class="dc-actions">
             <button type="button" onclick="document.getElementById('plant').scrollIntoView({behavior:'smooth'})">Edit mix</button>
-            <a href="#downside">Compare strategies →</a>
+            <a href="#worst">See the worst year →</a>
           </div>
         </div>
         <div class="strip-wrap">
@@ -998,42 +1077,84 @@ td{padding:7px 8px; border-bottom:1px solid var(--line); color:var(--muted);}
         <p class="v-caption">Fig 4 · Sorted hectare outcomes for your mix across 60 driest country-years (lowest 20% rainfall per country). Strip + tiles select the same event. Data: <a href="https://stats.pacificdata.org/vis?locale=en&amp;dataflow[datasourceId]=SPC2&amp;dataflow[agencyId]=SPC&amp;dataflow[dataflowId]=DF_CLIMATE_CHANGE&amp;dataflow[version]=1.0" target="_blank" rel="noopener">PDH rainfall anomalies</a> + <a href="https://www.fao.org/faostat/en/#data/QCL" target="_blank" rel="noopener">FAOSTAT yields</a></p>
       </div>
 
-      <div class="visual-slot" id="vs-winner">
-        <div class="winner-chips" id="winner-chips" role="group" aria-label="Best-performer counts"></div>
-        <div class="heatmap-wrap">
-          <div class="heatmap-grid" id="winner-heatmap" role="img" aria-label="Winner heatmap: yield anomalies by crop across 60 dry country-years"></div>
+      <div class="visual-slot" id="vs-worst">
+        <p class="fine">Fiji · 1992 · equal-third hypothetical hectare</p>
+        <svg class="harvest-svg" id="harvest-svg" viewBox="0 0 680 210" role="img" aria-label="Expected harvest 9.16 tonnes versus implied historical harvest 5.79 tonnes, a 3.37 tonne shortfall"></svg>
+        <div class="harvest-legend">
+          <span><span class="swatch base"></span>Fitted expected harvest</span>
+          <span><span class="swatch kept"></span>Implied harvest retained</span>
+          <span><span class="swatch miss"></span>Shortfall (hatched)</span>
         </div>
-        <div class="hm-tip" id="winner-tip" aria-live="polite">Hover or tap a tile — or a crop label — to explore.</div>
-        <p class="v-caption">60 selected unusually dry country-years — 10 per country. Colour shows national crop-yield deviation from fitted trend. Source: FAOSTAT crop data + Pacific Data Hub rainfall anomalies.</p>
+        <p class="qty-hero bad" id="harvest-hero">3.37 tonnes short</p>
+        <p class="qty-sub">≈ 3,365 kg per hectare below the fitted benchmark</p>
+        <details class="chapter-details" id="worst-detail">
+          <summary>Where did the difference come from?</summary>
+          <p class="story-punch" style="margin-top:8px;">One crop moved the other way.</p>
+          <svg class="waterfall-svg" id="waterfall-svg" viewBox="0 0 680 220" role="img" aria-label="Crop contribution to the Fiji 1992 harvest difference: cassava and taro down, sweet potato up"></svg>
+          <p class="fine">Sweet potato’s implied gain partially offset cassava and taro declines in this historical stress test. It does not mean sweet potato always rises in dry years.</p>
+        </details>
+        <p class="v-caption">Hypothetical equal-third hectare × national yield histories for Fiji 1992. Implied harvest versus fitted benchmark — not an observed household garden.</p>
       </div>
 
-      <div class="visual-slot" id="vs-joint">
-        <div class="stat-big good" id="joint-stat">56 / 60</div>
-        <div class="stat-sub">At least one crop series at/above trend</div>
-        <div class="aha-callout good" id="aha-joint">Only 4 / 60 had all three below fitted trend together (6.67%).</div>
-        <div class="tile-grid" id="joint-tiles"></div>
-        <div class="garden-legend" style="margin-top:8px;">
-          <span><span class="sw" style="background:var(--good)"></span>At least one at/above trend</span>
-          <span><span class="sw" style="background:var(--warn)"></span>All three below fitted trend</span>
+      <div class="visual-slot" id="vs-moneyBridge">
+        <div class="bridge-grid">
+          <div class="bridge-card">
+            <div class="place">Physical evidence</div>
+            <p class="big">Fiji 1992</p>
+            <p>−36.7% harvest outcome</p>
+            <p>3.37 t shortfall</p>
+            <p class="fine" style="margin-top:8px;">No complete three-crop producer prices</p>
+          </div>
+          <div class="bridge-arrow" aria-hidden="true">→</div>
+          <div class="bridge-card">
+            <div class="place">Financial evidence</div>
+            <p class="big">10 events</p>
+            <p>Fiji + New Caledonia</p>
+            <p>Price-covered stress years</p>
+            <p class="fine" style="margin-top:8px;">1998–2019, where all three prices are observed</p>
+          </div>
         </div>
-        <div class="panel" id="joint-panel" style="margin-top:8px; display:none;"></div>
-        <p class="v-caption">National crop-series co-occurrence on selected dry country-years — not household-garden outcomes. Data: FAOSTAT + PDH.</p>
-      </div>
-
-      <div class="visual-slot" id="vs-downside">
-        <svg class="downside-svg" id="downside-svg" viewBox="0 0 720 340" role="img" aria-label="Downside outcomes for four planting strategies across 60 stress events"></svg>
-        <div class="chart-tip" id="downside-tip" aria-live="polite">Hover or tap one event to compare the same country-year across all four strategies.</div>
-        <p class="v-caption">Conditional historical stress-test outcomes, not annual drought probabilities or causal yield effects. Severe-loss threshold = 10% downside.</p>
+        <p class="bridge-note">Only compare dollars where all three crop prices are observed.</p>
+        <div class="mini-timeline">
+          <div><span class="yr">1992</span>Worst physical stress test. Complete cassava, taro and sweet-potato producer prices are missing.</div>
+          <div><span class="yr">1998–2019</span>Price-covered events used in the economic extension.</div>
+        </div>
+        <p class="v-caption">Observed annual FAOSTAT Producer Price (USD/tonne) values are used as valuation weights. The analysis does not estimate drought-induced price changes.</p>
       </div>
 
       <div class="visual-slot" id="vs-money">
-        <svg class="money-svg" id="money-svg" viewBox="0 0 680 280" role="img" aria-label="Fiji 2004 farm-gate value outcomes for four planting bets"></svg>
+        <svg class="money-svg" id="money-svg" viewBox="0 0 720 360" role="img" aria-label="Fiji 2004 percentage farm-gate-value outcomes for cassava only, mixed garden, taro only and sweet potato only"></svg>
+        <div class="chart-tip" id="money-tip" aria-live="polite">Hover or tap a bar for expected vs historical implied gross farm-gate value. Bar length is the percentage outcome, not the raw dollar change.</div>
         <div class="money-reveal" id="money-reveal" hidden>
-          <div class="line1">If you knew cassava would win, you wouldn't need diversification.</div>
-          <div class="line2">But you only know the winner after the year has happened.</div>
+          <div class="line1">If you knew cassava would win, diversification would look unnecessary.</div>
+          <div class="line2">But the winner is only obvious after the year has happened.</div>
+          <div class="line3">Monocropping concentrates the bet. Here, the diversified hectare finished only US$243 below its fitted farm-gate benchmark — roughly four times smaller than taro-only’s US$968 shortfall in this historical stress-test valuation.</div>
         </div>
-        <div class="chart-tip" id="money-tip" aria-live="polite">Tap a bar for expected vs actual gross farm-gate value.</div>
-        <p class="v-caption">Observed same-year FAOSTAT producer prices are used to value the historical harvest quantities. This is not a model of drought-induced price changes. Gross farm-gate value, not profit or household income.</p>
+        <p class="v-caption">Observed same-year FAOSTAT producer prices value the modelled crop quantities. Values represent gross farm-gate value relative to each strategy's fitted harvest benchmark, not profit or household income.</p>
+      </div>
+
+      <div class="visual-slot" id="vs-pricedWorst">
+        <p class="fine">Fiji · 2006 · equal-third hectare · price-covered sample</p>
+        <div class="linked-qty">
+          <div class="linked-box">
+            <div class="k">Harvest</div>
+            <div class="flow" id="pw-harvest">10.6 t → 9.45 t</div>
+            <div class="delta">−1.15 t · −10.9%</div>
+          </div>
+          <div class="linked-box">
+            <div class="k">Gross farm-gate value</div>
+            <div class="flow" id="pw-value">US$4,554 → US$4,013</div>
+            <div class="delta">−US$541 · −11.9%</div>
+          </div>
+        </div>
+        <svg class="harvest-svg" id="priced-link-svg" viewBox="0 0 680 150" role="img" aria-label="Linked contraction from 10.6 tonnes to 9.45 tonnes and from US$4,554 to US$4,013 for Fiji 2006"></svg>
+        <details class="chapter-details" id="priced-detail">
+          <summary>What made up the US$541?</summary>
+          <svg class="contrib-svg" id="contrib-svg" viewBox="0 0 680 170" role="img" aria-label="Crop contribution to the US$541 gross farm-gate-value shortfall in Fiji 2006"></svg>
+          <p class="story-punch">Taro generated about two-thirds of the dollar shortfall.</p>
+          <p class="fine">That reflects both its yield decline and a higher producer-price weight in this event. It is not a universal relationship. Observed same-year producer prices are valuation weights only — not a model of drought changing market prices.</p>
+        </details>
+        <p class="v-caption">Crop outcomes → harvest quantity → gross farm-gate valuation using observed same-year FAOSTAT producer prices. Not profit, household income, or a drought-price effect.</p>
       </div>
 
       <div class="visual-slot" id="vs-insurance">
@@ -1041,8 +1162,13 @@ td{padding:7px 8px; border-bottom:1px solid var(--line); color:var(--muted);}
           <span class="arrow">6.6% → 3.1%</span>
           <span class="pct">53.3% lower average downside</span>
         </div>
-        <p class="ins-caveat">10 price-covered events · Fiji + New Caledonia · exploratory</p>
-        <svg class="insurance-svg" id="insurance-svg" viewBox="0 0 720 420" role="img" aria-label="Insurance effect: single-crop benchmark versus diversified downside across 10 price-covered events"></svg>
+        <p class="ins-caveat">across the 10 price-covered dry stress events · Fiji + New Caledonia · exploratory</p>
+        <div class="ins-tally" aria-label="Direction counts">
+          <span>7 ↓ downside</span>
+          <span>2 ↑ downside</span>
+          <span>1 =</span>
+        </div>
+        <svg class="insurance-svg" id="insurance-svg" viewBox="0 0 720 420" role="img" aria-label="Paired farm-gate-value downside for a single-crop benchmark versus an equal-third hectare across 10 price-covered events. Left is less downside."></svg>
         <div class="ins-actions">
           <button type="button" class="info-btn" id="ins-info-btn" aria-expanded="false">What is the single-crop benchmark?</button>
           <button type="button" id="ins-play-btn">Play all 10 events</button>
@@ -1050,11 +1176,11 @@ td{padding:7px 8px; border-bottom:1px solid var(--line); color:var(--muted);}
         </div>
         <div class="ins-info" id="ins-info" role="region">The benchmark asks what downside would be expected if the whole hectare had been committed to one of cassava, taro or sweet potato before the outcome was known, giving the three crop choices equal weight. It is a hypothetical ex-ante risk benchmark, not a description of actual farmer planting behaviour.</div>
         <div class="stat-check" id="ins-stats" role="region">
-          Observed average downside benefit: ≈ 3.53 percentage points.<br>
+          Observed mean benefit: ≈ 3.53 percentage points.<br>
           Exact paired sign-flip: p ≈ 0.0078 · Paired Wilcoxon: p ≈ 0.0122 · Event bootstrap 95% interval ≈ 1.37 to 5.91 percentage points.<br>
-          These tests are supporting exploratory evidence. The price-covered sample has only 10 events clustered within two countries, so the effect size and event-level pattern are more important than treating the p-values as definitive Pacific-wide inference.
+          These checks are exploratory. The price-covered sample contains only 10 events clustered within Fiji and New Caledonia, so the effect size and event-level pattern are more important than treating the p-values as definitive Pacific-wide inference.
         </div>
-        <div class="chart-tip" id="insurance-tip" aria-live="polite">Grey = single-crop benchmark · Gold = equal-third hectare. Red rows = diversification increased downside.</div>
+        <div class="chart-tip" id="insurance-tip" aria-live="polite">Grey = single-crop benchmark · Gold = equal-third hectare. Green = reduced downside · coral = increased. Left is less downside.</div>
         <p class="v-caption">53.3% lower average percentage downside in farm-gate value — not “53.3% fewer dollars lost.”</p>
       </div>
 
@@ -1179,6 +1305,42 @@ td{padding:7px 8px; border-bottom:1px solid var(--line); color:var(--muted);}
     </div>
   </details>
 
+  <details id="explore-winner">
+    <summary>The winner keeps changing (60-event heatmap)</summary>
+    <div class="panel-body">
+      <p class="fine">Across 60 unusually dry country-years, no root stays on top. Which crop you would have wanted depends on the place and the year — information you only learn after the shock.</p>
+      <div class="winner-chips" id="winner-chips" role="group" aria-label="Best-performer counts"></div>
+      <div class="heatmap-wrap">
+        <div class="heatmap-grid" id="winner-heatmap" role="img" aria-label="Winner heatmap: yield anomalies by crop across 60 dry country-years"></div>
+      </div>
+      <div class="hm-tip" id="winner-tip" aria-live="polite">Hover or tap a tile — or a crop label — to explore.</div>
+    </div>
+  </details>
+
+  <details id="explore-joint">
+    <summary>They usually didn’t all fall together (56 / 60)</summary>
+    <div class="panel-body">
+      <div class="stat-big good" id="joint-stat">56 / 60</div>
+      <div class="stat-sub">At least one crop series at/above trend</div>
+      <p class="fine">Only 4 / 60 had all three below fitted trend together. This is a national crop-series result — not a claim that every household garden followed the same pattern.</p>
+      <div class="tile-grid" id="joint-tiles"></div>
+      <div class="garden-legend" style="margin-top:8px;">
+        <span><span class="sw" style="background:var(--good)"></span>At least one at/above trend</span>
+        <span><span class="sw" style="background:var(--warn)"></span>All three below fitted trend</span>
+      </div>
+      <div class="panel" id="joint-panel" style="margin-top:8px; display:none;"></div>
+    </div>
+  </details>
+
+  <details id="explore-downside">
+    <summary>Physical downside tails by strategy</summary>
+    <div class="panel-body">
+      <p class="fine">The same 60 dry stress events applied to each strategy. Look at how far the worst harvest losses stretch. Diversification isn’t trying to pick the winner — it’s trying to make the loser hurt less.</p>
+      <svg class="downside-svg" id="downside-svg" viewBox="0 0 720 340" role="img" aria-label="Downside outcomes for four planting strategies across 60 stress events"></svg>
+      <div class="chart-tip" id="downside-tip" aria-live="polite">Hover or tap one event to compare the same country-year across all four strategies.</div>
+    </div>
+  </details>
+
   <details id="explore-bootstrap">
     <summary>Bootstrap evidence (price-covered sample)</summary>
     <div class="panel-body">
@@ -1202,6 +1364,7 @@ td{padding:7px 8px; border-bottom:1px solid var(--line); color:var(--muted);}
 
   <h3>Producer-price extension</h3>
   <p>Producer-price data come from FAOSTAT Agricultural Producer Prices. The economic extension uses annual Producer Price (USD/tonne) values for cassava, taro and sweet potato. Complete same-year USD producer prices for all three crops were available for 10 selected stress events: Fiji 1998, 2003, 2004, 2006, 2015; New Caledonia 2015, 2016, 2017, 2018, 2019. For each strategy, expected and historical crop quantities are valued using that country-crop-year's observed producer price.</p>
+  <p>The worst physical diversified stress test in this sample is Fiji 1992. Complete three-crop producer prices are not available for that year, so it is kept in tonnes and is not assigned a dollar figure.</p>
   <p><strong>The resulting quantity is gross farm-gate value relative to the fitted harvest benchmark. It is not farmer profit, household income or retail food value.</strong> Observed same-year producer prices are used as valuation weights. This analysis does not estimate how drought itself changes market prices.</p>
 
   <h3>Downside definition</h3>
@@ -1527,7 +1690,7 @@ function updateMixChip(){
     `<span class="sw" style="background:var(--cassava)"></span>${Math.round(w.c*100)}% ` +
     `<span class="sw" style="background:var(--taro)"></span>${Math.round(w.t*100)}% ` +
     `<span class="sw" style="background:var(--sp)"></span>${Math.round(w.s*100)}%`;
-  const show = state.planted || ['garden','tonga','sixty','winner','joint','downside','money','insurance','islands'].includes(state.visual);
+  const show = state.planted || ['garden','tonga','sixty','worst','moneyBridge','money','pricedWorst','insurance','islands'].includes(state.visual);
   chip.classList.toggle('visible', show && state.visual !== 'warming');
   if(editBtn) editBtn.hidden = state.visual === 'garden';
   updateFocusPill();
@@ -1538,7 +1701,7 @@ function updateFocusPill(){
   if(!pill) return;
   const name = state.corrCountry || state.island;
   document.getElementById('focus-pill-name').textContent = name || '—';
-  const show = state.focusPinned && ['islands','sixty','joint','winner','downside'].includes(state.visual);
+  const show = state.focusPinned && ['islands','sixty'].includes(state.visual);
   pill.classList.toggle('visible', !!show);
   syncStickyTools();
 }
@@ -1784,6 +1947,50 @@ const FALLBACK_BOOTSTRAP = {
   single_crop_mean_downside:6.63, diversified_mean_downside:3.10, proportional_reduction:0.533
 };
 
+/* Authoritative R-generated physical / price-covered figures. Do not recompute. */
+const WORST_PHYSICAL = {
+  country:'Fiji', year:1992,
+  expected_t:9.158, actual_t:5.793, shortfall_t:3.365, shortfall_kg:3365, outcome_pct:-36.7,
+  crops:[
+    {key:'cassava', lab:'Cassava', expected:4.184, actual:1.693, diff:-2.492},
+    {key:'taro', lab:'Taro', expected:3.296, actual:1.056, diff:-2.240},
+    {key:'sp', lab:'Sweet potato', expected:1.678, actual:3.044, diff:1.367}
+  ]
+};
+const PRICED_WORST = {
+  country:'Fiji', year:2006,
+  expected_t:10.6, actual_t:9.45, shortfall_t:1.15, harvest_pct:-10.9,
+  expected_usd:4554, actual_usd:4013, shortfall_usd:541, value_pct:-11.9,
+  crops:[
+    {key:'cassava', lab:'Cassava', anomaly:-9.0, price:289, expected:4.58, actual:4.17, qty_kg:411, value:119},
+    {key:'taro', lab:'Taro', anomaly:-14.0, price:693, expected:3.69, actual:3.17, qty_kg:515, value:357},
+    {key:'sp', lab:'Sweet potato', anomaly:-9.7, price:289, expected:2.34, actual:2.11, qty_kg:227, value:66}
+  ]
+};
+const PRICE_EVENT_ORDER = [
+  ['Fiji',1998],['Fiji',2003],['Fiji',2004],['Fiji',2006],['Fiji',2015],
+  ['New Caledonia',2015],['New Caledonia',2016],['New Caledonia',2017],['New Caledonia',2018],['New Caledonia',2019]
+];
+const MONEY_ROW_ORDER = ['cassava_only','mixed_equal','taro_only','sweet_potato_only'];
+const chapterPlayed = {harvest:false, money:false, priced:false};
+
+function prefersReducedMotion(){
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+function fmtUsd(n, signed){
+  const abs = Math.abs(Math.round(n)).toLocaleString('en-US');
+  if(!signed) return 'US$'+abs;
+  return (n>=0?'+':'−')+'US$'+abs;
+}
+function svgHatch(id, color){
+  return `<defs>
+    <pattern id="${id}" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">
+      <rect width="7" height="7" fill="${color}" opacity=".18"/>
+      <line x1="0" y1="0" x2="0" y2="7" stroke="${color}" stroke-width="2"/>
+    </pattern>
+  </defs>`;
+}
+
 function parseCSV(text){
   const lines = text.trim().split(/\r?\n/).filter(Boolean);
   if(!lines.length) return [];
@@ -1863,7 +2070,11 @@ function renderEvidenceCharts(){
   updateWinner();
   updateJoint();
   updateDownside();
-  updateMoney();
+  drawHarvestVolume(false);
+  drawWaterfall();
+  updateMoney(false);
+  drawPricedLink(false);
+  drawContrib();
   updateInsurance();
   updateFrontier();
   updateBootstrap();
@@ -2090,96 +2301,297 @@ function updateDownside(){
   });
 }
 
-/* ---- Fiji 2004 money ---- */
-function updateMoney(){
+/* ---- Chapter charts: worst physical year, money, priced worst, insurance ---- */
+function playChapterVisual(id){
+  if(id==='worst') drawHarvestVolume(true);
+  if(id==='money') updateMoney(true);
+  if(id==='pricedWorst') drawPricedLink(true);
+}
+
+function drawHarvestVolume(animate){
+  const svg = document.getElementById('harvest-svg');
+  if(!svg) return;
+  const d = WORST_PHYSICAL;
+  const W=680, H=210, pad={l:24, r:24, t:36, b:44};
+  const inner = W-pad.l-pad.r;
+  const kept = d.actual_t / d.expected_t;
+  const y=72, h=54;
+  const already = chapterPlayed.harvest;
+  const reduce = prefersReducedMotion() || !animate || already;
+  const startKept = reduce ? kept : 1;
+  if(animate) chapterPlayed.harvest = true;
+  svg.innerHTML = svgHatch('harvestHatch','var(--warn)') +
+    `<text x="${pad.l}" y="24" class="chart-label">Fitted expected harvest · ${d.expected_t.toFixed(2)} t</text>` +
+    `<rect x="${pad.l}" y="${y}" width="${inner}" height="${h}" rx="7" fill="rgba(247,241,228,.14)" stroke="var(--line)"/>` +
+    `<rect class="hv-kept" x="${pad.l}" y="${y}" width="${(inner*startKept).toFixed(1)}" height="${h}" rx="7" fill="var(--good)"/>` +
+    `<rect class="hv-miss" x="${(pad.l+inner*startKept).toFixed(1)}" y="${y}" width="${(inner*(1-startKept)).toFixed(1)}" height="${h}" rx="7" fill="url(#harvestHatch)" stroke="var(--warn)" stroke-width="1.4"/>` +
+    `<text x="${pad.l+10}" y="${y+h/2+5}" class="chart-val" fill="var(--bg)">${d.actual_t.toFixed(2)} t retained</text>` +
+    `<text class="hv-miss-lab chart-val" x="${W-pad.r-8}" y="${y+h/2+5}" text-anchor="end" fill="var(--warn)">${reduce?'−'+d.shortfall_t.toFixed(2)+' t':''}</text>` +
+    `<text x="${pad.l}" y="${H-16}" class="chart-label">Implied historical harvest</text>` +
+    `<text x="${W-pad.r}" y="${H-16}" text-anchor="end" class="chart-label">Shortfall · −36.7%</text>`;
+  if(!reduce){
+    const keptEl = svg.querySelector('.hv-kept');
+    const missEl = svg.querySelector('.hv-miss');
+    const lab = svg.querySelector('.hv-miss-lab');
+    const t0 = performance.now(), dur = 1100;
+    const tick = (now)=>{
+      const u = Math.min(1, (now-t0)/dur);
+      const ease = 1-Math.pow(1-u,3);
+      const k = 1 - (1-kept)*ease;
+      keptEl.setAttribute('width', (inner*k).toFixed(1));
+      missEl.setAttribute('x', (pad.l+inner*k).toFixed(1));
+      missEl.setAttribute('width', (inner*(1-k)).toFixed(1));
+      if(u>=1 && lab) lab.textContent = '−'+d.shortfall_t.toFixed(2)+' t';
+      if(u<1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+}
+
+function drawWaterfall(){
+  const svg = document.getElementById('waterfall-svg');
+  if(!svg) return;
+  const crops = WORST_PHYSICAL.crops;
+  const W=680, H=220, pad={l:132, r:96, t:26, b:34};
+  const running = [0];
+  crops.forEach(c=> running.push(running[running.length-1]+c.diff));
+  const lo = Math.min(-4, ...running), hi = Math.max(1.6, ...running);
+  const xOf = v => pad.l + ((v-lo)/(hi-lo))*(W-pad.l-pad.r);
+  const x0 = xOf(0);
+  const rowH = (H-pad.t-pad.b)/(crops.length+1);
+  const color = {cassava:'var(--cassava)', taro:'var(--taro)', sp:'var(--sp)'};
+  let html = svgHatch('wfHatch','var(--warn)');
+  html += `<line x1="${x0}" x2="${x0}" y1="${pad.t-4}" y2="${H-pad.b+4}" stroke="var(--faint)" stroke-dasharray="3 3"/>`;
+  html += `<text x="${x0}" y="${H-10}" text-anchor="middle" class="chart-label">0 t</text>`;
+  crops.forEach((c,i)=>{
+    const y = pad.t + i*rowH + 6;
+    const x1 = xOf(running[i]), x2 = xOf(running[i+1]);
+    const left = Math.min(x1,x2), w = Math.max(4, Math.abs(x2-x1));
+    html += `<text x="${pad.l-10}" y="${y+16}" text-anchor="end" class="chart-label" fill="${color[c.key]}">${c.lab}</text>`;
+    html += `<rect x="${left.toFixed(1)}" y="${y}" width="${w.toFixed(1)}" height="22" rx="3" fill="${c.diff>=0?'var(--good)':'url(#wfHatch)'}" stroke="${c.diff>=0?'var(--good)':'var(--warn)'}"/>`;
+    html += `<text x="${(c.diff>=0?x2+8:x2-8).toFixed(1)}" y="${y+16}" text-anchor="${c.diff>=0?'start':'end'}" class="chart-val">${c.diff>=0?'+':''}${c.diff.toFixed(3)} t</text>`;
+  });
+  const y = pad.t + crops.length*rowH + 6;
+  const netX = xOf(-WORST_PHYSICAL.shortfall_t);
+  html += `<text x="${pad.l-10}" y="${y+16}" text-anchor="end" class="chart-label">Net shortfall</text>`;
+  html += `<rect x="${netX.toFixed(1)}" y="${y}" width="${Math.abs(x0-netX).toFixed(1)}" height="22" rx="3" fill="url(#wfHatch)" stroke="var(--warn)"/>`;
+  html += `<text x="${(netX-8).toFixed(1)}" y="${y+16}" text-anchor="end" class="chart-val">−${WORST_PHYSICAL.shortfall_t.toFixed(3)} t</text>`;
+  svg.innerHTML = html;
+}
+
+function drawPricedLink(animate){
+  const svg = document.getElementById('priced-link-svg');
+  if(!svg) return;
+  const d = PRICED_WORST;
+  const W=680, H=150, pad={l:24, r:24, t:8, b:8};
+  const inner = W-pad.l-pad.r;
+  const hShare = d.actual_t / d.expected_t;
+  const vShare = d.actual_usd / d.expected_usd;
+  const already = chapterPlayed.priced;
+  const reduce = prefersReducedMotion() || !animate || already;
+  const sh = reduce ? hShare : 1;
+  const sv = reduce ? vShare : 1;
+  if(animate) chapterPlayed.priced = true;
+  svg.innerHTML = svgHatch('pwHatch','var(--warn)') +
+    `<text x="${pad.l}" y="18" class="chart-label">Harvest quantity</text>` +
+    `<rect x="${pad.l}" y="24" width="${inner}" height="28" rx="5" fill="rgba(247,241,228,.12)" stroke="var(--line)"/>` +
+    `<rect class="pw-h" x="${pad.l}" y="24" width="${(inner*sh).toFixed(1)}" height="28" rx="5" fill="var(--good)"/>` +
+    `<text x="${pad.l+8}" y="43" class="chart-val" fill="var(--bg)">${d.expected_t} t → ${d.actual_t} t</text>` +
+    `<text x="${pad.l}" y="78" class="chart-label">Gross farm-gate value</text>` +
+    `<rect x="${pad.l}" y="84" width="${inner}" height="28" rx="5" fill="rgba(247,241,228,.12)" stroke="var(--line)"/>` +
+    `<rect class="pw-v" x="${pad.l}" y="84" width="${(inner*sv).toFixed(1)}" height="28" rx="5" fill="#E4C264"/>` +
+    `<text x="${pad.l+8}" y="103" class="chart-val" fill="var(--bg)">${fmtUsd(d.expected_usd)} → ${fmtUsd(d.actual_usd)}</text>`;
+  if(reduce) return;
+  const hEl = svg.querySelector('.pw-h');
+  const vEl = svg.querySelector('.pw-v');
+  const run = (el, end, delay)=>{
+    const t0 = performance.now()+delay, dur = 900;
+    const tick = (now)=>{
+      if(now<t0){ requestAnimationFrame(tick); return; }
+      const u = Math.min(1, (now-t0)/dur);
+      const ease = 1-Math.pow(1-u,3);
+      el.setAttribute('width', (inner*(1-(1-end)*ease)).toFixed(1));
+      if(u<1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+  run(hEl, hShare, 0);
+  run(vEl, vShare, 550);
+}
+
+function drawContrib(){
+  const svg = document.getElementById('contrib-svg');
+  if(!svg) return;
+  const crops = PRICED_WORST.crops;
+  const total = crops.reduce((s,c)=>s+c.value,0);
+  const W=680, H=170, pad={l:16, r:16, t:28, b:52};
+  const inner = W-pad.l-pad.r;
+  const color = {cassava:'var(--cassava)', taro:'var(--taro)', sp:'var(--sp)'};
+  let x = pad.l, html = `<text x="${pad.l}" y="18" class="chart-label">Gross farm-gate-value shortfall by crop</text>`;
+  crops.forEach(c=>{
+    const w = (c.value/total)*inner;
+    html += `<rect x="${x.toFixed(1)}" y="36" width="${Math.max(2,w).toFixed(1)}" height="38" fill="${color[c.key]}"/>`;
+    html += `<text x="${(x+w/2).toFixed(1)}" y="60" text-anchor="middle" class="chart-val" fill="var(--bg)">US$${c.value}</text>`;
+    html += `<text x="${(x+w/2).toFixed(1)}" y="92" text-anchor="middle" class="chart-label">${c.lab}</text>`;
+    x += w;
+  });
+  html += `<text x="${W/2}" y="${H-18}" text-anchor="middle" class="chart-label">US$119 cassava + US$357 taro + US$66 sweet potato ≈ US$541</text>`;
+  svg.innerHTML = html;
+}
+
+function fourBetRows(){
+  const map = {
+    cassava_only:{lab:'Cassava only', color:'var(--cassava)'},
+    taro_only:{lab:'Taro only', color:'var(--taro)'},
+    sweet_potato_only:{lab:'Sweet potato only', color:'var(--sp)'},
+    mixed_equal:{lab:'Mixed garden — 1/3 each', color:'#E4C264'}
+  };
+  const src = (EVIDENCE.fourBets && EVIDENCE.fourBets.length) ? EVIDENCE.fourBets : FALLBACK_FOUR_BETS;
+  const byId = {};
+  src.forEach(r=> byId[r.strategy] = {...r, ...(map[r.strategy]||{lab:r.strategy, color:'var(--accent)'})});
+  return MONEY_ROW_ORDER.map(id=>byId[id]).filter(Boolean);
+}
+
+function updateMoney(animate){
   const svg = document.getElementById('money-svg');
   if(!svg) return;
-  const rows = (EVIDENCE.fourBets || FALLBACK_FOUR_BETS).map(r=>{
-    const map = {
-      cassava_only:{lab:'Cassava only', color:'var(--cassava)'},
-      taro_only:{lab:'Taro only', color:'var(--taro)'},
-      sweet_potato_only:{lab:'Sweet potato only', color:'var(--sp)'},
-      mixed_equal:{lab:'Mixed garden — 1/3 each', color:'#E4C264'}
-    };
-    return {...r, ...(map[r.strategy]||{lab:r.strategy, color:'var(--accent)'})};
-  });
-  const W=680, H=280, pad={l:170, r:120, t:24, b:40};
+  const rows = fourBetRows();
+  const W=720, H=360, pad={l:176, r:128, t:28, b:44};
   const lim = 40;
   const xOf = v => pad.l + ((v+lim)/(2*lim))*(W-pad.l-pad.r);
   const x0 = xOf(0);
   const rowH = (H-pad.t-pad.b)/rows.length;
-  let html = `<line x1="${x0}" x2="${x0}" y1="${pad.t-6}" y2="${H-pad.b+6}" stroke="var(--faint)" stroke-dasharray="3 3"/>`;
-  html += `<text x="${x0}" y="${H-14}" text-anchor="middle" class="chart-label">0%</text>`;
+  let html = svgHatch('moneyHatch','var(--warn)');
+  html += `<line x1="${x0}" x2="${x0}" y1="${pad.t-6}" y2="${H-pad.b+6}" stroke="var(--faint)" stroke-dasharray="3 3"/>`;
+  html += `<text x="${x0}" y="${H-16}" text-anchor="middle" class="chart-label">0%</text>`;
   [-40,-20,20,40].forEach(v=>{
-    html += `<text x="${xOf(v)}" y="${H-14}" text-anchor="middle" class="chart-label">${v}%</text>`;
+    html += `<text x="${xOf(v)}" y="${H-16}" text-anchor="middle" class="chart-label">${v}%</text>`;
   });
   html += `<text x="${(pad.l+x0)/2}" y="${H-2}" text-anchor="middle" class="chart-label">Below fitted benchmark</text>`;
   html += `<text x="${(x0+W-pad.r)/2}" y="${H-2}" text-anchor="middle" class="chart-label">Above fitted benchmark</text>`;
+  html += `<text x="${pad.l}" y="16" class="chart-label">Percentage farm-gate-value outcome · bar length ≠ dollar change</text>`;
+  const already = chapterPlayed.money;
+  const reduce = prefersReducedMotion() || !animate || already;
   rows.forEach((r,i)=>{
-    const y = pad.t + i*rowH + rowH*0.22;
-    const h = rowH*0.5;
-    const x1 = x0, x2 = xOf(r.outcome_pct);
-    const left = Math.min(x1,x2), w = Math.max(2, Math.abs(x2-x1));
-    const fill = r.outcome_pct>=0 ? 'var(--good)' : 'var(--warn)';
+    const y = pad.t + i*rowH + rowH*0.18;
+    const h = Math.max(28, rowH*0.52);
+    const x2 = xOf(r.outcome_pct);
+    const fullW = Math.max(2, Math.abs(x2-x0));
+    const drawW = reduce ? fullW : 2;
+    const left = r.outcome_pct>=0 ? x0 : x0-drawW;
     html += `<text x="${pad.l-10}" y="${(y+h*0.72).toFixed(1)}" text-anchor="end" class="chart-label" fill="${r.color}">${r.lab}</text>`;
-    html += `<rect class="money-bar" data-i="${i}" x="${left.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="${fill}" opacity="0.9" style="cursor:pointer"/>`;
+    html += `<rect class="money-bar" data-i="${i}" data-full="${fullW.toFixed(1)}" data-sign="${r.outcome_pct>=0?1:-1}" x="${left.toFixed(1)}" y="${y.toFixed(1)}" width="${drawW.toFixed(1)}" height="${h.toFixed(1)}" rx="4" fill="${r.color}" stroke="${r.outcome_pct<0?'var(--warn)':'none'}"/>`;
+    if(r.outcome_pct<0){
+      html += `<rect class="money-hatch" data-i="${i}" x="${left.toFixed(1)}" y="${y.toFixed(1)}" width="${drawW.toFixed(1)}" height="${h.toFixed(1)}" rx="4" fill="url(#moneyHatch)" pointer-events="none"/>`;
+    }
     const labelX = r.outcome_pct>=0 ? x2+8 : x2-8;
-    const anchor = r.outcome_pct>=0 ? 'start' : 'end';
-    const dollar = (r.diff_usd>=0?'+':'−') + 'US$' + Math.abs(r.diff_usd).toLocaleString();
-    html += `<text x="${labelX.toFixed(1)}" y="${(y+h*0.72).toFixed(1)}" text-anchor="${anchor}" class="chart-val" fill="var(--ink)">${fmtPct(r.outcome_pct)} · ${dollar}</text>`;
+    html += `<text class="money-end chart-val" data-i="${i}" x="${labelX.toFixed(1)}" y="${(y+h*0.72).toFixed(1)}" text-anchor="${r.outcome_pct>=0?'start':'end'}" fill="var(--ink)" opacity="${reduce?1:0}">${fmtPct(r.outcome_pct)}   ${fmtUsd(r.diff_usd,true)}</text>`;
+    html += `<rect class="money-hit" data-i="${i}" x="0" y="${(pad.t+i*rowH).toFixed(1)}" width="${W}" height="${rowH.toFixed(1)}" fill="transparent" tabindex="0" role="button" aria-label="${r.lab} ${fmtPct(r.outcome_pct)} ${fmtUsd(r.diff_usd,true)}"/>`;
   });
   svg.innerHTML = html;
   const tip = document.getElementById('money-tip');
   const reveal = document.getElementById('money-reveal');
-  if(reveal){ reveal.hidden = false; }
-  svg.querySelectorAll('.money-bar').forEach(bar=>{
-    bar.addEventListener('mouseenter', ()=>{
-      const r = rows[+bar.dataset.i];
-      tip.innerHTML = `<strong>${r.lab}</strong><br>Expected/fitted farm-gate value: US$${Number(r.expected_usd).toLocaleString()}<br>Actual 2004 farm-gate value: US$${Number(r.actual_usd).toLocaleString()}<br>Difference: ${(r.diff_usd>=0?'+':'−')}US$${Math.abs(r.diff_usd).toLocaleString()} (${fmtPct(r.outcome_pct)})`;
+  if(reveal) reveal.hidden = !(reduce || chapterPlayed.money);
+  const showTip = (i)=>{
+    const r = rows[i];
+    svg.querySelectorAll('.money-bar').forEach((b,bi)=>{
+      b.classList.toggle('hl', bi===i);
+      b.classList.toggle('dim', bi!==i);
     });
-    bar.addEventListener('click', ()=>bar.dispatchEvent(new Event('mouseenter')));
+    tip.innerHTML = `<strong>${r.lab}</strong> · Gross farm-gate value difference<br>Expected farm-gate value: ${fmtUsd(r.expected_usd)}<br>Historical implied farm-gate value: ${fmtUsd(r.actual_usd)}<br>Dollar difference: ${fmtUsd(r.diff_usd,true)}<br>Percentage difference: ${fmtPct(r.outcome_pct)}`;
+  };
+  svg.querySelectorAll('.money-hit').forEach(bar=>{
+    bar.addEventListener('mouseenter', ()=>showTip(+bar.dataset.i));
+    bar.addEventListener('focus', ()=>showTip(+bar.dataset.i));
+    bar.addEventListener('click', ()=>showTip(+bar.dataset.i));
+    bar.addEventListener('mouseleave', ()=> svg.querySelectorAll('.money-bar').forEach(b=>b.classList.remove('hl','dim')));
   });
+  if(!reduce && animate){
+    chapterPlayed.money = true;
+    const bars = [...svg.querySelectorAll('.money-bar')];
+    const hatches = [...svg.querySelectorAll('.money-hatch')];
+    const labels = [...svg.querySelectorAll('.money-end')];
+    const t0 = performance.now(), dur = 900;
+    const tick = (now)=>{
+      const u = Math.min(1, (now-t0)/dur);
+      const ease = 1-Math.pow(1-u,3);
+      bars.forEach(bar=>{
+        const full = +bar.dataset.full;
+        const w = Math.max(2, full*ease);
+        bar.setAttribute('width', w.toFixed(1));
+        if(bar.dataset.sign==='-1') bar.setAttribute('x', (x0-w).toFixed(1));
+      });
+      hatches.forEach(h=>{
+        const bar = bars[+h.dataset.i];
+        h.setAttribute('width', bar.getAttribute('width'));
+        h.setAttribute('x', bar.getAttribute('x'));
+      });
+      if(u>=1){
+        labels.forEach(l=> l.setAttribute('opacity','1'));
+        if(reveal) reveal.hidden = false;
+        const mixed = bars.find(b=> rows[+b.dataset.i].strategy==='mixed_equal');
+        if(mixed) showTip(+mixed.dataset.i);
+      } else requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  } else if(reveal){
+    reveal.hidden = false;
+  }
 }
 
-/* ---- Insurance dumbbells ---- */
+function orderedInsuranceRows(){
+  const src = [...(EVIDENCE.insurance || FALLBACK_INSURANCE)];
+  const key = r => r.country+'|'+r.year;
+  const by = {};
+  src.forEach(r=> by[key(r)] = r);
+  const ordered = PRICE_EVENT_ORDER.map(([c,y])=> by[c+'|'+y]).filter(Boolean);
+  return ordered.length ? ordered : src;
+}
+
 function updateInsurance(){
   const svg = document.getElementById('insurance-svg');
   if(!svg) return;
-  const rows = [...(EVIDENCE.insurance || FALLBACK_INSURANCE)];
-  // keep PDF/SVG order (largest reductions near top as in design)
-  rows.sort((a,b)=> b.diff_pp - a.diff_pp);
-  const W=720, H=420, pad={l:150, r:40, t:20, b:48};
+  const rows = orderedInsuranceRows();
+  const W=720, H=520, pad={l:158, r:36, t:18, b:52};
   const maxX = 18;
   const xOf = v => pad.l + (v/maxX)*(W-pad.l-pad.r);
   const rowH = (H-pad.t-pad.b)/rows.length;
   let html = '';
   [0,5,10,15].forEach(v=>{
     html += `<line x1="${xOf(v)}" x2="${xOf(v)}" y1="${pad.t}" y2="${H-pad.b}" stroke="var(--line)" stroke-dasharray="${v===0?'0':'2 4'}" opacity=".7"/>`;
-    html += `<text x="${xOf(v)}" y="${H-22}" text-anchor="middle" class="chart-label">${v}%</text>`;
+    html += `<text x="${xOf(v)}" y="${H-26}" text-anchor="middle" class="chart-label">${v}%</text>`;
   });
-  html += `<text x="${(pad.l+W-pad.r)/2}" y="${H-6}" text-anchor="middle" class="chart-label">Farm-gate-value downside % →</text>`;
+  html += `<text x="${pad.l}" y="${H-8}" class="chart-label">← less downside</text>`;
+  html += `<text x="${W-pad.r}" y="${H-8}" text-anchor="end" class="chart-label">Farm-gate-value downside % →</text>`;
   rows.forEach((r,i)=>{
     const y = pad.t + i*rowH + rowH*0.5;
     const x1 = xOf(r.single_crop_downside), x2 = xOf(r.diversified_downside);
     const dirColor = r.direction==='reduced' ? 'var(--good)' : (r.direction==='increased' ? 'var(--warn)' : 'var(--faint)');
+    const mark = r.direction==='reduced' ? '↓' : (r.direction==='increased' ? '↑' : '=');
     html += `<g class="ins-row" data-i="${i}">`;
-    html += `<text x="${pad.l-10}" y="${(y+4).toFixed(1)}" text-anchor="end" class="chart-label">${r.country} · ${r.year}</text>`;
-    html += `<line x1="${x1.toFixed(1)}" y1="${y.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${dirColor}" stroke-width="3"/>`;
-    html += `<circle cx="${x1.toFixed(1)}" cy="${y.toFixed(1)}" r="4.2" fill="#899493"/>`;
-    html += `<circle cx="${x2.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="#E4C264" stroke="var(--ink)" stroke-width="0.8" stroke-opacity=".35"/>`;
-    html += `<rect class="ins-hit" data-i="${i}" x="${pad.l}" y="${(y-rowH*0.4).toFixed(1)}" width="${(W-pad.l-pad.r).toFixed(1)}" height="${(rowH*0.8).toFixed(1)}" fill="transparent" style="cursor:pointer"/>`;
+    html += `<text x="${pad.l-10}" y="${(y+4).toFixed(1)}" text-anchor="end" class="chart-label">${r.country} · ${r.year} ${mark}</text>`;
+    html += `<line x1="${x1.toFixed(1)}" y1="${y.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${dirColor}" stroke-width="3.2"/>`;
+    html += `<circle cx="${x1.toFixed(1)}" cy="${y.toFixed(1)}" r="4.4" fill="#899493"/>`;
+    html += `<circle cx="${x2.toFixed(1)}" cy="${y.toFixed(1)}" r="5.2" fill="#E4C264" stroke="var(--ink)" stroke-width="0.8" stroke-opacity=".35"/>`;
+    html += `<rect class="ins-hit" data-i="${i}" x="0" y="${(y-rowH*0.48).toFixed(1)}" width="${W}" height="${(rowH*0.96).toFixed(1)}" fill="transparent" tabindex="0" role="button" aria-label="${r.country} ${r.year} ${r.direction}"/>`;
     html += `</g>`;
   });
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
   svg.innerHTML = html;
   const tip = document.getElementById('insurance-tip');
   const activate = (i)=>{
     svg.querySelectorAll('.ins-row').forEach((g,gi)=> g.classList.toggle('dim', gi!==i));
     const r = rows[i];
     const dir = r.direction==='reduced' ? 'reduced' : (r.direction==='increased' ? 'increased' : 'equal');
-    tip.innerHTML = `<strong>${r.country} · ${r.year}</strong><br>Single-crop benchmark downside: ${Number(r.single_crop_downside).toFixed(2)}%<br>Diversified downside: ${Number(r.diversified_downside).toFixed(2)}%<br>Difference: ${Number(r.diff_pp).toFixed(2)} pp · Direction: ${dir}`;
+    let extra = '';
+    if(r.country==='Fiji' && +r.year===2004){
+      extra = `<br>Normalised illustration — not household income. For every US$1,000 of expected farm-gate value, this corresponds to about US$164 of downside under the equal-probability single-crop benchmark versus about US$57 for the diversified hectare (≈ 65.2% proportional reduction).`;
+    }
+    tip.innerHTML = `<strong>${r.country} · ${r.year}</strong><br>Single-crop benchmark downside: ${Number(r.single_crop_downside).toFixed(2)}%<br>Diversified downside: ${Number(r.diversified_downside).toFixed(2)}%<br>Difference: ${Number(r.diff_pp).toFixed(2)} percentage points · Direction: ${dir}${extra}`;
   };
   svg.querySelectorAll('.ins-hit').forEach(hit=>{
     hit.addEventListener('mouseenter', ()=>activate(+hit.dataset.i));
+    hit.addEventListener('focus', ()=>activate(+hit.dataset.i));
     hit.addEventListener('mouseleave', ()=> svg.querySelectorAll('.ins-row').forEach(g=>g.classList.remove('dim')));
     hit.addEventListener('click', ()=>activate(+hit.dataset.i));
   });
@@ -2205,22 +2617,24 @@ function setupInsuranceUI(){
   }
   if(playBtn){
     playBtn.addEventListener('click', ()=>{
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(playBtn.dataset.played==='1') return;
+      playBtn.dataset.played = '1';
+      playBtn.disabled = true;
+      playBtn.textContent = 'Played';
       const rows = document.querySelectorAll('#insurance-svg .ins-row');
       if(!rows.length) return;
-      if(reduce){
+      if(prefersReducedMotion()){
         rows.forEach(g=>g.classList.remove('dim'));
         return;
       }
       let i = 0;
       const step = ()=>{
         rows.forEach((g,gi)=> g.classList.toggle('dim', gi!==i));
-        const tip = document.getElementById('insurance-tip');
         const hit = rows[i]?.querySelector('.ins-hit');
         if(hit) hit.dispatchEvent(new Event('mouseenter'));
         i++;
-        if(i < rows.length) setTimeout(step, 450);
-        else setTimeout(()=> rows.forEach(g=>g.classList.remove('dim')), 600);
+        if(i < rows.length) setTimeout(step, 480);
+        else setTimeout(()=> rows.forEach(g=>g.classList.remove('dim')), 700);
       };
       step();
     });
@@ -2504,10 +2918,10 @@ const VISUAL_TITLES = {
   garden:'Your hectare',
   tonga:'First stress test',
   sixty:'60 stress tests',
-  winner:'The winner keeps changing',
-  joint:'56 of 60',
-  downside:'The downside tail',
-  money:'Fiji 2004 · farm-gate value',
+  worst:'Worst diversified stress test',
+  moneyBridge:'From harvest to value',
+  money:'Fiji 2004 · Four bets',
+  pricedWorst:'Worst priced diversified year',
   insurance:'Economic downside',
   islands:'Local context'
 };
@@ -2519,13 +2933,15 @@ function showVisual(id){
   if(slot) slot.classList.add('active');
   document.getElementById('visual-title').textContent = VISUAL_TITLES[id] || id;
   const card = document.querySelector('.visual-card');
-  if(card) card.classList.toggle('wide', ['winner','downside','money','insurance','islands'].includes(id));
+  const wide = ['worst','money','insurance'].includes(id);
+  if(card) card.classList.toggle('wide', wide);
   const scrolly = document.getElementById('story');
-  if(scrolly) scrolly.classList.toggle('is-wide', ['winner','downside','money','insurance','islands'].includes(id));
+  if(scrolly) scrolly.classList.toggle('is-wide', wide);
   updateMixChip();
   if(changed && card){
     card.scrollTop = 0;
   }
+  if(changed) playChapterVisual(id);
   requestAnimationFrame(()=>animateStats());
 }
 
@@ -2537,8 +2953,6 @@ function updateAll(){
   updateWinner();
   updateJoint();
   updateDownside();
-  updateMoney();
-  updateInsurance();
   updateCorr();
   updateEvidence();
   updateFrontier();
@@ -2548,17 +2962,17 @@ function updateAll(){
 }
 
 /* ---- Progress rail + atmosphere + motion ---- */
-const BEAT_IDS = ['hero','warming','plant','tonga','sixty','winner','joint','downside','money','insurance','islands','resilience','meaning','close'];
+const BEAT_IDS = ['hero','warming','plant','tonga','sixty','worst','moneyBridge','money','pricedWorst','insurance','islands','resilience','meaning','close'];
 const SCENE_FOR = {
   hero:'hero',
   warming:'warming',
   plant:'plant',
   tonga:'tense',
   sixty:'tense',
-  winner:'tense',
-  joint:'clarity',
-  downside:'clarity',
+  worst:'tense',
+  moneyBridge:'clarity',
   money:'golden',
+  pricedWorst:'golden',
   insurance:'clarity',
   islands:'archipelago',
   resilience:'clarity',
@@ -2690,6 +3104,7 @@ fillMethods();
 setupInsuranceUI();
 showVisual('warming');
 updateAll();
+renderEvidenceCharts();
 setupObserver();
 setupHeadlineMotion();
 setupUnveil();
