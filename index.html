@@ -278,8 +278,8 @@ main{position:relative; z-index:2;}
   transition:max-width .35s ease, grid-template-columns .35s ease;
 }
 .scrolly.is-wide{
-  max-width:1400px;
-  grid-template-columns:minmax(260px,.85fr) minmax(480px,1.45fr);
+  max-width:1560px;
+  grid-template-columns:minmax(260px,.7fr) minmax(480px,1.6fr);
 }
 .scrolly .beats{display:flex; flex-direction:column; gap:0;}
 .beat{
@@ -374,7 +374,7 @@ main{position:relative; z-index:2;}
   -webkit-backdrop-filter:blur(var(--card-blur));
   transition:max-width .35s ease;
 }
-.visual-card.wide{max-width:880px;}
+.visual-card.wide{max-width:1080px;}
 [data-theme="paper"] .visual-card{
   background:var(--panel); box-shadow:inset 0 1px 0 rgba(255,255,255,.55), var(--glow);
 }
@@ -424,7 +424,7 @@ main{position:relative; z-index:2;}
 #vs-sixty .panel, #vs-joint .panel, #vs-tonga .panel{margin-top:8px; padding:10px 12px;}
 #vs-sixty .panel .row, #vs-joint .panel .row, #vs-tonga .panel .row{padding:5px 0; font-size:11.5px;}
 #vs-tonga .garden-grid, #vs-garden .garden-grid{max-width:280px;}
-#vs-islands .map-svg{max-height:380px;}
+#vs-islands .map-svg{max-height:520px;}
 
 /* New evidence chart chrome */
 .winner-chips{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 10px;}
@@ -472,7 +472,7 @@ main{position:relative; z-index:2;}
 .ins-info.open, .stat-check.open{display:block;}
 .ins-row.dim{opacity:.25;}
 .explore{
-  max-width:960px; margin:0 auto; padding:48px 24px 40px; border-top:1px solid var(--line);
+  max-width:1200px; margin:0 auto; padding:48px 24px 40px; border-top:1px solid var(--line);
 }
 .explore h2{font-size:clamp(22px,3vw,30px); margin-bottom:8px;}
 .explore > .lede{margin-bottom:20px;}
@@ -646,13 +646,13 @@ main{position:relative; z-index:2;}
 .tag.stable{background:var(--line); color:var(--faint);}
 
 /* ========== WARMING CHART ========== */
-.warm-chart{width:100%; height:220px;}
+.warm-chart{width:100%; height:320px;}
 .story-chart{width:100%; height:auto; display:block; margin:8px 0 4px; flex-shrink:0;}
-.story-chart.anomaly{max-height:148px;}
-.story-chart.strip{max-height:110px;}
-.story-chart.strat{max-height:168px;}
-.chart-label{font-family:var(--font-mono); font-size:10px; fill:var(--faint);}
-.chart-val{font-family:var(--font-mono); font-size:10px; font-weight:600;}
+.story-chart.anomaly{max-height:220px;}
+.story-chart.strip{max-height:160px;}
+.story-chart.strat{max-height:260px;}
+.chart-label{font-family:var(--font-mono); font-size:11px; fill:var(--faint);}
+.chart-val{font-family:var(--font-mono); font-size:11px; font-weight:600;}
 .strip-wrap{margin:6px 0 4px;}
 .strip-hint{font-family:var(--font-mono); font-size:10px; color:var(--faint); margin:0 0 4px;}
 #vs-tonga .garden-grid{max-width:220px; margin-bottom:4px;}
@@ -2519,9 +2519,9 @@ function showVisual(id){
   if(slot) slot.classList.add('active');
   document.getElementById('visual-title').textContent = VISUAL_TITLES[id] || id;
   const card = document.querySelector('.visual-card');
-  if(card) card.classList.toggle('wide', ['winner','downside','money','insurance','islands'].includes(id));
+  if(card) card.classList.toggle('wide', ['warming','tonga','sixty','winner','downside','money','insurance','islands'].includes(id));
   const scrolly = document.getElementById('story');
-  if(scrolly) scrolly.classList.toggle('is-wide', ['winner','downside','money','insurance','islands'].includes(id));
+  if(scrolly) scrolly.classList.toggle('is-wide', ['warming','tonga','sixty','winner','downside','money','insurance','islands'].includes(id));
   updateMixChip();
   if(changed && card){
     card.scrollTop = 0;
