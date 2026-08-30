@@ -273,18 +273,18 @@ main{position:relative; z-index:2;}
 .attr{font-family:var(--font-mono); font-size:12px; color:var(--accent);}
 
 .scrolly{
-  display:grid; grid-template-columns:minmax(200px,.38fr) minmax(600px,2.2fr);
-  gap:16px 72px; align-items:start; max-width:1760px; margin:0 auto; padding:28px 16px 80px 6px;
+  display:grid; grid-template-columns:minmax(240px, min(22%, 300px)) minmax(0,1fr);
+  gap:16px 28px; align-items:start; max-width:1760px; margin:0 auto; padding:28px 24px 80px 32px;
   transition:max-width .35s ease, grid-template-columns .35s ease;
 }
 .scrolly.is-wide{
   max-width:1840px;
-  grid-template-columns:minmax(190px,.34fr) minmax(660px,2.4fr);
+  grid-template-columns:minmax(240px, min(22%, 300px)) minmax(0,1fr);
 }
-.scrolly .beats{display:flex; flex-direction:column; gap:0;}
+.scrolly .beats{display:flex; flex-direction:column; gap:0; min-width:0;}
 .beat{
   min-height:78vh; padding:64px 0; display:flex; flex-direction:column; justify-content:center;
-  border-top:1px solid transparent; max-width:38em;
+  border-top:1px solid transparent; max-width:none; width:100%;
 }
 .beat h2{
   font-size:clamp(26px,3.4vw,38px); margin-bottom:14px; color:var(--ink);
@@ -309,7 +309,7 @@ main{position:relative; z-index:2;}
   box-shadow:0 8px 32px rgba(0,0,0,.18);
 }
 [data-theme="night"] .beat.prose-scrim{
-  padding:20px 14px 20px 8px;
+  padding:20px 16px;
   margin:8px 0 8px 0;
   box-sizing:border-box;
 }
@@ -362,7 +362,7 @@ main{position:relative; z-index:2;}
 .sticky-col{
   position:sticky; top:var(--sticky-top); height:calc(100vh - var(--sticky-top) - 12px);
   display:flex; flex-direction:column; align-items:stretch; justify-content:flex-start;
-  min-height:0; gap:0; padding-left:16px;
+  min-height:0; gap:0; padding-left:0;
 }
 .visual-card{
   width:100%; max-width:none; max-height:none; height:calc(100% - 52px);
@@ -388,7 +388,6 @@ main{position:relative; z-index:2;}
 .visual-slot.active .tonga-stage,
 .visual-slot.active .sixty-stage,
 .visual-slot.active .money-stage,
-.visual-slot.active .insurance-svg,
 .visual-slot.active .harvest-svg{
   flex:1 1 auto; min-height:0; width:100%; height:auto; align-self:stretch;
 }
@@ -464,7 +463,7 @@ main{position:relative; z-index:2;}
 .story-punch{font-family:var(--font-display); font-size:15px; color:var(--quote); font-weight:500; margin:10px 0 0; line-height:1.4;}
 .downside-svg, .money-svg, .insurance-svg, .frontier-svg, .bootstrap-svg, .harvest-svg, .waterfall-svg, .contrib-svg{width:100%; height:auto; display:block; min-height:0;}
 .money-svg{flex:0 1 auto; min-height:0; max-height:none; height:auto;}
-.insurance-svg{flex:1 1 auto; min-height:0; max-height:none; width:100%; height:100%;}
+.insurance-svg{display:block; min-height:0; max-height:none;}
 .downside-dot{cursor:pointer; transition:opacity .15s ease;}
 .downside-dot.dim{opacity:.22;}
 .downside-dot.hl{opacity:1;}
@@ -489,8 +488,8 @@ main{position:relative; z-index:2;}
   min-height:44px; display:flex; align-items:center; color:var(--ink);
 }
 .harvest-legend, .ins-tally{
-  display:flex; flex-wrap:wrap; gap:8px 14px; margin:8px 0 4px;
-  font-family:var(--font-mono); font-size:14px; color:var(--muted);
+  display:flex; flex-wrap:wrap; gap:6px 12px; margin:2px 0 4px;
+  font-family:var(--font-mono); font-size:13px; color:var(--muted);
 }
 .harvest-legend span, .ins-tally span{display:inline-flex; align-items:center; gap:6px;}
 .swatch{
@@ -545,12 +544,38 @@ main{position:relative; z-index:2;}
   font-family:var(--font-mono); font-size:12px; padding:5px 11px; min-height:36px;
   border-radius:100px; border:1px solid var(--line); background:transparent; color:var(--muted); cursor:pointer;
 }
-#vs-insurance .insurance-svg{flex:1 1 auto; min-height:0; width:100%; height:100%;}
-#vs-insurance .chart-tip{font-size:12px; padding:4px 8px;}
+#vs-insurance{
+  position:relative;
+}
+#vs-insurance .ins-chart-frame{
+  position:relative;
+  flex:1 1 auto; min-height:260px; width:100%;
+  display:flex; align-items:center; justify-content:center;
+}
+#vs-insurance .insurance-svg{
+  flex:0 0 auto;
+  width:min(100%, 800px);
+  height:clamp(260px, 32vh, 330px);
+  min-width:0; min-height:260px;
+}
+#vs-insurance .chart-tip{
+  position:static; margin:0; padding:4px 0; font-size:12px;
+  flex-shrink:0; min-height:2.6em;
+}
+#vs-insurance .ins-hover-tip{
+  position:absolute; left:10px; right:10px; bottom:8px; z-index:4;
+  margin:0; padding:8px 10px; font-size:12px;
+  font-family:var(--font-mono); color:var(--muted); line-height:1.45;
+  background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--accent);
+  border-radius:10px; pointer-events:none; max-height:46%; overflow:auto;
+}
+#vs-insurance .ins-hover-tip[hidden]{display:none;}
 .ins-actions button:hover, .info-btn:hover{color:var(--accent); border-color:var(--accent);}
 .ins-info, .stat-check{
-  margin:8px 0; padding:12px 14px; border:1px solid var(--line); border-radius:10px;
-  font-size:15px; color:var(--muted); line-height:1.55; display:none; flex-shrink:0;
+  position:absolute; left:10px; right:10px; bottom:8px; z-index:5;
+  margin:0; padding:12px 14px; border:1px solid var(--line); border-radius:10px;
+  font-size:15px; color:var(--muted); line-height:1.55; display:none;
+  background:var(--panel);
 }
 .ins-info.open, .stat-check.open{display:block;}
 .ins-row.dim{opacity:.25;}
@@ -585,8 +610,15 @@ main{position:relative; z-index:2;}
   font-family:var(--font-mono); font-size:11.5px; color:var(--faint); padding:8px 0; line-height:1.45;
 }
 
+@media (max-width:1100px) and (min-width:861px){
+  .scrolly{
+    grid-template-columns:minmax(220px, min(20%, 260px)) minmax(0,1fr);
+    padding:28px 20px 80px 24px; gap:16px 20px;
+  }
+}
 @media (max-width:860px){
-  .scrolly{grid-template-columns:1fr; padding-top:12px; gap:12px;}
+  .scrolly{grid-template-columns:1fr; padding:12px 16px 80px; gap:12px;}
+  #vs-insurance .insurance-svg{width:100%; height:clamp(200px, 36vh, 280px); min-height:200px;}
   .sticky-col{
     position:sticky; top:64px; height:auto; max-height:min(72vh,640px); order:-1; z-index:8;
     margin-bottom:8px; align-items:stretch;
@@ -1269,7 +1301,10 @@ td{padding:7px 8px; border-bottom:1px solid var(--line); color:var(--muted);}
           <span>2 ↑ downside</span>
           <span>1 =</span>
         </div>
-        <svg class="insurance-svg" id="insurance-svg" viewBox="0 0 1040 560" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Paired farm-gate-value downside for a single-crop benchmark versus an equal-third hectare across 10 price-covered events. Left is less downside."></svg>
+        <div class="ins-chart-frame">
+          <svg class="insurance-svg" id="insurance-svg" viewBox="0 0 1080 420" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Paired farm-gate-value downside for a single-crop benchmark versus an equal-third hectare across 10 price-covered events. Left is less downside."></svg>
+          <div class="ins-hover-tip" id="insurance-hover" aria-live="polite" hidden></div>
+        </div>
         <div class="ins-actions">
           <button type="button" class="info-btn" id="ins-info-btn" aria-expanded="false">What is the single-crop benchmark?</button>
           <button type="button" id="ins-play-btn">Play all 10 events</button>
@@ -1281,7 +1316,7 @@ td{padding:7px 8px; border-bottom:1px solid var(--line); color:var(--muted);}
           Exact paired sign-flip: p ≈ 0.0078 · Paired Wilcoxon: p ≈ 0.0122 · Event bootstrap 95% interval ≈ 1.37 to 5.91 percentage points.<br>
           These checks are exploratory. The price-covered sample contains only 10 events clustered within Fiji and New Caledonia, so the effect size and event-level pattern are more important than treating the p-values as definitive Pacific-wide inference.
         </div>
-        <div class="chart-tip" id="insurance-tip" aria-live="polite">Grey = single-crop benchmark · Gold = equal-third hectare. Green = reduced downside · coral = increased. Left is less downside.</div>
+        <div class="chart-tip" id="insurance-tip">Grey = single-crop benchmark · Gold = equal-third hectare. Green = reduced downside · coral = increased. Left is less downside.</div>
         <p class="v-caption">53.3% lower average percentage downside in farm-gate value — not “53.3% fewer dollars lost.”</p>
       </div>
 
@@ -2654,7 +2689,7 @@ function updateInsurance(){
   const svg = document.getElementById('insurance-svg');
   if(!svg) return;
   const rows = orderedInsuranceRows();
-  const W=1040, H=560, pad={l:236, r:28, t:16, b:48};
+  const W=1080, H=420, pad={l:248, r:32, t:14, b:42};
   const maxX = 18;
   const xOf = v => pad.l + (v/maxX)*(W-pad.l-pad.r);
   const rowH = (H-pad.t-pad.b)/rows.length;
@@ -2680,7 +2715,7 @@ function updateInsurance(){
   });
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
   svg.innerHTML = html;
-  const tip = document.getElementById('insurance-tip');
+  const hover = document.getElementById('insurance-hover');
   const activate = (i)=>{
     svg.querySelectorAll('.ins-row').forEach((g,gi)=> g.classList.toggle('dim', gi!==i));
     const r = rows[i];
@@ -2689,12 +2724,18 @@ function updateInsurance(){
     if(r.country==='Fiji' && +r.year===2004){
       extra = `<p>Normalised illustration — not household income. For every US$1,000 of expected farm-gate value, this corresponds to about US$164 of downside under the equal-probability single-crop benchmark versus about US$57 for the diversified hectare (≈ 65.2% proportional reduction).</p>`;
     }
-    tip.innerHTML = `<p><strong>${r.country} · ${r.year}</strong></p><p>Single-crop benchmark downside: ${Number(r.single_crop_downside).toFixed(2)}%</p><p>Diversified downside: ${Number(r.diversified_downside).toFixed(2)}%</p><p>Difference: ${Number(r.diff_pp).toFixed(2)} percentage points · Direction: ${dir}</p>${extra}`;
+    if(hover){
+      hover.hidden = false;
+      hover.innerHTML = `<p><strong>${r.country} · ${r.year}</strong></p><p>Single-crop benchmark downside: ${Number(r.single_crop_downside).toFixed(2)}%</p><p>Diversified downside: ${Number(r.diversified_downside).toFixed(2)}%</p><p>Difference: ${Number(r.diff_pp).toFixed(2)} percentage points · Direction: ${dir}</p>${extra}`;
+    }
   };
   svg.querySelectorAll('.ins-hit').forEach(hit=>{
     hit.addEventListener('mouseenter', ()=>activate(+hit.dataset.i));
     hit.addEventListener('focus', ()=>activate(+hit.dataset.i));
-    hit.addEventListener('mouseleave', ()=> svg.querySelectorAll('.ins-row').forEach(g=>g.classList.remove('dim')));
+    hit.addEventListener('mouseleave', ()=>{
+      svg.querySelectorAll('.ins-row').forEach(g=>g.classList.remove('dim'));
+      if(hover){ hover.hidden = true; hover.innerHTML = ''; }
+    });
     hit.addEventListener('click', ()=>activate(+hit.dataset.i));
   });
 }
