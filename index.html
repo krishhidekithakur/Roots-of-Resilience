@@ -273,13 +273,13 @@ main{position:relative; z-index:2;}
 .attr{font-family:var(--font-mono); font-size:12px; color:var(--accent);}
 
 .scrolly{
-  display:grid; grid-template-columns:minmax(210px,.44fr) minmax(580px,2.1fr);
-  gap:16px 40px; align-items:start; max-width:1720px; margin:0 auto; padding:28px 16px 80px 6px;
+  display:grid; grid-template-columns:minmax(200px,.38fr) minmax(600px,2.2fr);
+  gap:16px 72px; align-items:start; max-width:1760px; margin:0 auto; padding:28px 16px 80px 6px;
   transition:max-width .35s ease, grid-template-columns .35s ease;
 }
 .scrolly.is-wide{
-  max-width:1800px;
-  grid-template-columns:minmax(200px,.4fr) minmax(640px,2.25fr);
+  max-width:1840px;
+  grid-template-columns:minmax(190px,.34fr) minmax(660px,2.4fr);
 }
 .scrolly .beats{display:flex; flex-direction:column; gap:0;}
 .beat{
@@ -362,7 +362,7 @@ main{position:relative; z-index:2;}
 .sticky-col{
   position:sticky; top:var(--sticky-top); height:calc(100vh - var(--sticky-top) - 12px);
   display:flex; flex-direction:column; align-items:stretch; justify-content:flex-start;
-  min-height:0; gap:0; padding-left:8px;
+  min-height:0; gap:0; padding-left:16px;
 }
 .visual-card{
   width:100%; max-width:none; max-height:none; height:calc(100% - 52px);
@@ -464,7 +464,7 @@ main{position:relative; z-index:2;}
 .story-punch{font-family:var(--font-display); font-size:15px; color:var(--quote); font-weight:500; margin:10px 0 0; line-height:1.4;}
 .downside-svg, .money-svg, .insurance-svg, .frontier-svg, .bootstrap-svg, .harvest-svg, .waterfall-svg, .contrib-svg{width:100%; height:auto; display:block; min-height:0;}
 .money-svg{flex:0 1 auto; min-height:0; max-height:none; height:auto;}
-.insurance-svg{flex:1 1 auto; min-height:0; max-height:100%;}
+.insurance-svg{flex:1 1 auto; min-height:0; max-height:none; width:100%; height:100%;}
 .downside-dot{cursor:pointer; transition:opacity .15s ease;}
 .downside-dot.dim{opacity:.22;}
 .downside-dot.hl{opacity:1;}
@@ -531,19 +531,22 @@ main{position:relative; z-index:2;}
 .linked-box .k{font-family:var(--font-mono); font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--faint); margin-bottom:6px;}
 .linked-box .flow{font-family:var(--font-display); font-size:clamp(26px,3.4vw,36px); font-weight:700; line-height:1.2;}
 .linked-box .delta{font-family:var(--font-mono); font-size:16px; color:var(--warn); margin-top:8px;}
-.ins-stat-row{display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 14px; margin:4px 0 8px; flex-shrink:0;}
-.ins-stat-row .arrow{font-family:var(--font-display); font-size:clamp(36px,6vw,56px); font-weight:600; color:var(--ink);}
-.ins-stat-row .pct{font-family:var(--font-mono); font-size:18px; color:var(--accent); font-weight:600;}
+.ins-stat-row{display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 12px; margin:0 0 4px; flex-shrink:0;}
+.ins-stat-row .arrow{font-family:var(--font-display); font-size:clamp(26px,3.6vw,36px); font-weight:600; color:var(--ink);}
+.ins-stat-row .pct{font-family:var(--font-mono); font-size:15px; color:var(--accent); font-weight:600;}
 @media(max-width:720px){
   .bridge-grid, .linked-qty, .mini-timeline{grid-template-columns:1fr;}
   .bridge-arrow{transform:rotate(90deg);}
 }
-.ins-caveat{font-size:15px; color:var(--faint); margin:0 0 8px; line-height:1.5;}
-.ins-actions{display:flex; flex-wrap:wrap; gap:8px; margin:8px 0; flex-shrink:0;}
+.ins-caveat{font-size:12px; color:var(--faint); margin:0 0 4px; line-height:1.4;}
+.ins-tally{margin:0 0 4px; font-size:13px;}
+.ins-actions{display:flex; flex-wrap:wrap; gap:6px; margin:4px 0; flex-shrink:0;}
 .ins-actions button, .info-btn{
-  font-family:var(--font-mono); font-size:13px; padding:8px 14px; min-height:44px;
+  font-family:var(--font-mono); font-size:12px; padding:5px 11px; min-height:36px;
   border-radius:100px; border:1px solid var(--line); background:transparent; color:var(--muted); cursor:pointer;
 }
+#vs-insurance .insurance-svg{flex:1 1 auto; min-height:0; width:100%; height:100%;}
+#vs-insurance .chart-tip{font-size:12px; padding:4px 8px;}
 .ins-actions button:hover, .info-btn:hover{color:var(--accent); border-color:var(--accent);}
 .ins-info, .stat-check{
   margin:8px 0; padding:12px 14px; border:1px solid var(--line); border-radius:10px;
@@ -1266,7 +1269,7 @@ td{padding:7px 8px; border-bottom:1px solid var(--line); color:var(--muted);}
           <span>2 ↑ downside</span>
           <span>1 =</span>
         </div>
-        <svg class="insurance-svg" id="insurance-svg" viewBox="0 0 780 640" preserveAspectRatio="xMidYMin meet" role="img" aria-label="Paired farm-gate-value downside for a single-crop benchmark versus an equal-third hectare across 10 price-covered events. Left is less downside."></svg>
+        <svg class="insurance-svg" id="insurance-svg" viewBox="0 0 1040 560" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Paired farm-gate-value downside for a single-crop benchmark versus an equal-third hectare across 10 price-covered events. Left is less downside."></svg>
         <div class="ins-actions">
           <button type="button" class="info-btn" id="ins-info-btn" aria-expanded="false">What is the single-crop benchmark?</button>
           <button type="button" id="ins-play-btn">Play all 10 events</button>
@@ -2651,27 +2654,27 @@ function updateInsurance(){
   const svg = document.getElementById('insurance-svg');
   if(!svg) return;
   const rows = orderedInsuranceRows();
-  const W=780, H=640, pad={l:200, r:28, t:20, b:64};
+  const W=1040, H=560, pad={l:236, r:28, t:16, b:48};
   const maxX = 18;
   const xOf = v => pad.l + (v/maxX)*(W-pad.l-pad.r);
   const rowH = (H-pad.t-pad.b)/rows.length;
   let html = '';
   [0,5,10,15].forEach(v=>{
     html += `<line x1="${xOf(v)}" x2="${xOf(v)}" y1="${pad.t}" y2="${H-pad.b}" stroke="var(--line)" stroke-dasharray="${v===0?'0':'2 4'}" opacity=".7"/>`;
-    html += `<text x="${xOf(v)}" y="${H-26}" text-anchor="middle" class="chart-label">${v}%</text>`;
+    html += `<text x="${xOf(v)}" y="${H-24}" text-anchor="middle" class="chart-label" font-size="16">${v}%</text>`;
   });
-  html += `<text x="${pad.l}" y="${H-8}" class="chart-label">← less downside</text>`;
-  html += `<text x="${W-pad.r}" y="${H-8}" text-anchor="end" class="chart-label">Farm-gate-value downside % →</text>`;
+  html += `<text x="${pad.l}" y="${H-6}" class="chart-label" font-size="15">← less downside</text>`;
+  html += `<text x="${W-pad.r}" y="${H-6}" text-anchor="end" class="chart-label" font-size="15">Farm-gate-value downside % →</text>`;
   rows.forEach((r,i)=>{
     const y = pad.t + i*rowH + rowH*0.5;
     const x1 = xOf(r.single_crop_downside), x2 = xOf(r.diversified_downside);
     const dirColor = r.direction==='reduced' ? 'var(--good)' : (r.direction==='increased' ? 'var(--warn)' : 'var(--faint)');
     const mark = r.direction==='reduced' ? '↓' : (r.direction==='increased' ? '↑' : '=');
     html += `<g class="ins-row" data-i="${i}">`;
-    html += `<text x="${pad.l-10}" y="${(y+4).toFixed(1)}" text-anchor="end" class="chart-label">${r.country} · ${r.year} ${mark}</text>`;
-    html += `<line x1="${x1.toFixed(1)}" y1="${y.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${dirColor}" stroke-width="5"/>`;
-    html += `<circle cx="${x1.toFixed(1)}" cy="${y.toFixed(1)}" r="6.5" fill="#899493"/>`;
-    html += `<circle cx="${x2.toFixed(1)}" cy="${y.toFixed(1)}" r="8" fill="#E4C264" stroke="var(--ink)" stroke-width="1" stroke-opacity=".4"/>`;
+    html += `<text x="${pad.l-14}" y="${(y+6).toFixed(1)}" text-anchor="end" class="chart-label" font-size="17">${r.country} · ${r.year} ${mark}</text>`;
+    html += `<line x1="${x1.toFixed(1)}" y1="${y.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${dirColor}" stroke-width="8"/>`;
+    html += `<circle cx="${x1.toFixed(1)}" cy="${y.toFixed(1)}" r="9" fill="#899493"/>`;
+    html += `<circle cx="${x2.toFixed(1)}" cy="${y.toFixed(1)}" r="11" fill="#E4C264" stroke="var(--ink)" stroke-width="1.2" stroke-opacity=".4"/>`;
     html += `<rect class="ins-hit" data-i="${i}" x="0" y="${(y-rowH*0.48).toFixed(1)}" width="${W}" height="${(rowH*0.96).toFixed(1)}" fill="transparent" tabindex="0" role="button" aria-label="${r.country} ${r.year} ${r.direction}"/>`;
     html += `</g>`;
   });
