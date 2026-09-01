@@ -394,6 +394,7 @@ main{position:relative; z-index:2;}
 .v-caption{
   margin-top:6px; padding-top:6px; font-family:var(--font-mono); font-size:12.5px;
   color:var(--faint); line-height:1.45; border-top:none; flex-shrink:0;
+  max-width:100%; overflow-wrap:anywhere; word-break:break-word;
 }
 .v-caption a{color:var(--accent); text-decoration:underline; text-underline-offset:2px;}
 .v-caption a:hover{color:var(--ink);}
@@ -456,6 +457,7 @@ main{position:relative; z-index:2;}
   margin-top:4px; padding:6px 10px; border-left:3px solid var(--accent);
   font-family:var(--font-mono); font-size:13px; color:var(--muted); line-height:1.45;
   min-height:0; height:auto; flex-shrink:0; overflow:visible; display:block;
+  overflow-wrap:anywhere; word-break:break-word;
 }
 .hm-tip p, .chart-tip p{margin:0 0 .4em; line-height:1.55;}
 .hm-tip p:last-child, .chart-tip p:last-child{margin-bottom:0;}
@@ -645,9 +647,12 @@ main{position:relative; z-index:2;}
     grid-template-rows:minmax(120px,.9fr) auto minmax(90px,.55fr);
   }
   .sixty-stage .tile-grid{grid-column:1; grid-row:1;}
-  .sixty-side{grid-column:1; grid-row:2; flex-direction:row; flex-wrap:wrap;}
+  .sixty-side{grid-column:1; grid-row:2; flex-direction:row; flex-wrap:wrap; overflow:visible;}
   .sixty-stage .strip-wrap{grid-column:1; grid-row:3;}
-  .money-stage{grid-template-rows:minmax(140px,1fr) auto;}
+  .money-stage{grid-template-rows:minmax(140px,1fr) auto auto;}
+  .money-stage .money-svg{grid-column:1; grid-row:1;}
+  .money-copy{grid-column:1; grid-row:2; overflow:visible;}
+  .money-stage > .v-caption{grid-column:1; grid-row:3;}
   #vs-sixty .decision-card .dc-actions{display:none;}
 }
 
@@ -731,13 +736,14 @@ main{position:relative; z-index:2;}
 /* ========== STRATEGY ========== */
 .strat-list{display:flex; flex-direction:column; gap:8px;}
 .strat-btn{
-  display:grid; grid-template-columns:1fr auto auto; gap:10px; align-items:center;
+  display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:10px; align-items:center;
   background:var(--bg-2); border:1px solid var(--line); border-radius:12px;
-  padding:12px 14px; color:var(--ink); text-align:left; transition:border .15s, background .15s;
+  padding:12px 16px; color:var(--ink); text-align:left; transition:border .15s, background .15s;
+  min-width:0;
 }
 .strat-btn:hover, .strat-btn.active{border-color:var(--accent); background:var(--panel);}
 .strat-btn .name{font-family:var(--font-display); font-size:15px; font-weight:600;}
-.strat-btn .meta{font-family:var(--font-mono); font-size:11px; color:var(--muted);}
+.strat-btn .meta{font-family:var(--font-mono); font-size:11px; color:var(--muted); min-width:0; overflow-wrap:anywhere;}
 .strat-btn .worst{font-family:var(--font-mono); font-weight:700; color:var(--warn); font-size:14px;}
 .toggle-row{display:flex; align-items:center; gap:10px; margin:12px 0 4px; font-family:var(--font-mono); font-size:12px; color:var(--muted);}
 .toggle-row input{accent-color:var(--accent);}
@@ -776,7 +782,7 @@ main{position:relative; z-index:2;}
 .story-chart.anomaly{height:100%; max-height:none;}
 .story-chart.strip{max-height:none; min-height:0; height:100%; flex:1 1 auto;}
 .story-chart.strat{max-height:260px;}
-.chart-label{font-family:var(--font-mono); fill:var(--faint);}
+.chart-label{font-family:var(--font-mono); fill:var(--faint); font-size:11px;}
 .chart-val{font-family:var(--font-mono); font-weight:700;}
 .strip-wrap{margin:0; min-height:0; display:flex; flex-direction:column;}
 .strip-hint{font-family:var(--font-mono); font-size:11px; color:var(--faint); margin:0 0 4px; flex-shrink:0;}
@@ -814,13 +820,14 @@ main{position:relative; z-index:2;}
 .sixty-side{
   grid-column:2; grid-row:1 / span 2;
   min-height:0; display:flex; flex-direction:column; gap:8px;
-  overflow:hidden;
+  overflow-x:hidden; overflow-y:auto;
+  padding-bottom:4px;
 }
-.sixty-side .panel{margin:0; padding:8px 10px; flex:0 0 auto;}
+.sixty-side .panel{margin:0; padding:8px 10px; flex:1 1 auto; min-height:0; overflow-y:auto;}
 .sixty-side .panel .row{padding:3px 0; font-size:12px; gap:8px; align-items:flex-start;}
 .sixty-side .panel .row span:first-child{flex:0 0 auto; color:var(--faint);}
 .sixty-side .panel .row .v{text-align:right; overflow:visible; white-space:normal; word-break:break-word;}
-.sixty-side .decision-card{margin:0; padding:6px 0 6px 12px; flex:1 1 auto;}
+.sixty-side .decision-card{margin:0; padding:6px 0 8px 12px; flex:0 0 auto;}
 #vs-sixty .tile{aspect-ratio:auto; width:100%; height:100%; min-height:0;}
 #vs-sixty .stat-big{font-size:clamp(28px,4.2vw,40px); margin:0; line-height:1;}
 #vs-sixty .stat-sub{font-size:12px;}
@@ -828,19 +835,33 @@ main{position:relative; z-index:2;}
 #vs-sixty .decision-card .dc-delta{font-size:13px;}
 .money-stage{
   flex:1 1 auto; min-height:0;
-  display:grid; grid-template-columns:minmax(0,2.15fr) minmax(200px,.52fr);
-  gap:10px 18px; align-items:start;
+  display:grid; grid-template-columns:minmax(0,2.15fr) minmax(220px,.68fr);
+  grid-template-rows:minmax(0,1fr) auto;
+  gap:10px 18px; align-items:stretch;
 }
 .money-stage .money-svg{
+  grid-column:1; grid-row:1;
   width:100%; height:auto; min-height:0; max-height:none;
   aspect-ratio:760 / 320; align-self:start; justify-self:stretch;
 }
 .money-copy{
-  min-height:0; display:flex; flex-direction:column; gap:8px; overflow:hidden;
+  grid-column:2; grid-row:1;
+  min-height:0; display:flex; flex-direction:column; gap:8px;
+  overflow-x:hidden; overflow-y:auto;
 }
 .money-copy .chart-tip, .money-copy .money-reveal, .money-copy .v-caption{margin:0;}
-.money-copy .money-reveal{font-size:13.5px;}
+.money-copy .money-reveal{font-size:13.5px; flex:0 0 auto;}
+.money-stage > .v-caption{grid-column:1 / -1; grid-row:2; margin:0;}
 #explore .strat-list{margin-top:6px;}
+.frontier-legend{
+  margin:8px 0 0;
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.5;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
 .mech{
   display:flex; flex-direction:row; flex-wrap:wrap; align-items:center; justify-content:center;
   gap:6px 8px; margin-top:4px; font-family:var(--font-mono); font-size:12px; flex-shrink:0;
@@ -1261,8 +1282,8 @@ td{padding:7px 8px; border-bottom:1px solid var(--line); color:var(--muted);}
               <div class="line2">But the winner is only obvious after the year has happened.</div>
               <div class="line3">Monocropping concentrates the bet. Here, the diversified hectare finished only US$243 below its fitted farm-gate benchmark — roughly four times smaller than taro-only’s US$968 shortfall in this historical stress-test valuation.</div>
             </div>
-            <p class="v-caption">Observed same-year FAOSTAT producer prices value the modelled crop quantities. Values represent gross farm-gate value relative to each strategy's fitted harvest benchmark, not profit or household income.</p>
           </div>
+          <p class="v-caption">Observed same-year FAOSTAT producer prices value the modelled crop quantities. Values represent gross farm-gate value relative to each strategy's fitted harvest benchmark, not profit or household income.</p>
         </div>
       </div>
 
@@ -1427,7 +1448,7 @@ td{padding:7px 8px; border-bottom:1px solid var(--line); color:var(--muted);}
       <p class="fine">Capping anomalies at ±50% checks whether a few extreme crop-year observations drive the lower-tail conclusion. The broad pattern does not disappear under the cap — that is a robustness check, not proof.</p>
       <label class="toggle-row"><input type="checkbox" id="cap-toggle"> Cap anomalies at ±50% (sensitivity check)</label>
       <p class="fine" style="margin:0 0 4px;">Worst-year harvest % — shorter bars (less severe) are better. Click a row to apply that mix.</p>
-      <svg class="story-chart strat" id="evidence-worst-svg" viewBox="0 0 420 160" role="img" aria-label="Worst-year harvest by planting strategy"></svg>
+      <svg class="story-chart strat" id="evidence-worst-svg" viewBox="0 0 580 180" role="img" aria-label="Worst-year harvest by planting strategy"></svg>
       <div class="strat-list" id="strat-list"></div>
     </div>
   </details>
@@ -1436,7 +1457,8 @@ td{padding:7px 8px; border-bottom:1px solid var(--line); color:var(--muted);}
     <summary>231-garden risk / return frontier</summary>
     <div class="panel-body">
       <p class="caveat">In-sample historical optimisation. Not a planting recommendation. Never “the optimal Pacific garden.”</p>
-      <svg class="frontier-svg" id="frontier-svg" viewBox="0 0 680 420" role="img" aria-label="Portfolio landscape of 231 hectare allocations"></svg>
+      <svg class="frontier-svg" id="frontier-svg" viewBox="0 0 680 400" role="img" aria-label="Portfolio landscape of 231 hectare allocations"></svg>
+      <p class="frontier-legend">Gold = the mix with the least-severe worst year in this historical sample (10% cassava / 40% taro / 50% sweet potato). Teal = near-equal thirds. Circle size grows with how many of the 60 dry years were severe losses. This is in-sample history, not a recommended planting mix.</p>
       <div class="chart-tip" id="frontier-tip" aria-live="polite">Click a point to try that mix in your garden and jump to the 60-event backtest.</div>
     </div>
   </details>
@@ -1472,7 +1494,7 @@ td{padding:7px 8px; border-bottom:1px solid var(--line); color:var(--muted);}
     <summary>Physical downside tails by strategy</summary>
     <div class="panel-body">
       <p class="fine">The same 60 dry stress events applied to each strategy. Look at how far the worst harvest losses stretch. Diversification isn’t trying to pick the winner — it’s trying to make the loser hurt less.</p>
-      <svg class="downside-svg" id="downside-svg" viewBox="0 0 720 340" role="img" aria-label="Downside outcomes for four planting strategies across 60 stress events"></svg>
+      <svg class="downside-svg" id="downside-svg" viewBox="0 0 720 360" role="img" aria-label="Downside outcomes for four planting strategies across 60 stress events"></svg>
       <div class="chart-tip" id="downside-tip" aria-live="polite">Hover or tap one event to compare the same country-year across all four strategies.</div>
     </div>
   </details>
@@ -2357,7 +2379,7 @@ function updateDownside(){
     {id:'sp', name:'Sweet potato only', w:{c:0,t:0,s:1}, color:'var(--sp)'},
     {id:'equal', name:'Mixed garden — 1/3 each', w:{c:1/3,t:1/3,s:1/3}, color:'#E4C264', accent:true}
   ];
-  const W=720, H=340, pad={l:168, r:110, t:28, b:36};
+  const W=720, H=360, pad={l:220, r:118, t:36, b:48};
   const laneH = (H-pad.t-pad.b)/lanes.length;
   let maxD = 10;
   const points = [];
@@ -2394,25 +2416,26 @@ function updateDownside(){
     });
   });
 
-  let html = `<text x="${pad.l}" y="16" class="chart-label">Downside % (max(−harvest outcome, 0))</text>`;
+  let html = `<text x="${pad.l}" y="16" class="chart-label" font-size="12">Downside % (max(−harvest outcome, 0))</text>`;
   html += `<line x1="${xOf(10)}" x2="${xOf(10)}" y1="${pad.t-4}" y2="${H-pad.b+4}" stroke="var(--faint)" stroke-dasharray="4 4"/>`;
-  html += `<text x="${xOf(10)}" y="${H-12}" text-anchor="middle" class="chart-label">Severe-loss threshold · 10%</text>`;
-  [0,10,20,Math.min(maxD,40)].filter((v,i,a)=>a.indexOf(v)===i && v<=maxD).forEach(v=>{
-    html += `<text x="${xOf(v)}" y="${H-pad.b+18}" text-anchor="middle" class="chart-label">${v}%</text>`;
+  html += `<text x="${xOf(10)+8}" y="${pad.t-8}" class="chart-label" font-size="10">Severe-loss threshold · 10%</text>`;
+  [0,20,Math.min(maxD,40),maxD].filter((v,i,a)=>a.indexOf(v)===i && v<=maxD && v!==10).forEach(v=>{
+    html += `<text x="${xOf(v)}" y="${H-pad.b+16}" text-anchor="middle" class="chart-label" font-size="11">${v}%</text>`;
   });
 
   lanes.forEach((lane, li)=>{
     const y0 = pad.t + li*laneH + laneH*0.5;
     const st = strategyStats(lane.w, false);
-    html += `<text x="${pad.l-10}" y="${(y0+4).toFixed(1)}" text-anchor="end" class="chart-label" fill="${lane.color}" font-weight="${lane.accent?'700':'500'}">${lane.name}</text>`;
-    html += `<text x="${W-8}" y="${(y0-4).toFixed(1)}" text-anchor="end" class="chart-label">${st.severe}/60 severe</text>`;
-    html += `<text x="${W-8}" y="${(y0+10).toFixed(1)}" text-anchor="end" class="chart-label" fill="var(--warn)">worst ${fmtPct(st.worst)}</text>`;
+    html += `<text x="${pad.l-12}" y="${(y0+4).toFixed(1)}" text-anchor="end" class="chart-label" font-size="11" fill="${lane.color}" font-weight="${lane.accent?'700':'500'}">${lane.name}</text>`;
+    html += `<text x="${W-8}" y="${(y0-4).toFixed(1)}" text-anchor="end" class="chart-label" font-size="10">${st.severe}/60 severe</text>`;
+    html += `<text x="${W-8}" y="${(y0+10).toFixed(1)}" text-anchor="end" class="chart-label" font-size="10" fill="var(--warn)">worst ${fmtPct(st.worst)}</text>`;
   });
 
   placed.forEach(p=>{
     const r = p.lane.accent ? 4.2 : 3.6;
     html += `<circle class="downside-dot" data-eid="${p.eid}" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${r}" fill="${p.lane.color}" opacity="0.88" tabindex="0" role="button" aria-label="${p.country} ${p.year} ${p.lane.name}"/>`;
   });
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
   svg.innerHTML = html;
 
   const tip = document.getElementById('downside-tip');
@@ -2425,9 +2448,9 @@ function updateDownside(){
     const sample = placed.find(p=>p.eid===eid);
     if(!sample) return;
     const same = placed.filter(p=>p.eid===eid);
-    tip.innerHTML = `<strong>${sample.country} · ${sample.year}</strong> — same historical event, different planting strategies:<br>` +
-      same.map(p=>`${p.lane.name}: outcome ${fmtPct(p.out)}, downside ${p.down.toFixed(1)}%`).join(' · ') +
-      `<br>Rainfall anomaly: ${sample.rain}%`;
+    tip.innerHTML = `<p><strong>${sample.country} · ${sample.year}</strong> — same historical event, different planting strategies:</p>` +
+      same.map(p=>`<p>${p.lane.name}: outcome ${fmtPct(p.out)}, downside ${p.down.toFixed(1)}%</p>`).join('') +
+      `<p>Rainfall anomaly: ${sample.rain}%</p>`;
   };
   const clear = ()=>{
     svg.querySelectorAll('.downside-dot').forEach(d=>d.classList.remove('hl','dim'));
@@ -2790,7 +2813,7 @@ function updateFrontier(){
   if(!svg) return;
   const rows = EVIDENCE.portfolio || buildPortfolioFromEvents();
   const pareto = EVIDENCE.pareto || buildPareto(rows);
-  const W=680, H=420, pad={l:56, r:24, t:28, b:48};
+  const W=680, H=400, pad={l:56, r:24, t:28, b:36};
   const xs = rows.map(r=>r.worst), ys = rows.map(r=>r.mean);
   const xMin = Math.min(...xs)-2, xMax = Math.max(...xs)+2;
   const yMin = Math.min(...ys)-1, yMax = Math.max(...ys)+1;
@@ -2817,7 +2840,7 @@ function updateFrontier(){
     const fill = isBest ? '#E4C264' : (isThirds ? 'var(--accent)' : `hsl(${160 + r.eff_n*40}, 45%, ${45+r.eff_n*8}%)`);
     html += `<circle class="frontier-dot" data-i="${i}" cx="${xOf(r.worst).toFixed(1)}" cy="${yOf(r.mean).toFixed(1)}" r="${rSize}" fill="${fill}" opacity="${isBest||isThirds?1:0.55}" stroke="${isBest||isThirds?'var(--ink)':'none'}" stroke-width="1" style="cursor:pointer"/>`;
   });
-  html += `<text x="${pad.l}" y="${H-12}" class="chart-label">Gold = best historical worst-case mix (10/40/50) · Accent = near equal thirds · Size ∝ severe-loss events</text>`;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
   svg.innerHTML = html;
   const tip = document.getElementById('frontier-tip');
   svg.querySelectorAll('.frontier-dot').forEach(dot=>{
@@ -2911,7 +2934,7 @@ function drawEvidenceWorst(strategies){
     lab:s.name,
     worst:strategyStats(weightsFromStrategy(s.id), state.cap).worst
   }));
-  const W=420, H=160, pad={l:118, r:48, t:8, b:8};
+  const W=580, H=180, pad={l:176, r:72, t:10, b:16};
   const worsts = rows.map(r=>r.worst);
   const lo = Math.min(...worsts, -5);
   const span = Math.max(5, -lo);
@@ -2919,17 +2942,18 @@ function drawEvidenceWorst(strategies){
   const x0 = W - pad.r;
   const rowH = (H-pad.t-pad.b)/rows.length;
   let html = `<line x1="${x0}" x2="${x0}" y1="${pad.t}" y2="${H-pad.b}" stroke="var(--faint)" stroke-dasharray="3 3"/>`;
-  html += `<text x="${x0}" y="${H-2}" text-anchor="middle" class="chart-label">0%</text>`;
+  html += `<text x="${x0}" y="${H-2}" text-anchor="middle" class="chart-label" font-size="11">0%</text>`;
   rows.forEach((r,i)=>{
     const y = pad.t + i*rowH + rowH*0.18;
     const h = rowH*0.58;
     const x = xOf(r.worst);
     const w = Math.max(2, x0 - x);
     const active = state.strategy===r.id;
-    html += `<text x="${pad.l-8}" y="${(y+h*0.72).toFixed(1)}" text-anchor="end" class="chart-label"${active?' font-weight="700" fill="var(--ink)"':''}>${r.lab}</text>`;
+    html += `<text x="${pad.l-10}" y="${(y+h*0.72).toFixed(1)}" text-anchor="end" class="chart-label" font-size="12"${active?' font-weight="700" fill="var(--ink)"':''}>${r.lab}</text>`;
     html += `<rect class="strat-bar" data-id="${r.id}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="var(--warn)" opacity="${active?0.95:0.55}" stroke="${active?'var(--ink)':'none'}" stroke-width="${active?1.25:0}" style="cursor:pointer"/>`;
-    html += `<text x="${(x-6).toFixed(1)}" y="${(y+h*0.72).toFixed(1)}" text-anchor="end" class="chart-val" fill="var(--warn)">${fmtPct(r.worst)}</text>`;
+    html += `<text x="${(W-8).toFixed(1)}" y="${(y+h*0.72).toFixed(1)}" text-anchor="end" class="chart-val" font-size="12" fill="var(--warn)">${fmtPct(r.worst)}</text>`;
   });
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
   svg.innerHTML = html;
   svg.querySelectorAll('.strat-bar').forEach(bar=>{
     bar.addEventListener('click', ()=>{
