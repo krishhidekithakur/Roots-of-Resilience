@@ -463,7 +463,8 @@ main{position:relative; z-index:2;}
 .hm-tip p:last-child, .chart-tip p:last-child{margin-bottom:0;}
 .hm-tip strong, .chart-tip strong{color:var(--ink); font-weight:600;}
 .story-punch{font-family:var(--font-display); font-size:15px; color:var(--quote); font-weight:500; margin:10px 0 0; line-height:1.4;}
-.downside-svg, .money-svg, .insurance-svg, .frontier-svg, .bootstrap-svg, .harvest-svg, .waterfall-svg, .contrib-svg{width:100%; height:auto; display:block; min-height:0;}
+.downside-svg, .money-svg, .insurance-svg, .frontier-svg, .bootstrap-svg, .harvest-svg, .waterfall-svg, .contrib-svg{width:100%; height:auto; display:block; min-height:0; overflow:visible;}
+#evidence-worst-svg{overflow:visible;}
 .money-svg{flex:0 1 auto; min-height:0; max-height:none; height:auto;}
 .insurance-svg{display:block; min-height:0; max-height:none;}
 .downside-dot{cursor:pointer; transition:opacity .15s ease;}
@@ -649,10 +650,11 @@ main{position:relative; z-index:2;}
   .sixty-stage .tile-grid{grid-column:1; grid-row:1;}
   .sixty-side{grid-column:1; grid-row:2; flex-direction:row; flex-wrap:wrap; overflow:visible;}
   .sixty-stage .strip-wrap{grid-column:1; grid-row:3;}
-  .money-stage{grid-template-rows:minmax(140px,1fr) auto auto;}
+  .money-stage{grid-template-rows:minmax(140px,1fr) auto auto auto;}
   .money-stage .money-svg{grid-column:1; grid-row:1;}
   .money-copy{grid-column:1; grid-row:2; overflow:visible;}
-  .money-stage > .v-caption{grid-column:1; grid-row:3;}
+  .money-stage > .money-reveal{grid-column:1; grid-row:3;}
+  .money-stage > .v-caption{grid-column:1; grid-row:4;}
   #vs-sixty .decision-card .dc-actions{display:none;}
 }
 
@@ -836,7 +838,7 @@ main{position:relative; z-index:2;}
 .money-stage{
   flex:1 1 auto; min-height:0;
   display:grid; grid-template-columns:minmax(0,2.15fr) minmax(220px,.68fr);
-  grid-template-rows:minmax(0,1fr) auto;
+  grid-template-rows:minmax(0,1fr) auto auto;
   gap:10px 18px; align-items:stretch;
 }
 .money-stage .money-svg{
@@ -849,9 +851,12 @@ main{position:relative; z-index:2;}
   min-height:0; display:flex; flex-direction:column; gap:8px;
   overflow-x:hidden; overflow-y:auto;
 }
-.money-copy .chart-tip, .money-copy .money-reveal, .money-copy .v-caption{margin:0;}
-.money-copy .money-reveal{font-size:13.5px; flex:0 0 auto;}
-.money-stage > .v-caption{grid-column:1 / -1; grid-row:2; margin:0;}
+.money-copy .chart-tip{margin:0;}
+.money-stage > .money-reveal{
+  grid-column:1 / -1; grid-row:2;
+  margin:0; font-size:13.5px; flex:0 0 auto;
+}
+.money-stage > .v-caption{grid-column:1 / -1; grid-row:3; margin:0;}
 #explore .strat-list{margin-top:6px;}
 .frontier-legend{
   margin:8px 0 0;
@@ -1277,11 +1282,11 @@ td{padding:7px 8px; border-bottom:1px solid var(--line); color:var(--muted);}
           <svg class="money-svg" id="money-svg" viewBox="0 0 760 320" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Fiji 2004 percentage farm-gate-value outcomes for cassava only, mixed garden, taro only and sweet potato only"></svg>
           <div class="money-copy">
             <div class="chart-tip" id="money-tip" aria-live="polite">Hover or tap a bar for expected vs historical implied gross farm-gate value. Bar length is the percentage outcome, not the raw dollar change.</div>
-            <div class="money-reveal" id="money-reveal" hidden>
-              <div class="line1">If you knew cassava would win, diversification would look unnecessary.</div>
-              <div class="line2">But the winner is only obvious after the year has happened.</div>
-              <div class="line3">Monocropping concentrates the bet. Here, the diversified hectare finished only US$243 below its fitted farm-gate benchmark — roughly four times smaller than taro-only’s US$968 shortfall in this historical stress-test valuation.</div>
-            </div>
+          </div>
+          <div class="money-reveal" id="money-reveal" hidden>
+            <div class="line1">If you knew cassava would win, diversification would look unnecessary.</div>
+            <div class="line2">But the winner is only obvious after the year has happened.</div>
+            <div class="line3">Monocropping concentrates the bet. Here, the diversified hectare finished only US$243 below its fitted farm-gate benchmark — roughly four times smaller than taro-only’s US$968 shortfall in this historical stress-test valuation.</div>
           </div>
           <p class="v-caption">Observed same-year FAOSTAT producer prices value the modelled crop quantities. Values represent gross farm-gate value relative to each strategy's fitted harvest benchmark, not profit or household income.</p>
         </div>
@@ -2379,7 +2384,7 @@ function updateDownside(){
     {id:'sp', name:'Sweet potato only', w:{c:0,t:0,s:1}, color:'var(--sp)'},
     {id:'equal', name:'Mixed garden — 1/3 each', w:{c:1/3,t:1/3,s:1/3}, color:'#E4C264', accent:true}
   ];
-  const W=720, H=360, pad={l:220, r:118, t:36, b:48};
+  const W=720, H=360, pad={l:220, r:118, t:50, b:48};
   const laneH = (H-pad.t-pad.b)/lanes.length;
   let maxD = 10;
   const points = [];
@@ -2417,8 +2422,8 @@ function updateDownside(){
   });
 
   let html = `<text x="${pad.l}" y="16" class="chart-label" font-size="12">Downside % (max(−harvest outcome, 0))</text>`;
-  html += `<line x1="${xOf(10)}" x2="${xOf(10)}" y1="${pad.t-4}" y2="${H-pad.b+4}" stroke="var(--faint)" stroke-dasharray="4 4"/>`;
-  html += `<text x="${xOf(10)+8}" y="${pad.t-8}" class="chart-label" font-size="10">Severe-loss threshold · 10%</text>`;
+  html += `<line x1="${xOf(10)}" x2="${xOf(10)}" y1="${pad.t-2}" y2="${H-pad.b+4}" stroke="var(--faint)" stroke-dasharray="4 4"/>`;
+  html += `<text x="${xOf(10)+8}" y="34" class="chart-label" font-size="10">Severe-loss threshold · 10%</text>`;
   [0,20,Math.min(maxD,40),maxD].filter((v,i,a)=>a.indexOf(v)===i && v<=maxD && v!==10).forEach(v=>{
     html += `<text x="${xOf(v)}" y="${H-pad.b+16}" text-anchor="middle" class="chart-label" font-size="11">${v}%</text>`;
   });
@@ -2934,7 +2939,7 @@ function drawEvidenceWorst(strategies){
     lab:s.name,
     worst:strategyStats(weightsFromStrategy(s.id), state.cap).worst
   }));
-  const W=580, H=180, pad={l:176, r:72, t:10, b:16};
+  const W=580, H=180, pad={l:250, r:36, t:10, b:16};
   const worsts = rows.map(r=>r.worst);
   const lo = Math.min(...worsts, -5);
   const span = Math.max(5, -lo);
@@ -2949,9 +2954,9 @@ function drawEvidenceWorst(strategies){
     const x = xOf(r.worst);
     const w = Math.max(2, x0 - x);
     const active = state.strategy===r.id;
-    html += `<text x="${pad.l-10}" y="${(y+h*0.72).toFixed(1)}" text-anchor="end" class="chart-label" font-size="12"${active?' font-weight="700" fill="var(--ink)"':''}>${r.lab}</text>`;
+    html += `<text x="12" y="${(y+h*0.72).toFixed(1)}" class="chart-label" font-size="12"${active?' font-weight="700" fill="var(--ink)"':''}>${r.lab}</text>`;
+    html += `<text x="${(pad.l-10).toFixed(1)}" y="${(y+h*0.72).toFixed(1)}" text-anchor="end" class="chart-val" font-size="12" fill="var(--warn)">${fmtPct(r.worst)}</text>`;
     html += `<rect class="strat-bar" data-id="${r.id}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="var(--warn)" opacity="${active?0.95:0.55}" stroke="${active?'var(--ink)':'none'}" stroke-width="${active?1.25:0}" style="cursor:pointer"/>`;
-    html += `<text x="${(W-8).toFixed(1)}" y="${(y+h*0.72).toFixed(1)}" text-anchor="end" class="chart-val" font-size="12" fill="var(--warn)">${fmtPct(r.worst)}</text>`;
   });
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
   svg.innerHTML = html;
